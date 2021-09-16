@@ -13,4 +13,8 @@ gradle-app.setting
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
 
-.DS_Store
+# Ignore Macos nonsense
+**.DS_Store
+
+# Ignore custom vscode user settings
+**/.settings
