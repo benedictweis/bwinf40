@@ -44,13 +44,13 @@ public class App {
         System.out.println(num_of_hotels);
         System.out.println(totalTime);
 
-        HashMap<Integer,Float> hotels = new HashMap<Integer,Float>();
+        //HashMap<Integer,Float> hotels = new HashMap<Integer,Float>();
+        ArrayList<Hotel> hotels = new ArrayList<Hotel>();
 
-        for (String line: lines) {
+        for (int i = 0; i<lines.size(); i++) {
+            String parts[] = lines.get(i).split(" ");
 
-            String parts[] = line.split(" ");
-
-            hotels.put(Integer.parseInt(parts[0]), Float.parseFloat(parts[1]));
+            //hotels.put(Integer.parseInt(parts[0]), Float.parseFloat(parts[1]));
         }
 
         System.out.println(hotels);

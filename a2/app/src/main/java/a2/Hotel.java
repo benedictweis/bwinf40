@@ -6,7 +6,8 @@ public class Hotel{
     public float rating;
 
     public Hotel (int id,int distance,float rating){
-        Hotel h = new Hotel;
-
+        this.id = id;
+        this.distance = distance;
+        this.rating = rating;
     }
 }
