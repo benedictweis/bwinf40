@@ -6,7 +6,6 @@ package a2;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class App {
@@ -49,7 +48,7 @@ public class App {
 
         for (int i = 0; i<lines.size(); i++) {
             String parts[] = lines.get(i).split(" ");
-
+            hotels.add(new Hotel(i, Integer.parseInt(parts[0]), Float.parseFloat(parts[1])));
             //hotels.put(Integer.parseInt(parts[0]), Float.parseFloat(parts[1]));
         }
 
