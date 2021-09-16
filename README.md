@@ -1,6 +1,6 @@
 # Willkommen 👋
 
-## 40. Jugendwettbererb Informatik Baden-Würtemberg
+## 40. Jugendwettbewerb Informatik Baden-Würtemberg
 
 Dies is die offizielle Repository des Carl-Friedrich-Gauss-Gymnasiums in Hockenheim zum 40. Jugendwettbewerb Informatik des Landes Baden-Würtemberg
 
