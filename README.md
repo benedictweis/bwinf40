@@ -2,6 +2,6 @@
 
 ## 40. Jugendwettbewerb Informatik Baden-Würtemberg
 
-Dies is die offizielle Repository des Carl-Friedrich-Gauss-Gymnasiums in Hockenheim zum 40. Jugendwettbewerb Informatik des Landes Baden-Würtemberg
+Dies ist die offizielle Repository des Carl-Friedrich-Gauss-Gymnasiums in Hockenheim zum 40. Jugendwettbewerb Informatik. 
 
-Die Aufgaben werden hier in der Programmiersprache Java ☕️ bearbeitet
+Die Aufgaben werden hier in der Programmiersprache Java ☕️ bearbeitet.
