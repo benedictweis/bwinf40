@@ -9,6 +9,5 @@ public class Hotel{
         this.id = id;
         this.distance = distance;
         this.rating = rating;
-
     }
 }
