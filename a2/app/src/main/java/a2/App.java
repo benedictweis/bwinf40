@@ -59,7 +59,34 @@ public class App {
         }
 
         int currentTravelTime = 0;
+        float averageRating;
+        ArrayList<Hotel> selectedHotels = new ArrayList<Hotel>();
+        while (currentTravelTime < totalTime-600){
+            Hotel currentHotel = getBestHotelWithinRange(hotels, currentTravelTime);
+            selectedHotels.add(currentHotel);
+            currentTravelTime = currentHotel.distance;
+        }
 
+    }
 
+    static float calculateAverageRating (ArrayList<Hotel> list){
+        float average = 0;
+        int counter = 0;
+        for (Hotel h: list){
+            average += h.rating;
+            counter++;
+        }
+        average = average/counter;
+        return average;
+    }
+
+    static Hotel getBestHotelWithinRange (ArrayList<Hotel> list, int currentTraveltime){
+        Hotel current = null;
+        for (Hotel h: list){
+            if (current == null) current = h;
+            //TODO account for negative travel time
+            if (current.rating <= h.rating && current.distance-currentTraveltime <= 600) current = h;
+        }
+        return current;
     }
 }
