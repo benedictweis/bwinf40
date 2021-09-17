@@ -1,6 +1,6 @@
 # Willkommen 👋
 
-## 40. Bundesjugendwettbewerb Informatik
+## 40. Bundeswettbewerb Informatik
 
 Dies ist die offizielle Repository des Carl-Friedrich-Gauss-Gymnasiums in Hockenheim zum 40. Jugendwettbewerb Informatik. 
 
