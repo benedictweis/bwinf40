@@ -97,8 +97,8 @@ public class Wortsuche{
         zeigen();
     }
 
-    public void vertfuellen(){
-        vertEinfg("TEST");
+    public void vertfuellen(String wort){
+        vertEinfg(wort);
         zeigen();
     }
 
@@ -131,8 +131,8 @@ public class Wortsuche{
         }
     }
 
-    public void horifuellen(){
-        horiEinfg("TEST");
+    public void horifuellen(String wort){
+        horiEinfg(wort);
         zeigen();
     }
 
@@ -163,5 +163,18 @@ public class Wortsuche{
         } else{
             horiEinfg(wort);
         }
+    }
+
+    public void alleEinfg(){
+        Random random = new Random();
+        for(int i = 2; i < (Integer.parseInt(lines.get(1)) + 2); i++){
+            int zufall = random.nextInt(2);
+            if(zufall == 0){
+                vertfuellen(lines.get(i));
+            } else if(zufall == 1){
+                horifuellen(lines.get(i));
+            }
+        }
+        
     }
 }
