@@ -6,7 +6,7 @@ public class main
 {
     String alphabet[]="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     ArrayList<String> lines=new ArrayList<String>();
-    String solution[][]=new String[alphabet.length][alphabet.length];
+    String solution[]=new String[alphabet.length];
     String nf[];
     String qf[];
     public main()
@@ -48,7 +48,7 @@ public class main
             if(nf[i]==null){
                 break;
             }
-            solution[i][0]=nf[i]+": ";
+            solution[i]=nf[i]+": ";
             moveOut(i);
             resetQF();
         }
@@ -140,15 +140,12 @@ public class main
     }
     public void printResult(){
         for(int x=0;x<nf.length;x++){
-            int y=0;
-            for(;y<solution[x].length;y++){
-                if(solution[x][y]==null){
+            if(solution[x]==null){
                     break;
                 }
                 else{
-                    System.out.println(solution[x][y]);
+                    System.out.println(solution[x]);
                 }
-            }
         }
     }
     public void moveOut(int index){
@@ -165,7 +162,7 @@ public class main
                     }
                     else if(qf[index-2]==null){
                         moveLeft(index);
-                        solution[index][0]+=qfName+" 1 left";
+                        solution[index]+=qfName+" 1 left";
                         return;
                     }
                     if((index+2)>qf.length){
@@ -173,7 +170,7 @@ public class main
                     else if(qf[index+1]==null&&qf[index+2]==null){
                         moveRight(index);
                         moveRight(index);
-                        solution[index][0]+=qfName+" 2 right";
+                        solution[index]+=qfName+" 2 right";
                         return;
                     }
                 }
@@ -184,7 +181,7 @@ public class main
                     }
                     else if(qf[index+2]==null){
                         moveRight(index);
-                        solution[index][0]+=qfName+" 1 right";
+                        solution[index]+=qfName+" 1 right";
                         return;
                     }
                     if((index-2)<0){
@@ -192,7 +189,7 @@ public class main
                     else if(qf[index-1]==null&&qf[index-2]==null){
                         moveLeft(index);
                         moveLeft(index);
-                        solution[index][0]+=qfName+" 2 left";
+                        solution[index]+=qfName+" 2 left";
                         return;
                     }
                 }
