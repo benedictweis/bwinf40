@@ -44,105 +44,88 @@ public class main
     }
     public void AutosAusparken()
     {   
-        /* Cars with no sidewys-car behind them gets moved out first */
         for(int i=0;i<nf.length;i++){
-            String carName=nf[i];
-            if(qf[i]==null){
-                solution[i][0]=carName+":";
+            if(nf[i]==null){
+                break;
             }
+            solution[i][0]=nf[i]+": ";
+            moveOut(i);
+            resetQF();
         }
         printResult();
     }
     public int moveRight(int index){
-        int status=9999;
+        /* Returncodes: -1-> error, 0->other car is blocking, 1->done */
         try{
             String carName = qf[index];
             if(carName==null){
-                return -9999;
+                return -1;
             }
             if((index - 1)<0){
-                status=(-9999);
             }
-            else if(qf[index - 1]==carName){
+            else if(qf[index-1]==carName){
                 if(qf[index+1]==null){
                     qf[index+1]=carName;
                     qf[index-1]=null;
-                    status=0;
-                }
-                else if(qf[index+1]!=null&&qf[index+1]!=carName){
                     return 1;
                 }
-            }
-            if(status==0){
-                return status;
+                else if(qf[index+1]!=null&&qf[index+1]!=carName){
+                    return 0;
+                }
             }
             if((index + 2)>qf.length){
-                status=(-9999);
             }
-            else if(qf[index + 1]==carName){
+            else if(qf[index+1]==carName){
                 if(qf[index+2]==null){
                     qf[index + 2]=carName;
                     qf[index]=null;
-                    status=0;
+                    return 1;
                 }
                 else if(qf[index+2]!=null&&qf[index+2]!=carName){
-                    return 1;
+                    return 0;
+                }
             }
-            }
-            if(status==0){
-                return status;
-            }
-            return status;
+            return -1;
         }
         catch (Exception e){
-            return -9999;
+            return -1;
         }
     }
     public int moveLeft(int index){
-        /* If moving the car fails, an error code is returned */
-        /* Returncodes: -9999-> array-data-error, -1-> there is a car to the left, 0-> all went well, 1-> there is a car to the right, 9999-> code didnt work */
-        int status=9999;
+        /* Returncodes: -1-> error, 0->other car is blocking, 1->done */
         try{
             String carName=qf[index];
             if(carName==null){
-                return -9999;
+                return -1;
             }
             if((index - 2)<0){      
-                status=(-9999);
             }
             else if(qf[index - 1]==carName){
                 if(qf[index-2]==null){
                     qf[index - 2]=carName;
                     qf[index]=null;
-                    status=0;
+                    return 1;
                 }
                 else if(qf[index-2]!=null&&qf[index-2]!=carName){
-                    return -1;
-            }
-            }
-            if(status==0){
-                return status;
+                    return 0;
+                }
             }
             if((index + 1)>qf.length){
-                status=(-9999);
             }
             else if(qf[index + 1]==carName){
                 if(qf[index-1]==null){
                     qf[index - 1]=carName;
                     qf[index + 1]=null;
-                    status=0;
+                    return 1;
                 }
                 else if(qf[index-1]!=null&&qf[index-1]!=carName){
-                    return -1;
+                    return 0;
+                }
             }
-            }
-            if(status==0){
-                return status;
-            }
-            return status;
+            return -1;
         }
         catch(Exception e){
-            return -9999;
+            return -1;
         }
     }
     public void resetQF(){
@@ -156,10 +139,8 @@ public class main
         }
     }
     public void printResult(){
-        int x=0;
-        int y=0;
-        for(;x<solution.length;x++){
-            y=0;
+        for(int x=0;x<solution.length;x++){
+            int y=0;
             for(;y<solution[x].length;y++){
                 if(solution[x][y]==null){
                     break;
@@ -168,6 +149,43 @@ public class main
                     System.out.println(solution[x][y]);
                 }
             }
+        }
+    }
+    public void moveOut(int index){
+        String carName=nf[index];
+        try{
+            if(qf[index]==null){
+            }
+            else if(qf[index]!=null){
+                if((index - 2)<0){      
+                }
+                else if(qf[index - 1]==carName){
+                    if(qf[index-2]==null){
+                        moveLeft(index);
+                        solution[index][1]=qf[index]+"1 left";
+                    }
+                    else if(qf[index+1]==null&&qf[index+2]==null){
+                        moveRight(index);
+                        moveRight(index);
+                        solution[index][1]=qf[index]+"2 right";
+                    }
+                }
+                if((index + 1)>qf.length){
+                }
+                else if(qf[index + 1]==carName){
+                    if(qf[index+2]==null){
+                        moveRight(index);
+                        solution[index][1]=qf[index]+"1 right";
+                    }
+                    else if(qf[index-1]==null&&qf[index-2]==null){
+                        moveLeft(index);
+                        moveLeft(index);
+                        solution[index][1]=qf[index]+"2 left";
+                    }
+                }
+            }
+        }
+        catch(Exception e){
         }
     }
 }

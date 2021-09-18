@@ -12,4 +12,6 @@ comment5.params=
 comment5.target=void\ resetQF()
 comment6.params=
 comment6.target=void\ printResult()
-numComments=7
+comment7.params=index
+comment7.target=void\ moveOut(int)
+numComments=8
