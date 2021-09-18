@@ -139,7 +139,7 @@ public class main
         }
     }
     public void printResult(){
-        for(int x=0;x<solution.length;x++){
+        for(int x=0;x<nf.length;x++){
             int y=0;
             for(;y<solution[x].length;y++){
                 if(solution[x][y]==null){
@@ -152,40 +152,54 @@ public class main
         }
     }
     public void moveOut(int index){
-        String carName=nf[index];
+        String qfName=qf[index];
         try{
             if(qf[index]==null){
             }
-            else if(qf[index]!=null){
-                if((index - 2)<0){      
+            else{
+                if((index - 1)<0){
+                    return;
                 }
-                else if(qf[index - 1]==carName){
-                    if(qf[index-2]==null){
+                else if(qf[index - 1]==qfName){
+                    if((index-2)<0){
+                    }
+                    else if(qf[index-2]==null){
                         moveLeft(index);
-                        solution[index][1]=qf[index]+"1 left";
+                        solution[index][0]+=qfName+" 1 left";
+                        return;
+                    }
+                    if((index+2)>qf.length){
                     }
                     else if(qf[index+1]==null&&qf[index+2]==null){
                         moveRight(index);
                         moveRight(index);
-                        solution[index][1]=qf[index]+"2 right";
+                        solution[index][0]+=qfName+" 2 right";
+                        return;
                     }
                 }
-                if((index + 1)>qf.length){
+                if((index + 1)>=qf.length){
                 }
-                else if(qf[index + 1]==carName){
-                    if(qf[index+2]==null){
+                else if(qf[index + 1]==qfName){
+                    if((index+2)>qf.length){
+                    }
+                    else if(qf[index+2]==null){
                         moveRight(index);
-                        solution[index][1]=qf[index]+"1 right";
+                        solution[index][0]+=qfName+" 1 right";
+                        return;
+                    }
+                    if((index-2)<0){
                     }
                     else if(qf[index-1]==null&&qf[index-2]==null){
                         moveLeft(index);
                         moveLeft(index);
-                        solution[index][1]=qf[index]+"2 left";
+                        solution[index][0]+=qfName+" 2 left";
+                        return;
                     }
                 }
             }
         }
         catch(Exception e){
+            return;
         }
     }
 }
