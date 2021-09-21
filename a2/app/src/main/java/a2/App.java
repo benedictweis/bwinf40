@@ -72,10 +72,10 @@ public class App {
             }
         }
 
-        averageRating = calculateAverageRating(selectedHotels);
-
         while (selectedHotels.size() < 5){
-
+            averageRating = calculateAverageRating(selectedHotels);
+            Hotel bestRemaining = getBestRemainingHotel(hotels, selectedHotels);
+            if (bestRemaining.rating > averageRating) selectedHotels.add(bestRemaining);
         }
     }
 
@@ -103,8 +103,12 @@ public class App {
         
         ArrayList<Hotel> remainingHotels = allHotels;
         for (Hotel h: selectedHotels){
-
+            remainingHotels.remove(h);
         }
-        return null;
+        Hotel bestHotel = null;
+        for (Hotel h: remainingHotels){
+            if (bestHotel == null || bestHotel.rating < h.rating) bestHotel = h;
+        }
+        return bestHotel;
     }
 }
