@@ -17,7 +17,7 @@ public class main
     public main()
     {
         /* Reading File */
-        File file = new File("parkplatz0.txt");
+        File file = new File("parkplatz1.txt");
         try{
             Scanner scanner = new Scanner(file);
             while(scanner.hasNext()){
@@ -72,7 +72,7 @@ public class main
      *  @param distance: how many positions the parallel car shall be moved
      **/
     public boolean moveRight(int index, int distance){
-        /* Returncodes: -1-> error, 1->done */
+        /* Returncodes: false-> error, true->done */
         try{
             String parallelName = parallel[index];
             if(parallelName==null){
@@ -81,13 +81,13 @@ public class main
             if(distance==1){    //car shall be moved one position
                 if((index - 1)<0){
                 }
-                else if(parallel[index-1]==parallelName){
-                    if(parallel[index+1]==null){
+                else if(parallel[index-1]==parallelName){   //second char is to the left
+                    if(parallel[index+1]==null){    //path is empty
                         parallel[index+1]=parallelName;
                         parallel[index-1]=null;
                         return true;
                     }
-                    else if(parallel[index+1]!=null&&parallel[index+1]!=parallelName){
+                    else if(parallel[index+1]!=null){   //path is blocked
                         if(!moveRight(index+1, distance)) {
                             return false;
                         }
@@ -98,13 +98,13 @@ public class main
                 }
                 if((index + 2)>parallel.length){
                 }
-                else if(parallel[index+1]==parallelName){
-                    if(parallel[index+2]==null){
+                else if(parallel[index+1]==parallelName){   //second char is to the right
+                    if(parallel[index+2]==null){    //path is empty
                         parallel[index + 2]=parallelName;
                         parallel[index]=null;
                         return true;
                     }
-                    else if(parallel[index+2]!=null&&parallel[index+2]!=parallelName){
+                    else if(parallel[index+2]!=null){   //path is blocked
                         if(!moveRight(index+2, distance)) {
                             return false;
                         }
@@ -117,8 +117,8 @@ public class main
             else if(distance==2){   //car shall be moved two positions
                 if((index - 1)<0){
                 }
-                else if(parallel[index-1]==parallelName){
-                    if(parallel[index+1]==null){    //position of 2nd char is to the right
+                else if(parallel[index-1]==parallelName){   //second char is to the left
+                    if(parallel[index+1]==null){    //path is empty
                         parallel[index+2]=parallelName;
                         parallel[index+1]=parallelName;
                         parallel[index]=null;
@@ -136,7 +136,7 @@ public class main
                         return true;
                     }
                     else if(parallel[index+2]!=null){   //path is blocked by other car at far right index
-                        if(!moveRight(index+1, distance-1)){
+                        if(!moveRight(index+2, distance-1)){
                             return false;
                         }
                         parallel[index+2]=parallelName;
@@ -148,17 +148,31 @@ public class main
                 }
                 if((index + 2)>parallel.length){
                 }
-                else if(parallel[index+1]==parallelName){
-                    if(parallel[index+2]==null){
-                        parallel[index + 2]=parallelName;
+                else if(parallel[index+1]==parallelName){   //second char is to the right
+                    if(parallel[index+3]==null){    //path is empty
+                        parallel[index+3]=parallelName;
+                        parallel[index+2]=parallelName;
+                        parallel[index+1]=null;
                         parallel[index]=null;
                         return true;
                     }
-                    else if(parallel[index+2]!=null&&parallel[index+2]!=parallelName){
+                    else if(parallel[index+2]!=null){   //path is blocked by other car at near right index
                         if(!moveRight(index+2, distance)) {
                             return false;
                         }
-                        parallel[index + 2]=parallelName;
+                        parallel[index+3]=parallelName;
+                        parallel[index+2]=parallelName;
+                        parallel[index+1]=null;
+                        parallel[index]=null;
+                        return true;
+                    }
+                    else if(parallel[index+3]!=null){   //path is blocked by other car at far right index
+                        if(!moveRight(index+3, distance-1)){
+                            return false;
+                        }
+                        parallel[index+3]=parallelName;
+                        parallel[index+2]=parallelName;
+                        parallel[index+1]=null;
                         parallel[index]=null;
                         return true;
                     }
