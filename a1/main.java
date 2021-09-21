@@ -118,7 +118,7 @@ public class main
                 if((index - 1)<0){
                 }
                 else if(parallel[index-1]==parallelName){   //second char is to the left
-                    if(parallel[index+1]==null){    //path is empty
+                    if(parallel[index+2]==null){    //path is empty
                         parallel[index+2]=parallelName;
                         parallel[index+1]=parallelName;
                         parallel[index]=null;
