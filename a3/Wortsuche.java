@@ -198,13 +198,13 @@ public class Wortsuche{
         zeigen();
     }
 
-    private void drehen(int index){
+    public void drehen(int index){
         String wort=lines.get(index);
-        char[] bst=wort.toCharArray();
-        char[] speicher=bst;
-        for(int i=0; i<bst.length;i++){
-            bst[i]=speicher[(bst.length-(i+1))];
+        String umgekehrt=new String();
+        for(int i=(wort.length()-1);i>=0;i--){
+            umgekehrt += wort.charAt(i);
         }
+        lines.set(index, umgekehrt);
     }
 
     public void test(int anz){
