@@ -2,11 +2,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Arrays;
 public class main
 {
     String alphabet[]="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     ArrayList<String> lines=new ArrayList<String>();
-    String solution[]=new String[alphabet.length];
+    String finalSolution[];
+    String preSolution[][];
     String straight[];
     String parallel[];
     public main()
@@ -41,21 +43,25 @@ public class main
             parallel[Integer.parseInt(parallelln[1])]=parallelln[0];
             parallel[Integer.parseInt(parallelln[1])+1]=parallelln[0];
         }
+        finalSolution=new String[straight.length];
+        preSolution=new String[straight.length][straight.length * straight.length];
     }
+
     public void AutosAusparken()
     {   
         for(int i=0;i<straight.length;i++){
             if(straight[i]==null){
                 break;
             }
-            solution[i]=straight[i]+": ";
+            finalSolution[i]=straight[i]+": ";
             moveOut(i);
             resetparallel();
         }
         printResult();
     }
+
     public int moveRight(int index){
-        /* Returncodes: -1-> error, 0->other car is blocking, 1->done */
+        /* Returncodes: -1-> error, 1->done */
         try{
             String parallelName = parallel[index];
             if(parallelName==null){
@@ -67,6 +73,13 @@ public class main
                 if(parallel[index+1]==null){
                     parallel[index+1]=parallelName;
                     parallel[index-1]=null;
+                    for(int i=0;i<preSolution[index].length;i++){
+                        if(preSolution[index][i]==null){
+                            preSolution[index][i]=parallelName;
+                            break;
+                        }
+                    }
+                    System.out.println(parallelName+" 1 right");
                     return 1;
                 }
                 else if(parallel[index+1]!=null&&parallel[index+1]!=parallelName){
@@ -75,6 +88,13 @@ public class main
                     }
                     parallel[index+1] = parallelName;
                     parallel[index-1] = null;
+                    for(int i=0;i<preSolution[index].length;i++){
+                        if(preSolution[index][i]==null){
+                            preSolution[index][i]=parallelName;
+                            break;
+                        }
+                    }
+                    System.out.println(parallelName+" 1 right");
                     return 1;
                 }
             }
@@ -84,6 +104,13 @@ public class main
                 if(parallel[index+2]==null){
                     parallel[index + 2]=parallelName;
                     parallel[index]=null;
+                    for(int i=0;i<preSolution[index].length;i++){
+                        if(preSolution[index][i]==null){
+                            preSolution[index][i]=parallelName;
+                            break;
+                        }
+                    }
+                    System.out.println(parallelName+" 1 right");
                     return 1;
                 }
                 else if(parallel[index+2]!=null&&parallel[index+2]!=parallelName){
@@ -92,6 +119,13 @@ public class main
                     }
                     parallel[index + 2]=parallelName;
                     parallel[index]=null;
+                    for(int i=0;i<preSolution[index].length;i++){
+                        if(preSolution[index][i]==null){
+                            preSolution[index][i]=parallelName;
+                            break;
+                        }
+                    }
+                    System.out.println(parallelName+" 1 right");
                     return 1;
                 }
             }
@@ -101,11 +135,12 @@ public class main
             return -1;
         }
     }
+
     public int moveLeft(int index){
-        /* Returncodes: -1-> error, 0->other car is blocking, 1->done */
+        /* Returncodes: -1-> error, 1->done */
         try{
             String parallelName=parallel[index];
-            if(parallelName==null){
+            if(parallelName==null){ //if there isnt a car at index returns error
                 return -1;
             }
             if((index - 2)<0){      
@@ -120,9 +155,9 @@ public class main
                     if(moveLeft(index-2)== -1) {
                         return -1;
                     }
-                        parallel[index-2] = parallelName;
-                        parallel[index] = null;
-                        return 1;
+                    parallel[index-2] = parallelName;
+                    parallel[index] = null;
+                    return 1;
                 }
             }
             if((index + 1)>parallel.length){
@@ -148,6 +183,7 @@ public class main
             return -1;
         }
     }
+
     public void resetparallel(){
         for(int i=0;i<parallel.length;i++){
             parallel[i]=null;
@@ -158,16 +194,18 @@ public class main
             parallel[Integer.parseInt(parallelln[1])+1]=parallelln[0];
         }
     }
+
     public void printResult(){
         for(int x=0;x<straight.length;x++){
-            if(solution[x]==null){
-                    break;
-                }
-                else{
-                    System.out.println(solution[x]);
-                }
+            if(finalSolution[x]==null){
+                break;
+            }
+            else{
+                System.out.println(finalSolution[x]);
+            }
         }
     }
+
     public void moveOut(int index){
         String parallelName=parallel[index];
         try{
@@ -182,7 +220,8 @@ public class main
                     }
                     else if(parallel[index-2]==null){
                         moveLeft(index);
-                        solution[index]+=parallelName+" 1 left";
+                        finalSolution[index]+=parallelName+" 1 left";
+                        preSolution[index][0]="-1";
                         return;
                     }
                     if((index+2)>parallel.length){
@@ -190,7 +229,8 @@ public class main
                     else if(parallel[index+1]==null&&parallel[index+2]==null){
                         moveRight(index);
                         moveRight(index);
-                        solution[index]+=parallelName+" 2 right";
+                        finalSolution[index]+=parallelName+" 2 right";
+                        preSolution[index][0]="1";
                         return;
                     }
                 }
@@ -201,7 +241,8 @@ public class main
                     }
                     else if(parallel[index+2]==null){
                         moveRight(index);
-                        solution[index]+=parallelName+" 1 right";
+                        finalSolution[index]+=parallelName+" 1 right";
+                        preSolution[index][0]="1";
                         return;
                     }
                     if((index-2)<0){
@@ -209,7 +250,8 @@ public class main
                     else if(parallel[index-1]==null&&parallel[index-2]==null){
                         moveLeft(index);
                         moveLeft(index);
-                        solution[index]+=parallelName+" 2 left";
+                        finalSolution[index]+=parallelName+" 2 left";
+                        preSolution[index][0]="-1";
                         return;
                     }
                 }
@@ -218,5 +260,8 @@ public class main
         catch(Exception e){
             return;
         }
+    }
+    public int test(){
+        return Arrays.asList(parallel).indexOf("H");
     }
 }
