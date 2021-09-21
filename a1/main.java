@@ -7,8 +7,8 @@ public class main
     String alphabet[]="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     ArrayList<String> lines=new ArrayList<String>();
     String solution[]=new String[alphabet.length];
-    String nf[];
-    String qf[];
+    String straight[];
+    String parallel[];
     public main()
     {
         /* Reading File */
@@ -28,61 +28,71 @@ public class main
         /* Filling array with the normal-cars */
         for(int i=0;i<alphabet.length;i++){
             if(alphabet[i].equalsIgnoreCase(firstln[1])){
-                nf=new String[i+1];
-                qf=new String[i+1];
-                for(int j=0;j<nf.length;j++){
-                    nf[j]=alphabet[j];
+                straight=new String[i+1];
+                parallel=new String[i+1];
+                for(int j=0;j<straight.length;j++){
+                    straight[j]=alphabet[j];
                 }
             }
         }
         /* Filling array with the sideways-cars */
         for(int i=2;i<lines.size();i++){
-            String qfln[]=lines.get(i).split(" ");
-            qf[Integer.parseInt(qfln[1])]=qfln[0];
-            qf[Integer.parseInt(qfln[1])+1]=qfln[0];
+            String parallelln[]=lines.get(i).split(" ");
+            parallel[Integer.parseInt(parallelln[1])]=parallelln[0];
+            parallel[Integer.parseInt(parallelln[1])+1]=parallelln[0];
         }
     }
     public void AutosAusparken()
     {   
-        for(int i=0;i<nf.length;i++){
-            if(nf[i]==null){
+        for(int i=0;i<straight.length;i++){
+            if(straight[i]==null){
                 break;
             }
-            solution[i]=nf[i]+": ";
+            solution[i]=straight[i]+": ";
             moveOut(i);
-            resetQF();
+            resetparallel();
         }
         printResult();
     }
     public int moveRight(int index){
         /* Returncodes: -1-> error, 0->other car is blocking, 1->done */
         try{
-            String carName = qf[index];
-            if(carName==null){
+            String parallelName = parallel[index];
+            if(parallelName==null){
                 return -1;
             }
             if((index - 1)<0){
             }
-            else if(qf[index-1]==carName){
-                if(qf[index+1]==null){
-                    qf[index+1]=carName;
-                    qf[index-1]=null;
+            else if(parallel[index-1]==parallelName){
+                if(parallel[index+1]==null){
+                    parallel[index+1]=parallelName;
+                    parallel[index-1]=null;
                     return 1;
                 }
-                else if(qf[index+1]!=null&&qf[index+1]!=carName){
-                    return 0;
-                }
-            }
-            if((index + 2)>qf.length){
-            }
-            else if(qf[index+1]==carName){
-                if(qf[index+2]==null){
-                    qf[index + 2]=carName;
-                    qf[index]=null;
+                else if(parallel[index+1]!=null&&parallel[index+1]!=parallelName){
+                    if(moveRight(index+1)== -1) {
+                        return -1;
+                    }
+                    parallel[index+1] = parallelName;
+                    parallel[index-1] = null;
                     return 1;
                 }
-                else if(qf[index+2]!=null&&qf[index+2]!=carName){
-                    return 0;
+            }
+            if((index + 2)>parallel.length){
+            }
+            else if(parallel[index+1]==parallelName){
+                if(parallel[index+2]==null){
+                    parallel[index + 2]=parallelName;
+                    parallel[index]=null;
+                    return 1;
+                }
+                else if(parallel[index+2]!=null&&parallel[index+2]!=parallelName){
+                    if(moveRight(index+2)== -1) {
+                        return -1;
+                    }
+                    parallel[index + 2]=parallelName;
+                    parallel[index]=null;
+                    return 1;
                 }
             }
             return -1;
@@ -94,32 +104,42 @@ public class main
     public int moveLeft(int index){
         /* Returncodes: -1-> error, 0->other car is blocking, 1->done */
         try{
-            String carName=qf[index];
-            if(carName==null){
+            String parallelName=parallel[index];
+            if(parallelName==null){
                 return -1;
             }
             if((index - 2)<0){      
             }
-            else if(qf[index - 1]==carName){
-                if(qf[index-2]==null){
-                    qf[index - 2]=carName;
-                    qf[index]=null;
+            else if(parallel[index - 1]==parallelName){
+                if(parallel[index-2]==null){
+                    parallel[index - 2]=parallelName;
+                    parallel[index]=null;
                     return 1;
                 }
-                else if(qf[index-2]!=null&&qf[index-2]!=carName){
-                    return 0;
+                else if(parallel[index-2]!=null&&parallel[index-2]!=parallelName){
+                    if(moveLeft(index-2)== -1) {
+                        return -1;
+                    }
+                        parallel[index-2] = parallelName;
+                        parallel[index] = null;
+                        return 1;
                 }
             }
-            if((index + 1)>qf.length){
+            if((index + 1)>parallel.length){
             }
-            else if(qf[index + 1]==carName){
-                if(qf[index-1]==null){
-                    qf[index - 1]=carName;
-                    qf[index + 1]=null;
+            else if(parallel[index + 1]==parallelName){
+                if(parallel[index-1]==null){
+                    parallel[index - 1]=parallelName;
+                    parallel[index + 1]=null;
                     return 1;
                 }
-                else if(qf[index-1]!=null&&qf[index-1]!=carName){
-                    return 0;
+                else if(parallel[index-1]!=null&&parallel[index-1]!=parallelName){
+                    if(moveLeft(index-1)== -1) {
+                        return -1;
+                    }
+                    parallel[index-1] = parallelName;
+                    parallel[index+1] = null;
+                    return 1;
                 }
             }
             return -1;
@@ -128,18 +148,18 @@ public class main
             return -1;
         }
     }
-    public void resetQF(){
-        for(int i=0;i<qf.length;i++){
-            qf[i]=null;
+    public void resetparallel(){
+        for(int i=0;i<parallel.length;i++){
+            parallel[i]=null;
         }
         for(int i=2;i<lines.size();i++){
-            String qfln[]=lines.get(i).split(" ");
-            qf[Integer.parseInt(qfln[1])]=qfln[0];
-            qf[Integer.parseInt(qfln[1])+1]=qfln[0];
+            String parallelln[]=lines.get(i).split(" ");
+            parallel[Integer.parseInt(parallelln[1])]=parallelln[0];
+            parallel[Integer.parseInt(parallelln[1])+1]=parallelln[0];
         }
     }
     public void printResult(){
-        for(int x=0;x<nf.length;x++){
+        for(int x=0;x<straight.length;x++){
             if(solution[x]==null){
                     break;
                 }
@@ -149,47 +169,47 @@ public class main
         }
     }
     public void moveOut(int index){
-        String qfName=qf[index];
+        String parallelName=parallel[index];
         try{
-            if(qf[index]==null){
+            if(parallel[index]==null){
             }
             else{
                 if((index - 1)<0){
                     return;
                 }
-                else if(qf[index - 1]==qfName){
+                else if(parallel[index - 1]==parallelName){
                     if((index-2)<0){
                     }
-                    else if(qf[index-2]==null){
+                    else if(parallel[index-2]==null){
                         moveLeft(index);
-                        solution[index]+=qfName+" 1 left";
+                        solution[index]+=parallelName+" 1 left";
                         return;
                     }
-                    if((index+2)>qf.length){
+                    if((index+2)>parallel.length){
                     }
-                    else if(qf[index+1]==null&&qf[index+2]==null){
+                    else if(parallel[index+1]==null&&parallel[index+2]==null){
                         moveRight(index);
                         moveRight(index);
-                        solution[index]+=qfName+" 2 right";
+                        solution[index]+=parallelName+" 2 right";
                         return;
                     }
                 }
-                if((index + 1)>=qf.length){
+                if((index + 1)>=parallel.length){
                 }
-                else if(qf[index + 1]==qfName){
-                    if((index+2)>qf.length){
+                else if(parallel[index + 1]==parallelName){
+                    if((index+2)>parallel.length){
                     }
-                    else if(qf[index+2]==null){
+                    else if(parallel[index+2]==null){
                         moveRight(index);
-                        solution[index]+=qfName+" 1 right";
+                        solution[index]+=parallelName+" 1 right";
                         return;
                     }
                     if((index-2)<0){
                     }
-                    else if(qf[index-1]==null&&qf[index-2]==null){
+                    else if(parallel[index-1]==null&&parallel[index-2]==null){
                         moveLeft(index);
                         moveLeft(index);
-                        solution[index]+=qfName+" 2 left";
+                        solution[index]+=parallelName+" 2 left";
                         return;
                     }
                 }
