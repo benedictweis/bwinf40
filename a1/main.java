@@ -70,7 +70,12 @@ public class main
                     return 1;
                 }
                 else if(qf[index+1]!=null&&qf[index+1]!=carName){
-                    return 0;
+                    if(moveRight(index+1)== -1) {
+                        return -1;
+                    }
+                    qf[index+1] = carName;
+                    qf[index-1] = null;
+                    return 1;
                 }
             }
             if((index + 2)>qf.length){
@@ -82,7 +87,12 @@ public class main
                     return 1;
                 }
                 else if(qf[index+2]!=null&&qf[index+2]!=carName){
-                    return 0;
+                    if(moveRight(index+2)== -1) {
+                        return -1;
+                    }
+                    qf[index + 2]=carName;
+                    qf[index]=null;
+                    return 1;
                 }
             }
             return -1;
@@ -107,7 +117,12 @@ public class main
                     return 1;
                 }
                 else if(qf[index-2]!=null&&qf[index-2]!=carName){
-                    return 0;
+                    if(moveLeft(index-2)== -1) {
+                        return -1;
+                    }
+                        qf[index-2] = carName;
+                        qf[index] = null;
+                        return 1;
                 }
             }
             if((index + 1)>qf.length){
@@ -119,7 +134,12 @@ public class main
                     return 1;
                 }
                 else if(qf[index-1]!=null&&qf[index-1]!=carName){
-                    return 0;
+                    if(moveLeft(index-1)== -1) {
+                        return -1;
+                    }
+                    qf[index-1] = carName;
+                    qf[index+1] = null;
+                    return 1;
                 }
             }
             return -1;
