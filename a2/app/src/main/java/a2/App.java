@@ -61,6 +61,7 @@ public class App {
         int currentTravelTime = 0;
         float averageRating;
         ArrayList<Hotel> selectedHotels = new ArrayList<Hotel>();
+        Boolean usingAlternateMethod = false;
         // -360 because we can reach end from there
         while (currentTravelTime < totalTime-360){
             //TODO might not reach end within 5 hotels with this method
@@ -68,9 +69,19 @@ public class App {
             selectedHotels.add(currentHotel);
             currentTravelTime = currentHotel.distance;
             if (selectedHotels.size() > 5){
+                usingAlternateMethod =true;
+                break;
+            }
+        }
+
+        if (usingAlternateMethod){
+            selectedHotels.clear();
+            currentTravelTime = 0;
+            while(currentTravelTime < totalTime-360){
 
             }
         }
+        averageRating = calculateAverageRating(selectedHotels);
 
         while (selectedHotels.size() < 5){
             averageRating = calculateAverageRating(selectedHotels);
