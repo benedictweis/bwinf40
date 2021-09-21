@@ -27,8 +27,6 @@ public class Wortsuche{
                 Gitter[x][y] = '#';
             }
         }
-
-        zeigen();
     }
 
     private void einlesen(String input){
@@ -41,13 +39,12 @@ public class Wortsuche{
             }
         } catch(FileNotFoundException e){
             e.printStackTrace();
-
         }
 
         parts = lines.get(0).split(" ");
     }
 
-    public void zeigen(){
+    private void zeigen(){
         System.out.println(" ");
         System.out.println(" ");
         System.out.println(" ");
@@ -85,21 +82,18 @@ public class Wortsuche{
         return Character.toUpperCase(randomizedCharacter);
     }
 
-    public void randomAuffüllen(){
+    private void randomAuffüllen(){
         for(int y = 0; y < spalte; y++){
-            for(int x = 0; x < spalte; x++){
+            for(int x = 0; x < zeile; x++){
                 if(Gitter[x][y] == '#'){
                     Gitter[x][y] = randomBuchstaben();
                 }
             }
         }
-
-        zeigen();
     }
 
-    public void vertfuellen(String wort){
+    private void vertfuellen(String wort){
         vertEinfg(wort);
-        zeigen();
     }
 
     private void vertEinfg(String wort){
@@ -111,7 +105,7 @@ public class Wortsuche{
         coloum = random.nextInt((spalte - bst.length + 1));
         while(passt){
             for(int i = 0; i < bst.length; i++){
-                if(Gitter[row][coloum+i] == '#'){
+                if(Gitter[row][coloum+i] == '#' || Gitter[row][coloum+i] == bst[i]){
                     passt = true;
                 }else{
                     passt = false;
@@ -127,13 +121,12 @@ public class Wortsuche{
             }
 
         } else{
-            vertEinfg(wort);
+            horiEinfg(wort);
         }
     }
 
-    public void horifuellen(String wort){
+    private void horifuellen(String wort){
         horiEinfg(wort);
-        zeigen();
     }
 
     private void horiEinfg(String wort){
@@ -145,7 +138,7 @@ public class Wortsuche{
         coloum = random.nextInt(spalte);
         while(passt){
             for(int i = 0; i < bst.length; i++){
-                if(Gitter[row+i][coloum] == '#'){
+                if(Gitter[row+i][coloum] == '#' || Gitter[row+i][coloum] == bst[i]){
                     passt = true;
                 }else{
                     passt = false;
@@ -161,11 +154,11 @@ public class Wortsuche{
             }
 
         } else{
-            horiEinfg(wort);
+            vertEinfg(wort);
         }
     }
 
-    public void alleEinfg(){
+    public void level1(){
         Random random = new Random();
         for(int i = 2; i < (Integer.parseInt(lines.get(1)) + 2); i++){
             int zufall = random.nextInt(2);
@@ -175,6 +168,48 @@ public class Wortsuche{
                 horifuellen(lines.get(i));
             }
         }
-        
+
+        randomAuffüllen();
+        zeigen();
+    }
+
+    public void level2(){
+        Random random = new Random();
+        for(int i = 2; i < (Integer.parseInt(lines.get(1)) + 2); i++){
+            int zufall2 = random.nextInt(2);
+            if(zufall2==0){
+                int zufall = random.nextInt(2);
+                if(zufall == 0){
+                    vertfuellen(lines.get(i));
+                } else if(zufall == 1){
+                    horifuellen(lines.get(i));
+                }
+            }else{
+                drehen(i);
+                int zufall = random.nextInt(2);
+                if(zufall == 0){
+                    vertfuellen(lines.get(i));
+                } else if(zufall == 1){
+                    horifuellen(lines.get(i));
+                }
+            }
+        }
+        randomAuffüllen();
+        zeigen();
+    }
+
+    private void drehen(int index){
+        String wort=lines.get(index);
+        char[] bst=wort.toCharArray();
+        char[] speicher=bst;
+        for(int i=0; i<bst.length;i++){
+            bst[i]=speicher[(bst.length-(i+1))];
+        }
+    }
+
+    public void test(int anz){
+        for(int i=0; i<anz;i++){
+            level1();
+        }
     }
 }
