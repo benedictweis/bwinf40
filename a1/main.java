@@ -53,11 +53,11 @@ public class main
      **/
     public void AutosAusparken()
     {   
-        for(int i=0;i<straight.length;i++){
-            findPath(i);
+        for(int straightIndex=0;straightIndex<straight.length;straightIndex++){
+            findPath(straightIndex);
             resetCars();
+            System.out.println(finalSolution[straightIndex]);
         }
-        printResult();
     }
 
     /**
@@ -331,20 +331,6 @@ public class main
             String parallelln[]=lines.get(i).split(" ");
             parallel[Integer.parseInt(parallelln[1])]=parallelln[0];
             parallel[Integer.parseInt(parallelln[1])+1]=parallelln[0];
-        }
-    }
-
-    /**
-     *  prints the final results to the console  
-     **/
-    public void printResult(){
-        for(int x=0;x<straight.length;x++){
-            if(finalSolution[x]==null){
-                break;
-            }
-            else{
-                System.out.println(finalSolution[x]);
-            }
         }
     }
     
