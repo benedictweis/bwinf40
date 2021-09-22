@@ -301,7 +301,7 @@ public class main
                         return true;
                     }
                     else if(parallel[parallelIndex-2]!=null){   //path is blocked by other car at far left index
-                        if(!moveRight(parallelIndex-2, distance-1, straightIndex)){
+                        if(!moveLeft(parallelIndex-2, distance-1, straightIndex)){
                             return false;
                         }
                         parallel[parallelIndex-2]=parallelName;
@@ -360,45 +360,59 @@ public class main
     public void findPath(int straightIndex){
         String parallelName=parallel[straightIndex];
         try{
-            if(parallel[straightIndex]==null){
+            if(parallel[straightIndex]==null){  //exit path is empty
+                finalSolution[straightIndex]=straight[straightIndex]+": ";
             }
             else{
                 if((straightIndex - 1)<0){
-                    return;
                 }
-                else if(parallel[straightIndex - 1]==parallelName){
+                else if(parallel[straightIndex - 1]==parallelName){ //second char is to the left
                     if((straightIndex-2)<0){
                     }
-                    else if(parallel[straightIndex-2]==null){
-                        moveLeft(straightIndex, 1, straightIndex);
-                        return;
+                    else if(parallel[straightIndex-2]==null){   //free space to the right side
+                        if(moveLeft(straightIndex, 1, straightIndex)){
+                            return;
+                        }
                     }
                     if((straightIndex+2)>parallel.length){
                     }
-                    else if(parallel[straightIndex+1]==null&&parallel[straightIndex+2]==null){
+                    else if(parallel[straightIndex+1]==null){   // empty space to the left side
+                        if(moveRight(straightIndex, 2, straightIndex)){
+                            return;
+                        }
+                    }
+                    //no free space at all
+                    if(!moveLeft(straightIndex, 1, straightIndex)){
                         moveRight(straightIndex, 2, straightIndex);
-                        return;
                     }
+                    return;
                 }
-                if((straightIndex + 1)>=parallel.length){
+                if((straightIndex + 1)>parallel.length){
                 }
-                else if(parallel[straightIndex + 1]==parallelName){
-                    if((straightIndex+2)>parallel.length){
+                else if(parallel[straightIndex+1]==parallelName){ //second char is to the right
+                    if((straightIndex+2)>=parallel.length){
                     }
-                    else if(parallel[straightIndex+2]==null){
+                    else if(parallel[straightIndex+2]==null){   //empty space to right side
                         moveRight(straightIndex, 1 , straightIndex);
                         return;
                     }
                     if((straightIndex-2)<0){
                     }
-                    else if(parallel[straightIndex-1]==null&&parallel[straightIndex-2]==null){
+                    else if(parallel[straightIndex-1]==null){
                         moveLeft(straightIndex, 2, straightIndex);
                         return;
                     }
+                    if(!moveRight(straightIndex, 1, straightIndex)){
+                        moveLeft(straightIndex, 2, straightIndex);
+                    }
+                    return;
                 }
             }
+            return;
         }
         catch(Exception e){
+            System.out.print(e);
+            e.printStackTrace();
             return;
         }
     }
