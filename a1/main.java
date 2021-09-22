@@ -54,9 +54,6 @@ public class main
     public void AutosAusparken()
     {   
         for(int i=0;i<straight.length;i++){
-            if(straight[i]==null){
-                break;
-            }
             findPath(i);
             resetCars();
         }
@@ -327,10 +324,10 @@ public class main
      *  resets the parallel cars to their start position
      **/
     public void resetCars(){
-        for(int i=0;i<parallel.length;i++){
+        for(int i=0;i<parallel.length;i++){ //overwriting the array with "null"
             parallel[i]=null;
         }
-        for(int i=2;i<lines.size();i++){
+        for(int i=2;i<lines.size();i++){    //refilling it with the data from the .txt file
             String parallelln[]=lines.get(i).split(" ");
             parallel[Integer.parseInt(parallelln[1])]=parallelln[0];
             parallel[Integer.parseInt(parallelln[1])+1]=parallelln[0];
@@ -368,9 +365,6 @@ public class main
                 finalSolution[straightIndex]+=", "+parallel[parallelIndex]+" "+distance+" left";
             }
         }
-        System.out.println(parallelIndex);
-        System.out.println(distance);
-        System.out.println(straightIndex);
     }
 
     /**
