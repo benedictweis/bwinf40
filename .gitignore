@@ -2,9 +2,3 @@
 
 # Ignore custom vscode user settings
 **/.settings
-*.css
-*.html
-a1/doc/element-list
-*.txt
-*.bluej
-a1/package.bluej
