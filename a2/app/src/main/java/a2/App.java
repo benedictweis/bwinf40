@@ -110,6 +110,15 @@ public class App {
         return current;
     }
 
+    static Hotel getFarthestHotelWithinRange (ArrayList<Hotel> list, int currentTraveltime){
+        Hotel current = null;
+        for (Hotel h: list){
+            if (current == null) current = h;
+            if (current.distance <= h.distance && current.distance-currentTraveltime <= 360 && current.distance-currentTraveltime > 0) current = h;
+        }
+        return null;
+    }
+
     static Hotel getBestRemainingHotel (ArrayList<Hotel> allHotels, ArrayList<Hotel> selectedHotels){
         
         ArrayList<Hotel> remainingHotels = allHotels;
