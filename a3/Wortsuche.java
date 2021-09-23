@@ -91,183 +91,212 @@ public class Wortsuche{
     }
 
     private void vertfuellen(String wort){
-        vertEinfg(wort);
+        vertEinfg(wort,0);
     }
 
-    private void vertEinfg(String wort){
-        boolean passt = true;
-        char bst[] = wort.toCharArray();
-        Random random = new Random();
+    private void vertEinfg(String wort, int durchgang){
+        if(durchgang>=15){
+            level3();
+        }else{
+            boolean passt = true;
+            char bst[] = wort.toCharArray();
+            Random random = new Random();
 
-        row = random.nextInt(zeile);
-        coloum = random.nextInt((spalte - bst.length + 1));
-        while(passt){
-            for(int i = 0; i < bst.length; i++){
-                if(Gitter[row][coloum+i] == '#' || Gitter[row][coloum+i] == bst[i]){
-                    passt = true;
+            row = random.nextInt(zeile);
+            coloum = random.nextInt((spalte - bst.length + 1));
+            while(passt){
+                for(int i = 0; i < bst.length; i++){
+                    if(Gitter[row][coloum+i] == '#' || Gitter[row][coloum+i] == bst[i]){
+                        passt = true;
+                    }else{
+                        passt = false;
+                        break;
+                    }
+                }
+                break;
+            }
+
+            if(passt == true){
+                for(int i = 0;i < bst.length; i++){
+                    Gitter[row][coloum+i] = bst[i];
+                }
+
+            } else{
+                int zuf=random.nextInt(2);
+                if(zuf==0){
+                    diagonalEinfg(wort,(durchgang+1));
                 }else{
-                    passt = false;
-                    break;
+                    horiEinfg(wort,(durchgang+1));
                 }
             }
-            break;
         }
+    }
 
-        if(passt == true){
-            for(int i = 0;i < bst.length; i++){
-                Gitter[row][coloum+i] = bst[i];
-            }
+    private void vertfuellenEinf(String wort, int lvl){
+        vertEinfgEinf(wort,0, lvl);
+    }
 
-        } else{
-            int zuf=random.nextInt(2);
-            if(zuf==0){
-                diagonalEinfg(wort);
+    private void vertEinfgEinf(String wort, int durchgang, int lvl){
+        if(durchgang>=15){
+            if(lvl==1){
+                level1();
             }else{
-                horiEinfg(wort);
+                level2();
             }
-        }
-    }
-   
-        private void vertfuellenEinf(String wort){
-        vertEinfgEinf(wort);
-    }
+        }else{
 
-    private void vertEinfgEinf(String wort){
-        boolean passt = true;
-        char bst[] = wort.toCharArray();
-        Random random = new Random();
+            boolean passt = true;
+            char bst[] = wort.toCharArray();
+            Random random = new Random();
 
-        row = random.nextInt(zeile);
-        coloum = random.nextInt((spalte - bst.length + 1));
-        while(passt){
-            for(int i = 0; i < bst.length; i++){
-                if(Gitter[row][coloum+i] == '#' || Gitter[row][coloum+i] == bst[i]){
-                    passt = true;
-                }else{
-                    passt = false;
-                    break;
+            row = random.nextInt(zeile);
+            coloum = random.nextInt((spalte - bst.length + 1));
+            while(passt){
+                for(int i = 0; i < bst.length; i++){
+                    if(Gitter[row][coloum+i] == '#' || Gitter[row][coloum+i] == bst[i]){
+                        passt = true;
+                    }else{
+                        passt = false;
+                        break;
+                    }
                 }
-            }
-            break;
-        }
-
-        if(passt == true){
-            for(int i = 0;i < bst.length; i++){
-                Gitter[row][coloum+i] = bst[i];
+                break;
             }
 
-        } else{
-            horiEinfgEinf(wort);
-        }
-    }
-   
-        private void horifuellenEinf(String wort){
-        horiEinfgEinf(wort);
-    }
-
-    private void horiEinfgEinf(String wort){
-        boolean passt = true;
-        char bst[] = wort.toCharArray();
-        Random random = new Random();
-
-        row = random.nextInt((zeile - bst.length + 1));
-        coloum = random.nextInt(spalte);
-        while(passt){
-            for(int i = 0; i < bst.length; i++){
-                if(Gitter[row+i][coloum] == '#' || Gitter[row+i][coloum] == bst[i]){
-                    passt = true;
-                }else{
-                    passt = false;
-                    break;
+            if(passt == true){
+                for(int i = 0;i < bst.length; i++){
+                    Gitter[row][coloum+i] = bst[i];
                 }
-            }
-            break;
-        }
 
-        if(passt == true){
-            for(int i = 0;i < bst.length; i++){
-                Gitter[row+i][coloum] = bst[i];
+            } else{
+                horiEinfgEinf(wort, durchgang+1, lvl);
             }
-        } else{
-            vertEinfgEinf(wort);
+        }
+    }
+
+    private void horifuellenEinf(String wort, int lvl){
+        horiEinfgEinf(wort, 0, lvl);
+    }
+
+    private void horiEinfgEinf(String wort, int durchgang, int lvl){
+        if(durchgang>=15){
+            if(lvl==1){
+                level1();
+            }else{
+                level2();
+            }
+            }else{
+            boolean passt = true;
+            char bst[] = wort.toCharArray();
+            Random random = new Random();
+
+            row = random.nextInt((zeile - bst.length + 1));
+            coloum = random.nextInt(spalte);
+            while(passt){
+                for(int i = 0; i < bst.length; i++){
+                    if(Gitter[row+i][coloum] == '#' || Gitter[row+i][coloum] == bst[i]){
+                        passt = true;
+                    }else{
+                        passt = false;
+                        break;
+                    }
+                }
+                break;
+            }
+
+            if(passt == true){
+                for(int i = 0;i < bst.length; i++){
+                    Gitter[row+i][coloum] = bst[i];
+                }
+            } else{
+                vertEinfgEinf(wort,durchgang+1,lvl);
+            }
         }
     }
 
     private void horifuellen(String wort){
-        horiEinfg(wort);
+        horiEinfg(wort,0);
     }
 
-    private void horiEinfg(String wort){
-        boolean passt = true;
-        char bst[] = wort.toCharArray();
-        Random random = new Random();
+    private void horiEinfg(String wort, int durchgang){
+        if(durchgang>=15){
+            level3();
+        }else{
 
-        row = random.nextInt((zeile - bst.length + 1));
-        coloum = random.nextInt(spalte);
-        while(passt){
-            for(int i = 0; i < bst.length; i++){
-                if(Gitter[row+i][coloum] == '#' || Gitter[row+i][coloum] == bst[i]){
-                    passt = true;
-                }else{
-                    passt = false;
-                    break;
+            boolean passt = true;
+            char bst[] = wort.toCharArray();
+            Random random = new Random();
+
+            row = random.nextInt((zeile - bst.length + 1));
+            coloum = random.nextInt(spalte);
+            while(passt){
+                for(int i = 0; i < bst.length; i++){
+                    if(Gitter[row+i][coloum] == '#' || Gitter[row+i][coloum] == bst[i]){
+                        passt = true;
+                    }else{
+                        passt = false;
+                        break;
+                    }
                 }
-            }
-            break;
-        }
-
-        if(passt == true){
-            for(int i = 0;i < bst.length; i++){
-                Gitter[row+i][coloum] = bst[i];
+                break;
             }
 
-        } else{
-            int zuf=random.nextInt(2);
-            if(zuf==0){
-                vertEinfg(wort);
-            }else{
-                diagonalEinfg(wort);
+            if(passt == true){
+                for(int i = 0;i < bst.length; i++){
+                    Gitter[row+i][coloum] = bst[i];
+                }
+
+            } else{
+                int zuf=random.nextInt(2);
+                if(zuf==0){
+                    vertEinfg(wort,(durchgang+1));
+                }else{
+                    diagonalEinfg(wort,(durchgang+1));
+                }
             }
         }
     }
 
     private void diagonal(String wort){
-        diagonalEinfg(wort);
+        diagonalEinfg(wort,0);
     }
 
-    private void diagonalEinfg(String wort){
-        boolean passt = true;
-        char bst[] = wort.toCharArray();
-        Random random = new Random();
+    private void diagonalEinfg(String wort, int durchgang){
+        if(durchgang>=15){
+            level3();
+        }else{
+            boolean passt = true;
+            char bst[] = wort.toCharArray();
+            Random random = new Random();
 
-        row = random.nextInt((zeile - bst.length + 1));
-        coloum = random.nextInt((spalte - bst.length +1));
-        while(passt){
-            for(int i = 0; i < bst.length; i++){
-                if(Gitter[row+i][coloum+i] == '#' || Gitter[row+i][coloum+i] == bst[i]){
-                    passt = true;
+            row = random.nextInt((zeile - bst.length + 1));
+            coloum = random.nextInt((spalte - bst.length +1));
+            while(passt){
+                for(int i = 0; i < bst.length; i++){
+                    if(Gitter[row+i][coloum+i] == '#' || Gitter[row+i][coloum+i] == bst[i]){
+                        passt = true;
+                    }else{
+                        passt = false;
+                        break;
+                    }
+                }
+                break;
+            }
+
+            if(passt == true){
+                for(int i = 0;i < bst.length; i++){
+                    Gitter[row+i][coloum+i] = bst[i];
+                }
+
+            } else{
+                int zuf=random.nextInt(2);
+                if(zuf==0){
+                    vertEinfg(wort,(durchgang+1));
                 }else{
-                    passt = false;
-                    break;
+                    horiEinfg(wort,(durchgang+1));
                 }
             }
-            break;
         }
-
-        if(passt == true){
-            for(int i = 0;i < bst.length; i++){
-                Gitter[row+i][coloum+i] = bst[i];
-            }
-
-        } else{
-            int zuf=random.nextInt(2);
-            if(zuf==0){
-                vertEinfg(wort);
-            }else{
-                horiEinfg(wort);
-            }
-        }
-
     }
 
     public void level1(){
@@ -276,9 +305,9 @@ public class Wortsuche{
         for(int i = 2; i < (Integer.parseInt(lines.get(1)) + 2); i++){
             int zufall = random.nextInt(2);
             if(zufall == 0){
-                vertfuellenEinf(lines.get(i));
+                vertfuellenEinf(lines.get(i),1);
             } else if(zufall == 1){
-                horifuellenEinf(lines.get(i));
+                horifuellenEinf(lines.get(i),1);
             }
         }
 
@@ -294,17 +323,17 @@ public class Wortsuche{
             if(zufall2==0){
                 int zufall = random.nextInt(2);
                 if(zufall == 0){
-                    vertfuellenEinf(lines.get(i));
+                    vertfuellenEinf(lines.get(i),2);
                 } else if(zufall == 1){
-                    horifuellenEinf(lines.get(i));
+                    horifuellenEinf(lines.get(i),2);
                 }
             }else{
                 drehen(i);
                 int zufall = random.nextInt(2);
                 if(zufall == 0){
-                    vertfuellenEinf(lines.get(i));
+                    vertfuellenEinf(lines.get(i),2);
                 } else if(zufall == 1){
-                    horifuellenEinf(lines.get(i));
+                    horifuellenEinf(lines.get(i),2);
                 }
             }
         }
@@ -365,13 +394,13 @@ public class Wortsuche{
             level1();
         }
     }
-    
+
     public void test2(int anz){
         for(int i=0; i<anz;i++){
             level2();
         }
     }
-    
+
     public void test3(int anz){
         for(int i=0; i<anz;i++){
             level3();
