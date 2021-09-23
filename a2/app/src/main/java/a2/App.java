@@ -64,20 +64,25 @@ public class App {
         Boolean usingAlternateMethod = false;
         // -360 because we can reach end from there
         while (currentTravelTime < totalTime-360){
+            //try to make it to the end using only the best Hotels within Range
             //TODO might not reach end within 5 hotels with this method
             Hotel currentHotel = getBestHotelWithinRange(hotels, currentTravelTime);
             selectedHotels.add(currentHotel);
             currentTravelTime = currentHotel.distance;
+            //if this fails use the other method
             if (selectedHotels.size() > 5){
+
                 usingAlternateMethod =true;
                 break;
             }
         }
 
         if (usingAlternateMethod){
+            //clear values from previous attempt
             selectedHotels.clear();
             currentTravelTime = 0;
             while(currentTravelTime < totalTime-360){
+                //use the farthest hotels within Range to make it to the end with certainty
                 Hotel currentHotel = getFarthestHotelWithinRange(hotels, currentTravelTime);
                 selectedHotels.add(currentHotel);
                 currentTravelTime = currentHotel.distance;
@@ -85,12 +90,14 @@ public class App {
             int previousHotelTime = 0;
             int nextHotelTime = 0;
             for (int i = selectedHotels.size()-1; i>-1; i--){
-                
+                //adjust the hotels to try and optimize the average rating
+
             }
         }
         averageRating = calculateAverageRating(selectedHotels);
 
         while (selectedHotels.size() < 5){
+            //if we still have stops left over use them to try and improve our average rating
             averageRating = calculateAverageRating(selectedHotels);
             Hotel bestRemaining = getBestRemainingHotel(hotels, selectedHotels);
             if (bestRemaining.rating > averageRating) selectedHotels.add(bestRemaining);
