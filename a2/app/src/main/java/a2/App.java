@@ -121,6 +121,7 @@ public class App {
             Hotel bestRemaining = getBestRemainingHotel(hotels, selectedHotels);
             if (bestRemaining.rating > averageRating) selectedHotels.add(bestRemaining);
         }
+        for (Hotel h: selectedHotels)  System.out.println(h);
     }
 
     static float calculateAverageRating (ArrayList<Hotel> list){
