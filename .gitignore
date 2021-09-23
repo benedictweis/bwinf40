@@ -3,3 +3,4 @@
 # Ignore custom vscode user settings
 **/.settings
 .vscode 
+a3/package.bluej
