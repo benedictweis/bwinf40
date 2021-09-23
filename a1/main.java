@@ -10,13 +10,16 @@ public class main
     String finalSolution[];
     String straight[];
     String parallel[];
+    String fileName = "parkplatz1.txt";
     /**
      *  fills the straight- & parallel-car arrays with the content of the .txt file   
      **/
     public main()
     {
+        String visualizeStraight = "";
+        String visualizeParallel = "";
         /* Reading File */
-        File file = new File("parkplatz1.txt");
+        File file = new File(fileName);
         try{
             Scanner scanner = new Scanner(file);
             while(scanner.hasNext()){
@@ -25,7 +28,6 @@ public class main
         } catch (FileNotFoundException e){
             e.printStackTrace();
         }
-        System.out.println(lines);
         /* Getting each char, line by line  */
         String firstln[]=lines.get(0).split(" ");
         String thirdln[]=lines.get(2).split(" ");
@@ -45,7 +47,23 @@ public class main
             parallel[Integer.parseInt(parallelln[1])]=parallelln[0];
             parallel[Integer.parseInt(parallelln[1])+1]=parallelln[0];
         }
+        
+        for(int i = 0; i<straight.length; i++){
+            visualizeStraight += straight[i]+" ";
+        }
+        
+        for(int i = 0; i<parallel.length; i++){
+            if(parallel[i]!=null){
+                visualizeParallel += parallel[i]+" ";
+            } else {
+                visualizeParallel += "# ";
+            }
+        }
         finalSolution=new String[straight.length];
+        System.out.println("Searching solution of: \""+fileName+"\" ☺\n");
+        
+        System.out.println("straight cars: \t"+visualizeStraight);
+        System.out.println("parallel cars: \t"+visualizeParallel);
     }
 
     /**
@@ -53,6 +71,7 @@ public class main
      **/
     public void AutosAusparken()
     {   
+        System.out.println("\n\n"+"Solution: \n");
         for(int straightIndex=0;straightIndex<straight.length;straightIndex++){
             findPath(straightIndex);
             resetCars();
