@@ -91,7 +91,26 @@ public class App {
             int nextHotelTime = 0;
             for (int i = selectedHotels.size()-1; i>-1; i--){
                 //adjust the hotels to try and optimize the average rating
+                if (i == 0){
+                    previousHotelTime = 0;
+                }
+                else{
+                previousHotelTime = selectedHotels.get(i-1).distance;
+                }
+                if (i == selectedHotels.size()-1){
+                    nextHotelTime = totalTime;
+                }
+                else{
+                nextHotelTime = selectedHotels.get(i+1).distance;
+                }
 
+                Hotel currentHotel = selectedHotels.get(i);
+                for(Hotel h: getRemainingHotels(hotels, selectedHotels)){
+                    if (nextHotelTime-h.distance < 360 && nextHotelTime-h.distance > 0 && currentHotel.rating < h.rating){
+                        currentHotel = h;
+                        selectedHotels.set(i, currentHotel);
+                    }
+                }
             }
         }
         averageRating = calculateAverageRating(selectedHotels);
@@ -135,14 +154,19 @@ public class App {
 
     static Hotel getBestRemainingHotel (ArrayList<Hotel> allHotels, ArrayList<Hotel> selectedHotels){
         
-        ArrayList<Hotel> remainingHotels = allHotels;
-        for (Hotel h: selectedHotels){
-            remainingHotels.remove(h);
-        }
+        ArrayList<Hotel> remainingHotels = getRemainingHotels(allHotels, selectedHotels);
         Hotel bestHotel = null;
         for (Hotel h: remainingHotels){
             if (bestHotel == null || bestHotel.rating < h.rating) bestHotel = h;
         }
         return bestHotel;
+    }
+
+    static ArrayList<Hotel> getRemainingHotels (ArrayList<Hotel> allHotels, ArrayList<Hotel> selectedHotels){
+        ArrayList<Hotel> remainingHotels = allHotels;
+        for (Hotel h: selectedHotels){
+            remainingHotels.remove(h);
+        }
+        return remainingHotels;
     }
 }
