@@ -15,9 +15,11 @@ public class Wortsuche{
     int count2;
     int row;
     int coloum;
+    String datei;
 
     public Wortsuche(String worte){
         einlesen(worte);
+        datei = worte;
         zeile = Integer.parseInt(parts[0]);
         spalte = Integer.parseInt(parts[1]);
         Gitter = new char[zeile][spalte];
@@ -119,10 +121,75 @@ public class Wortsuche{
         } else{
             int zuf=random.nextInt(2);
             if(zuf==0){
-                vertEinfg(wort);
+                diagonalEinfg(wort);
             }else{
                 horiEinfg(wort);
             }
+        }
+    }
+   
+        private void vertfuellenEinf(String wort){
+        vertEinfgEinf(wort);
+    }
+
+    private void vertEinfgEinf(String wort){
+        boolean passt = true;
+        char bst[] = wort.toCharArray();
+        Random random = new Random();
+
+        row = random.nextInt(zeile);
+        coloum = random.nextInt((spalte - bst.length + 1));
+        while(passt){
+            for(int i = 0; i < bst.length; i++){
+                if(Gitter[row][coloum+i] == '#' || Gitter[row][coloum+i] == bst[i]){
+                    passt = true;
+                }else{
+                    passt = false;
+                    break;
+                }
+            }
+            break;
+        }
+
+        if(passt == true){
+            for(int i = 0;i < bst.length; i++){
+                Gitter[row][coloum+i] = bst[i];
+            }
+
+        } else{
+            horiEinfgEinf(wort);
+        }
+    }
+   
+        private void horifuellenEinf(String wort){
+        horiEinfgEinf(wort);
+    }
+
+    private void horiEinfgEinf(String wort){
+        boolean passt = true;
+        char bst[] = wort.toCharArray();
+        Random random = new Random();
+
+        row = random.nextInt((zeile - bst.length + 1));
+        coloum = random.nextInt(spalte);
+        while(passt){
+            for(int i = 0; i < bst.length; i++){
+                if(Gitter[row+i][coloum] == '#' || Gitter[row+i][coloum] == bst[i]){
+                    passt = true;
+                }else{
+                    passt = false;
+                    break;
+                }
+            }
+            break;
+        }
+
+        if(passt == true){
+            for(int i = 0;i < bst.length; i++){
+                Gitter[row+i][coloum] = bst[i];
+            }
+        } else{
+            vertEinfgEinf(wort);
         }
     }
 
@@ -159,7 +226,7 @@ public class Wortsuche{
             if(zuf==0){
                 vertEinfg(wort);
             }else{
-                horiEinfg(wort);
+                diagonalEinfg(wort);
             }
         }
     }
@@ -174,7 +241,7 @@ public class Wortsuche{
         Random random = new Random();
 
         row = random.nextInt((zeile - bst.length + 1));
-        coloum = random.nextInt(spalte);
+        coloum = random.nextInt((spalte - bst.length +1));
         while(passt){
             for(int i = 0; i < bst.length; i++){
                 if(Gitter[row+i][coloum+i] == '#' || Gitter[row+i][coloum+i] == bst[i]){
@@ -189,7 +256,7 @@ public class Wortsuche{
 
         if(passt == true){
             for(int i = 0;i < bst.length; i++){
-                Gitter[row+i][coloum] = bst[i];
+                Gitter[row+i][coloum+i] = bst[i];
             }
 
         } else{
@@ -209,9 +276,9 @@ public class Wortsuche{
         for(int i = 2; i < (Integer.parseInt(lines.get(1)) + 2); i++){
             int zufall = random.nextInt(2);
             if(zufall == 0){
-                vertfuellen(lines.get(i));
+                vertfuellenEinf(lines.get(i));
             } else if(zufall == 1){
-                horifuellen(lines.get(i));
+                horifuellenEinf(lines.get(i));
             }
         }
 
@@ -227,17 +294,17 @@ public class Wortsuche{
             if(zufall2==0){
                 int zufall = random.nextInt(2);
                 if(zufall == 0){
-                    vertfuellen(lines.get(i));
+                    vertfuellenEinf(lines.get(i));
                 } else if(zufall == 1){
-                    horifuellen(lines.get(i));
+                    horifuellenEinf(lines.get(i));
                 }
             }else{
                 drehen(i);
                 int zufall = random.nextInt(2);
                 if(zufall == 0){
-                    vertfuellen(lines.get(i));
+                    vertfuellenEinf(lines.get(i));
                 } else if(zufall == 1){
-                    horifuellen(lines.get(i));
+                    horifuellenEinf(lines.get(i));
                 }
             }
         }
@@ -251,7 +318,7 @@ public class Wortsuche{
         for(int i = 2; i < (Integer.parseInt(lines.get(1)) + 2); i++){
             int zufall2 = random.nextInt(2);
             if(zufall2==0){
-                int zufall = random.nextInt(3);
+                int zufall = random.nextInt(4);
                 if(zufall == 0){
                     vertfuellen(lines.get(i));
                 } else if(zufall == 1){
@@ -261,7 +328,7 @@ public class Wortsuche{
                 }
             }else{
                 drehen(i);
-                int zufall = random.nextInt(3);
+                int zufall = random.nextInt(4);
                 if(zufall == 0){
                     vertfuellen(lines.get(i));
                 } else if(zufall == 1){
@@ -281,6 +348,7 @@ public class Wortsuche{
                 Gitter[x][y] = '#';
             }
         }
+        einlesen(datei);
     }
 
     private void drehen(int index){
@@ -292,9 +360,21 @@ public class Wortsuche{
         lines.set(index, umgekehrt);
     }
 
-    public void test(int anz){
+    public void test1(int anz){
         for(int i=0; i<anz;i++){
             level1();
+        }
+    }
+    
+    public void test2(int anz){
+        for(int i=0; i<anz;i++){
+            level2();
+        }
+    }
+    
+    public void test3(int anz){
+        for(int i=0; i<anz;i++){
+            level3();
         }
     }
 }
