@@ -52,8 +52,6 @@ public class App {
             //hotels.put(Integer.parseInt(parts[0]), Float.parseFloat(parts[1]));
         }
 
-        System.out.println(hotels);
-
         if (totalTime > 1800) {
             totalTime = 1800;
         }
@@ -65,7 +63,6 @@ public class App {
         // -360 because we can reach end from there
         while (currentTravelTime < totalTime-360){
             //try to make it to the end using only the best Hotels within Range
-            //TODO might not reach end within 5 hotels with this method
             Hotel currentHotel = getBestHotelWithinRange(hotels, currentTravelTime);
             selectedHotels.add(currentHotel);
             currentTravelTime = currentHotel.distance;
@@ -76,7 +73,7 @@ public class App {
                 break;
             }
         }
-
+        usingAlternateMethod = true;
         if (usingAlternateMethod){
             //clear values from previous attempt
             selectedHotels.clear();
@@ -87,11 +84,32 @@ public class App {
                 selectedHotels.add(currentHotel);
                 currentTravelTime = currentHotel.distance;
             }
+            for (Hotel h: selectedHotels)  System.out.println(h.distance +" "+ h.rating);
+            System.out.println("------");
             int previousHotelTime = 0;
             int nextHotelTime = 0;
             for (int i = selectedHotels.size()-1; i>-1; i--){
                 //adjust the hotels to try and optimize the average rating
+                if (i == 0){
+                    previousHotelTime = 0;
+                }
+                else{
+                previousHotelTime = selectedHotels.get(i-1).distance;
+                }
+                if (i == selectedHotels.size()-1){
+                    nextHotelTime = totalTime;
+                }
+                else{
+                nextHotelTime = selectedHotels.get(i+1).distance;
+                }
 
+                Hotel currentHotel = selectedHotels.get(i);
+                for(Hotel h: getRemainingHotels(hotels, selectedHotels)){
+                    if (nextHotelTime-h.distance < 360 && nextHotelTime-h.distance > 0 && currentHotel.rating < h.rating){
+                        currentHotel = h;
+                        selectedHotels.set(i, currentHotel);
+                    }
+                }
             }
         }
         averageRating = calculateAverageRating(selectedHotels);
@@ -101,7 +119,10 @@ public class App {
             averageRating = calculateAverageRating(selectedHotels);
             Hotel bestRemaining = getBestRemainingHotel(hotels, selectedHotels);
             if (bestRemaining.rating > averageRating) selectedHotels.add(bestRemaining);
+            else break;
         }
+        for (Hotel h: selectedHotels)  System.out.println(h.distance +" "+ h.rating);
+        System.out.println(averageRating);
     }
 
     static float calculateAverageRating (ArrayList<Hotel> list){
@@ -119,7 +140,7 @@ public class App {
         Hotel current = null;
         for (Hotel h: list){
             if (current == null) current = h;
-            if (current.rating <= h.rating && current.distance-currentTraveltime <= 360 && current.distance-currentTraveltime > 0) current = h;
+            if (current.rating <= h.rating && h.distance-currentTraveltime <= 360 && h.distance-currentTraveltime > 0) current = h;
         }
         return current;
     }
@@ -128,21 +149,26 @@ public class App {
         Hotel current = null;
         for (Hotel h: list){
             if (current == null) current = h;
-            if (current.distance <= h.distance && current.distance-currentTraveltime <= 360 && current.distance-currentTraveltime > 0) current = h;
+            if (current.distance <= h.distance && h.distance-currentTraveltime <= 360 && h.distance-currentTraveltime > 0) current = h;
         }
         return current;
     }
 
     static Hotel getBestRemainingHotel (ArrayList<Hotel> allHotels, ArrayList<Hotel> selectedHotels){
         
-        ArrayList<Hotel> remainingHotels = allHotels;
-        for (Hotel h: selectedHotels){
-            remainingHotels.remove(h);
-        }
+        ArrayList<Hotel> remainingHotels = getRemainingHotels(allHotels, selectedHotels);
         Hotel bestHotel = null;
         for (Hotel h: remainingHotels){
             if (bestHotel == null || bestHotel.rating < h.rating) bestHotel = h;
         }
         return bestHotel;
+    }
+
+    static ArrayList<Hotel> getRemainingHotels (ArrayList<Hotel> allHotels, ArrayList<Hotel> selectedHotels){
+        ArrayList<Hotel> remainingHotels = allHotels;
+        for (Hotel h: selectedHotels){
+            remainingHotels.remove(h);
+        }
+        return remainingHotels;
     }
 }
