@@ -22,11 +22,7 @@ public class Wortsuche{
         spalte = Integer.parseInt(parts[1]);
         Gitter = new char[zeile][spalte];
 
-        for(int y = 0; y < spalte; y++){
-            for(int x = 0; x < zeile; x++){
-                Gitter[x][y] = '#';
-            }
-        }
+        reset();
     }
 
     private void einlesen(String input){
@@ -121,7 +117,12 @@ public class Wortsuche{
             }
 
         } else{
-            horiEinfg(wort);
+            int zuf=random.nextInt(2);
+            if(zuf==0){
+                vertEinfg(wort);
+            }else{
+                horiEinfg(wort);
+            }
         }
     }
 
@@ -154,11 +155,56 @@ public class Wortsuche{
             }
 
         } else{
-            vertEinfg(wort);
+            int zuf=random.nextInt(2);
+            if(zuf==0){
+                vertEinfg(wort);
+            }else{
+                horiEinfg(wort);
+            }
         }
     }
 
+    private void diagonal(String wort){
+        diagonalEinfg(wort);
+    }
+
+    private void diagonalEinfg(String wort){
+        boolean passt = true;
+        char bst[] = wort.toCharArray();
+        Random random = new Random();
+
+        row = random.nextInt((zeile - bst.length + 1));
+        coloum = random.nextInt(spalte);
+        while(passt){
+            for(int i = 0; i < bst.length; i++){
+                if(Gitter[row+i][coloum+i] == '#' || Gitter[row+i][coloum+i] == bst[i]){
+                    passt = true;
+                }else{
+                    passt = false;
+                    break;
+                }
+            }
+            break;
+        }
+
+        if(passt == true){
+            for(int i = 0;i < bst.length; i++){
+                Gitter[row+i][coloum] = bst[i];
+            }
+
+        } else{
+            int zuf=random.nextInt(2);
+            if(zuf==0){
+                vertEinfg(wort);
+            }else{
+                horiEinfg(wort);
+            }
+        }
+
+    }
+
     public void level1(){
+        reset();
         Random random = new Random();
         for(int i = 2; i < (Integer.parseInt(lines.get(1)) + 2); i++){
             int zufall = random.nextInt(2);
@@ -174,6 +220,7 @@ public class Wortsuche{
     }
 
     public void level2(){
+        reset();
         Random random = new Random();
         for(int i = 2; i < (Integer.parseInt(lines.get(1)) + 2); i++){
             int zufall2 = random.nextInt(2);
@@ -198,7 +245,45 @@ public class Wortsuche{
         zeigen();
     }
 
-    public void drehen(int index){
+    public void level3(){
+        reset();
+        Random random = new Random();
+        for(int i = 2; i < (Integer.parseInt(lines.get(1)) + 2); i++){
+            int zufall2 = random.nextInt(2);
+            if(zufall2==0){
+                int zufall = random.nextInt(3);
+                if(zufall == 0){
+                    vertfuellen(lines.get(i));
+                } else if(zufall == 1){
+                    horifuellen(lines.get(i));
+                }else{
+                    diagonal(lines.get(i));
+                }
+            }else{
+                drehen(i);
+                int zufall = random.nextInt(3);
+                if(zufall == 0){
+                    vertfuellen(lines.get(i));
+                } else if(zufall == 1){
+                    horifuellen(lines.get(i));
+                }else{
+                    diagonal(lines.get(i));
+                }
+            }
+        }
+        randomAuffüllen();
+        zeigen();
+    }
+
+    private void reset(){
+        for(int y = 0; y < spalte; y++){
+            for(int x = 0; x < zeile; x++){
+                Gitter[x][y] = '#';
+            }
+        }
+    }
+
+    private void drehen(int index){
         String wort=lines.get(index);
         String umgekehrt=new String();
         for(int i=(wort.length()-1);i>=0;i--){
