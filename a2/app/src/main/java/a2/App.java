@@ -82,6 +82,11 @@ public class App {
                 selectedHotels.add(currentHotel);
                 currentTravelTime = currentHotel.distance;
             }
+            int previousHotelTime = 0;
+            int nextHotelTime = 0;
+            for (int i = selectedHotels.size()-1; i>-1; i--){
+                
+            }
         }
         averageRating = calculateAverageRating(selectedHotels);
 
