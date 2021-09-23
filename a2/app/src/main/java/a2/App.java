@@ -78,7 +78,9 @@ public class App {
             selectedHotels.clear();
             currentTravelTime = 0;
             while(currentTravelTime < totalTime-360){
-
+                Hotel currentHotel = getFarthestHotelWithinRange(hotels, currentTravelTime);
+                selectedHotels.add(currentHotel);
+                currentTravelTime = currentHotel.distance;
             }
         }
         averageRating = calculateAverageRating(selectedHotels);
@@ -116,7 +118,7 @@ public class App {
             if (current == null) current = h;
             if (current.distance <= h.distance && current.distance-currentTraveltime <= 360 && current.distance-currentTraveltime > 0) current = h;
         }
-        return null;
+        return current;
     }
 
     static Hotel getBestRemainingHotel (ArrayList<Hotel> allHotels, ArrayList<Hotel> selectedHotels){
