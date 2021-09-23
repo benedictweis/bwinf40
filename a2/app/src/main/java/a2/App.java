@@ -110,6 +110,7 @@ public class App {
                         selectedHotels.set(i, currentHotel);
                     }
                 }
+                //TODO remove Hotel if before previous Hotel
             }
         }
         averageRating = calculateAverageRating(selectedHotels);
@@ -121,6 +122,7 @@ public class App {
             if (bestRemaining.rating > averageRating) selectedHotels.add(bestRemaining);
             else break;
         }
+
         for (Hotel h: selectedHotels)  System.out.println(h.distance +" "+ h.rating);
         System.out.println(averageRating);
     }
@@ -170,5 +172,9 @@ public class App {
             remainingHotels.remove(h);
         }
         return remainingHotels;
+    }
+
+    static void sortList (){
+        
     }
 }
