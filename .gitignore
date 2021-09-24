@@ -2,5 +2,4 @@
 
 # Ignore custom vscode user settings
 **/.settings
-.vscode 
-*.class
+.vscode
