@@ -1,6 +1,6 @@
 package a2;
 
-public class Hotel{
+public class Hotel implements Comparable<Hotel>{
     public int id;
     public int distance;
     public float rating;
@@ -9,5 +9,11 @@ public class Hotel{
         this.id = id;
         this.distance = distance;
         this.rating = rating;
+    }
+
+    @Override
+    public int compareTo(Hotel h){
+        Integer Hotel1 = (Integer)this.distance;
+        return Hotel1.compareTo(h.distance);
     }
 }
