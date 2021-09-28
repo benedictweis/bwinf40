@@ -234,7 +234,7 @@ public class Wortsuche{
         }
     }
 
-    private boolean diagonalEinfg(String wort, int durchgang){
+    private boolean diagonal(String wort, int durchgang){
         if(durchgang>=15){
             level3();
         }else{
@@ -284,7 +284,8 @@ public class Wortsuche{
                         break;
                     }
                 } else if(zufall == 1){
-                    horiEinfgEinf(lines.get(i),0,1);
+                    horifuellenEinf(lines.get(i),1);
+
                 }
             } 
         }
@@ -301,17 +302,17 @@ public class Wortsuche{
             if(zufall2==0){
                 int zufall = random.nextInt(2);
                 if(zufall == 0){
-                    vertEinfgEinf(lines.get(i),0,2);
+                    vertfuellenEinf(lines.get(i),2);
                 } else if(zufall == 1){
-                    horiEinfgEinf(lines.get(i),0,2);
+                    horifuellenEinf(lines.get(i),2);
                 }
             }else{
                 drehen(i);
                 int zufall = random.nextInt(2);
                 if(zufall == 0){
-                    vertEinfgEinf(lines.get(i),0,2);
+                    vertfuellenEinf(lines.get(i),2);
                 } else if(zufall == 1){
-                    horiEinfgEinf(lines.get(i),0,2);
+                    horifuellenEinf(lines.get(i),2);
                 }
             }
         }
@@ -327,21 +328,21 @@ public class Wortsuche{
             if(zufall2==0){
                 int zufall = random.nextInt(4);
                 if(zufall == 0){
-                    vertEinfg(lines.get(i),0);
+                    vertfuellen(lines.get(i));
                 } else if(zufall == 1){
-                    horiEinfg(lines.get(i),0);
+                    horifuellen(lines.get(i));
                 }else{
-                    diagonalEinfg(lines.get(i),0);
+                    diagonal(lines.get(i));
                 }
             }else{
                 drehen(i);
                 int zufall = random.nextInt(4);
                 if(zufall == 0){
-                    vertEinfg(lines.get(i),0);
+                    vertfuellen(lines.get(i));
                 } else if(zufall == 1){
-                    horiEinfg(lines.get(i),0);
+                    horifuellen(lines.get(i));
                 }else{
-                    diagonalEinfg(lines.get(i),0);
+                    diagonal(lines.get(i));
                 }
             }
         }
