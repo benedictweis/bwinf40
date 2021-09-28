@@ -91,7 +91,6 @@ public class Wortsuche{
         }
     }
 
-
     private boolean vertEinfg(String wort, int durchgang){
         if(durchgang>=15){
             level3();
@@ -130,45 +129,35 @@ public class Wortsuche{
         }
     }
 
-
     private boolean vertEinfgEinf(String wort, int durchgang, int lvl){
-        if(durchgang>=15){
-            if(lvl==1){
-                level1();
-            }else{
-                level2();
-            }
-        }else{
+        boolean passt = true;
+        char bst[] = wort.toCharArray();
+        Random random = new Random();
 
-            boolean passt = true;
-            char bst[] = wort.toCharArray();
-            Random random = new Random();
-
-            row = random.nextInt(zeile);
-            coloum = random.nextInt((spalte - bst.length + 1));
-            while(passt){
-                for(int i = 0; i < bst.length; i++){
-                    if(Gitter[row][coloum+i] == '#' || Gitter[row][coloum+i] == bst[i]){
-                        passt = true;
-                    }else{
-                        passt = false;
-                        break;
-                    }
+        row = random.nextInt(zeile);
+        coloum = random.nextInt((spalte - bst.length + 1));
+        while(passt){
+            for(int i = 0; i < bst.length; i++){
+                if(Gitter[row][coloum+i] == '#' || Gitter[row][coloum+i] == bst[i]){
+                    passt = true;
+                }else{
+                    passt = false;
+                    break;
                 }
-                break;
             }
-
-            if(passt == true){
-                for(int i = 0;i < bst.length; i++){
-                    Gitter[row][coloum+i] = bst[i];
-                }
-
-            } else{
-                horiEinfgEinf(wort, durchgang+1, lvl);
-            }
+            break;
         }
-    }
 
+        if(passt == true){
+            for(int i = 0;i < bst.length; i++){
+                Gitter[row][coloum+i] = bst[i];
+            }
+            return true;
+        } else{
+            return false;
+        }
+
+    }
 
     private boolean horiEinfgEinf(String wort, int durchgang, int lvl){
         if(durchgang>=15){
@@ -177,7 +166,7 @@ public class Wortsuche{
             }else{
                 level2();
             }
-            }else{
+        }else{
             boolean passt = true;
             char bst[] = wort.toCharArray();
             Random random = new Random();
@@ -205,7 +194,6 @@ public class Wortsuche{
             }
         }
     }
-
 
     private boolean horiEinfg(String wort, int durchgang){
         if(durchgang>=15){
@@ -287,13 +275,19 @@ public class Wortsuche{
     public void level1(){
         reset();
         Random random = new Random();
+
         for(int i = 2; i < (Integer.parseInt(lines.get(1)) + 2); i++){
-            int zufall = random.nextInt(2);
-            if(zufall == 0){
-                vertfuellenEinf(lines.get(i),1);
-            } else if(zufall == 1){
-                horifuellenEinf(lines.get(i),1);
-            }
+            for(int j = 0; j < 20; j++){ 
+                int zufall = random.nextInt(2);
+                if(zufall == 0){
+                    if(vertEinfgEinf(lines.get(i), 1, 1) == true){
+                        break;
+                    }
+                } else if(zufall == 1){
+                    horifuellenEinf(lines.get(i),1);
+
+                }
+            } 
         }
 
         randomAuffüllen();
