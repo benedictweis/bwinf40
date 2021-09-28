@@ -13,7 +13,7 @@ public class App {
 
     public static void main(String[] args) {
 
-        File file = new File("src/main/resources/hotels1.txt");
+        File file = new File("src/main/resources/hotels2.txt");
 
         System.out.println(file.getAbsolutePath());
 
@@ -44,13 +44,13 @@ public class App {
         System.out.println(num_of_hotels);
         System.out.println(totalTime);
 
-        // HashMap<Integer,Float> hotels = new HashMap<Integer,Float>();
+        // 
         ArrayList<Hotel> hotels = new ArrayList<Hotel>();
 
         for (int i = 0; i < lines.size(); i++) {
             String parts[] = lines.get(i).split(" ");
             hotels.add(new Hotel(i, Integer.parseInt(parts[0]), Float.parseFloat(parts[1])));
-            // hotels.put(Integer.parseInt(parts[0]), Float.parseFloat(parts[1]));
+            //
         }
 
         if (totalTime > 1800) {
@@ -146,7 +146,6 @@ public class App {
         ArrayList<Hotel> previousRoute = new ArrayList<Hotel>();
 
         while (!previousRoute.equals(selectedHotels)) {
-            System.out.println("huh");
             previousRoute = (ArrayList<Hotel>) selectedHotels.clone();
             for (int i = selectedHotels.size() - 1; i > -1; i--) {
                 // adjust the hotels to try and optimize the average rating
@@ -172,7 +171,7 @@ public class App {
                 }
                 averageRating = calculateAverageRating(selectedHotels);
 
-                while (selectedHotels.size() < 5) {
+                while (selectedHotels.size() < 4) {
                     // if we still have stops left over use them to try and improve our average
                     // rating
                     averageRating = calculateAverageRating(selectedHotels);
