@@ -91,11 +91,8 @@ public class Wortsuche{
         }
     }
 
-    private void vertfuellen(String wort){
-        vertEinfg(wort,0);
-    }
 
-    private void vertEinfg(String wort, int durchgang){
+    private boolean vertEinfg(String wort, int durchgang){
         if(durchgang>=15){
             level3();
         }else{
@@ -133,11 +130,8 @@ public class Wortsuche{
         }
     }
 
-    private void vertfuellenEinf(String wort, int lvl){
-        vertEinfgEinf(wort,0, lvl);
-    }
 
-    private void vertEinfgEinf(String wort, int durchgang, int lvl){
+    private boolean vertEinfgEinf(String wort, int durchgang, int lvl){
         if(durchgang>=15){
             if(lvl==1){
                 level1();
@@ -175,11 +169,8 @@ public class Wortsuche{
         }
     }
 
-    private void horifuellenEinf(String wort, int lvl){
-        horiEinfgEinf(wort, 0, lvl);
-    }
 
-    private void horiEinfgEinf(String wort, int durchgang, int lvl){
+    private boolean horiEinfgEinf(String wort, int durchgang, int lvl){
         if(durchgang>=15){
             if(lvl==1){
                 level1();
@@ -215,11 +206,8 @@ public class Wortsuche{
         }
     }
 
-    private void horifuellen(String wort){
-        horiEinfg(wort,0);
-    }
 
-    private void horiEinfg(String wort, int durchgang){
+    private boolean horiEinfg(String wort, int durchgang){
         if(durchgang>=15){
             level3();
         }else{
@@ -258,11 +246,7 @@ public class Wortsuche{
         }
     }
 
-    private void diagonal(String wort){
-        diagonalEinfg(wort,0);
-    }
-
-    private void diagonalEinfg(String wort, int durchgang){
+    private boolean diagonal(String wort, int durchgang){
         if(durchgang>=15){
             level3();
         }else{
