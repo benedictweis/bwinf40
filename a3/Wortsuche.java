@@ -129,7 +129,7 @@ public class Wortsuche{
         }
     }
 
-    private boolean vertEinfgEinf(String wort, int durchgang, int lvl){
+    private boolean vertEinfgEinf(String wort){
         boolean passt = true;
         char bst[] = wort.toCharArray();
         Random random = new Random();
@@ -159,7 +159,7 @@ public class Wortsuche{
 
     }
 
-    private boolean horiEinfgEinf(String wort, int durchgang, int lvl){
+    private boolean horiEinfgEinf(String wort){
 
         boolean passt = true;
         char bst[] = wort.toCharArray();
@@ -275,11 +275,11 @@ public class Wortsuche{
             for(int j = 0; j < 20; j++){ 
                 int zufall = random.nextInt(2);
                 if(zufall == 0){
-                    if(vertEinfgEinf(lines.get(i), 1, 1) == true){
+                    if(vertEinfgEinf(lines.get(i)) == true){
                         break;
                     }
                 } else if(zufall == 1){
-                    if(horiEinfgEinf(lines.get(i), 1, 1) == true){
+                    if(horiEinfgEinf(lines.get(i)) == true){
                         break;
                     }
                 }
@@ -298,17 +298,17 @@ public class Wortsuche{
             if(zufall2==0){
                 int zufall = random.nextInt(2);
                 if(zufall == 0){
-                    vertEinfgEinf(lines.get(i),0,2);
+                    vertEinfgEinf(lines.get(i));
                 } else if(zufall == 1){
-                    horiEinfgEinf(lines.get(i),0,2);
+                    horiEinfgEinf(lines.get(i));
                 }
             }else{
                 drehen(i);
                 int zufall = random.nextInt(2);
                 if(zufall == 0){
-                    vertEinfgEinf(lines.get(i),0,2);
+                    vertEinfgEinf(lines.get(i));
                 } else if(zufall == 1){
-                    horiEinfgEinf(lines.get(i),0,2);
+                    horiEinfgEinf(lines.get(i));
                 }
             }
         }
