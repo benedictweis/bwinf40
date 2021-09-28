@@ -87,57 +87,64 @@ public class main
      **/
     public boolean moveRight(int parallelIndex, int distance, int straightIndex){
         /* Returncodes: false-> error, true->done */
+        int occupiedDistanceToCar = 0;  
         try{
-            String parallelName = parallel[parallelIndex];
+            String parallelName = parallel[parallelIndex]; 
             if((parallel[parallelIndex-1]==parallelName)&&   //second char is to the left
-                ((parallelIndex - 1)>=0)&&
-                (distance==1)&&     //car shall be moved one position
-                (parallelName!=null)){  
-                if(parallel[parallelIndex+1]==null){    //path is empty
-                    parallel[parallelIndex+1]=parallelName;
-                    parallel[parallelIndex-1]=null;
-                    calcSolution(parallelIndex+1, distance, straightIndex, 1);
-                    return true;
+            ((parallelIndex - 1)>=0)&&
+            (distance==1)&&     //car shall be moved one position
+            (parallel[parallelIndex+1]==null)){    //path is empty
+                calcMovement(parallelIndex, distance, 1, 0);
+                calcSolution(parallelIndex+1, distance, straightIndex, 1);
+                return true;
+            }
+            else if((parallel[parallelIndex-1]==parallelName)&&   //second char is to the left
+            ((parallelIndex - 1)>=0)&&
+            (distance==1)&&     //car shall be moved one position
+            (parallel[parallelIndex+1]!=null)){   //path is blocked
+                if(!moveRight(parallelIndex+1, distance, straightIndex)) {
+                    return false;
                 }
-                else if(parallel[parallelIndex+1]!=null){   //path is blocked
-                    if(!moveRight(parallelIndex+1, distance, straightIndex)) {
-                        return false;
-                    }
-                    parallel[parallelIndex+1] = parallelName;
-                    parallel[parallelIndex-1] = null;
-                    calcSolution(parallelIndex+1, distance, straightIndex, 1);
-                    return true;
-                }
+                calcMovement(parallelIndex, distance, 1, 0);
+                calcSolution(parallelIndex+1, distance, straightIndex, 1);
+                return true;
+            }
+            if((parallel[parallelIndex+1]==parallelName)&&  //second char is to the right
+            ((parallelIndex + 2)<=parallel.length)&&
+            (distance==1)&&
+            (parallel[parallelIndex+2]==null)){    //path is empty
+                calcMovement(parallelIndex, distance, 1, 1);
+                calcSolution(parallelIndex+1, distance, straightIndex, 1);
+                return true;
             }
             else if((parallel[parallelIndex+1]==parallelName)&&  //second char is to the right
-                    ((parallelIndex + 2)<=parallel.length)&&
-                    (distance==1)&&
-                    (parallelName!=null)){  
-                if(parallel[parallelIndex+2]==null){    //path is empty
-                    parallel[parallelIndex + 2]=parallelName;
-                    parallel[parallelIndex]=null;
-                    calcSolution(parallelIndex+1, distance, straightIndex, 1);
-                    return true;
+            ((parallelIndex + 2)<=parallel.length)&&
+            (distance==1)&&
+            (parallel[parallelIndex+2]!=null)){   //path is blocked
+                if(!moveRight(parallelIndex+2, distance, straightIndex)) {
+                    return false;
                 }
-                else if(parallel[parallelIndex+2]!=null){   //path is blocked
-                    if(!moveRight(parallelIndex+2, distance, straightIndex)) {
-                        return false;
-                    }
-                    parallel[parallelIndex + 2]=parallelName;
-                    parallel[parallelIndex]=null;
-                    calcSolution(parallelIndex+1, distance, straightIndex, 1);
-                    return true;
-                }
+                calcMovement(parallelIndex, distance, 1, 1);
+                calcSolution(parallelIndex+1, distance, straightIndex, 1);
+                return true;
             }
             if((parallel[parallelIndex-1]==parallelName)&&  //second char is to the left
-                ((parallelIndex - 1)>=0)&&
-                (distance==2)&& //car shall be moved two positions
-                (parallelName!=null)){   
+            ((parallelIndex - 1)>=0)&&
+            (distance==2)){   //car shall be moved two positions  
+                switch((parallel[parallelIndex+2]==null) ? 1 : 0) {
+                    case 0: occupiedDistanceToCar = 1;
+                    case 1: occupiedDistanceToCar = -1;
+                    deafault : occupiedDistanceToCar = 0;
+                }
+                if((occupiedDistanceToCar != -1)&&(!moveRight(parallelIndex+1+occupiedDistanceToCar, distance-occupiedDistanceToCar, straightIndex))) {
+                        return false;
+                    }
+                    calcMovement(parallelIndex, distance, 2, 0);
+                    calcSolution(parallelIndex+2, distance, straightIndex, 1);
+                    return true;
+                /*    
                 if(parallel[parallelIndex+2]==null){    //path is empty
-                    parallel[parallelIndex+2]=parallelName;
-                    parallel[parallelIndex+1]=parallelName;
-                    parallel[parallelIndex]=null;
-                    parallel[parallelIndex-1]=null;
+                    calcMovement(parallelIndex, distance, 2, 0);
                     calcSolution(parallelIndex+2, distance, straightIndex, 1);
                     return true;
                 }
@@ -145,10 +152,7 @@ public class main
                     if(!moveRight(parallelIndex+1, distance, straightIndex)) {
                         return false;
                     }
-                    parallel[parallelIndex+2]=parallelName;
-                    parallel[parallelIndex+1]=parallelName;
-                    parallel[parallelIndex]=null;
-                    parallel[parallelIndex-1]=null;
+                    calcMovement(parallelIndex, distance, 2, 0);
                     calcSolution(parallelIndex+2, distance, straightIndex, 1);
                     return true;
                 }
@@ -156,23 +160,16 @@ public class main
                     if(!moveRight(parallelIndex+2, distance-1, straightIndex)){
                         return false;
                     }
-                    parallel[parallelIndex+2]=parallelName;
-                    parallel[parallelIndex+1]=parallelName;
-                    parallel[parallelIndex]=null;
-                    parallel[parallelIndex-1]=null;
+                    calcMovement(parallelIndex, distance, 2, 0);
                     calcSolution(parallelIndex+2, distance, straightIndex, 1);
                     return true;
-                }
+                } */
             }
             else if((parallel[parallelIndex+1]==parallelName)&& //second char is to the right
-                ((parallelIndex + 2)<=parallel.length)&&
-                (distance==2)&&
-                (parallelName!=null)){   
+            ((parallelIndex + 2)<=parallel.length)&&
+            (distance==2)){   
                 if(parallel[parallelIndex+3]==null){    //path is empty
-                    parallel[parallelIndex+3]=parallelName;
-                    parallel[parallelIndex+2]=parallelName;
-                    parallel[parallelIndex+1]=null;
-                    parallel[parallelIndex]=null;
+                    calcMovement(parallelIndex, distance, 2, 1);
                     calcSolution(parallelIndex+2, distance, straightIndex, 1);
                     return true;
                 }
@@ -180,10 +177,7 @@ public class main
                     if(!moveRight(parallelIndex+2, distance, straightIndex)) {
                         return false;
                     }
-                    parallel[parallelIndex+3]=parallelName;
-                    parallel[parallelIndex+2]=parallelName;
-                    parallel[parallelIndex+1]=null;
-                    parallel[parallelIndex]=null;
+                    calcMovement(parallelIndex, distance, 2, 1);
                     calcSolution(parallelIndex+2, distance, straightIndex, 1);
                     return true;
                 }
@@ -191,10 +185,7 @@ public class main
                     if(!moveRight(parallelIndex+3, distance-1, straightIndex)){
                         return false;
                     }
-                    parallel[parallelIndex+3]=parallelName;
-                    parallel[parallelIndex+2]=parallelName;
-                    parallel[parallelIndex+1]=null;
-                    parallel[parallelIndex]=null;
+                    calcMovement(parallelIndex, distance, 2, 1);
                     calcSolution(parallelIndex+2, distance, straightIndex, 1);
                     return true;
                 }
@@ -224,7 +215,7 @@ public class main
                     if(parallel[parallelIndex-2]==null){    //path is empty
                         parallel[parallelIndex - 2]=parallelName;
                         parallel[parallelIndex]=null;
-                        calcSolution(parallelIndex-1, distance, straightIndex, -1);
+                        calcSolution(parallelIndex-1, distance, straightIndex, 0);
                         return true;
                     }
                     else if(parallel[parallelIndex-2]!=null){   //path is blocked
@@ -233,7 +224,7 @@ public class main
                         }
                         parallel[parallelIndex-2] = parallelName;
                         parallel[parallelIndex] = null;
-                        calcSolution(parallelIndex-1, distance, straightIndex, -1);
+                        calcSolution(parallelIndex-1, distance, straightIndex, 0);
                         return true;
                     }
                 }
@@ -243,7 +234,7 @@ public class main
                     if(parallel[parallelIndex-1]==null){
                         parallel[parallelIndex - 1]=parallelName;
                         parallel[parallelIndex + 1]=null;
-                        calcSolution(parallelIndex-1, distance, straightIndex, -1);
+                        calcSolution(parallelIndex-1, distance, straightIndex, 0);
                         return true;
                     }
                     else if(parallel[parallelIndex-1]!=null){
@@ -252,7 +243,7 @@ public class main
                         }
                         parallel[parallelIndex-1] = parallelName;
                         parallel[parallelIndex+1] = null;
-                        calcSolution(parallelIndex-1, distance, straightIndex, -1);
+                        calcSolution(parallelIndex-1, distance, straightIndex, 0);
                         return true;
                     }
                 }
@@ -266,7 +257,7 @@ public class main
                         parallel[parallelIndex-2]=parallelName;
                         parallel[parallelIndex-1]=null;
                         parallel[parallelIndex]=null;
-                        calcSolution(parallelIndex-2, distance, straightIndex, -1);
+                        calcSolution(parallelIndex-2, distance, straightIndex, 0);
                         return true;
                     }
                     else if(parallel[parallelIndex-2]!=null){   //if path is blocked by other car at left right index
@@ -277,7 +268,7 @@ public class main
                         parallel[parallelIndex-2]=parallelName;
                         parallel[parallelIndex-1]=null;
                         parallel[parallelIndex]=null;
-                        calcSolution(parallelIndex-2, distance, straightIndex, -1);
+                        calcSolution(parallelIndex-2, distance, straightIndex, 0);
                         return true;
                     }
                     else if(parallel[parallelIndex-3]!=null){   //path is blocked by other car at far left index
@@ -288,7 +279,7 @@ public class main
                         parallel[parallelIndex-2]=parallelName;
                         parallel[parallelIndex-1]=null;
                         parallel[parallelIndex]=null;
-                        calcSolution(parallelIndex-2, distance, straightIndex, -1);
+                        calcSolution(parallelIndex-2, distance, straightIndex, 0);
                         return true;
                     }
                 }
@@ -300,7 +291,7 @@ public class main
                         parallel[parallelIndex-1]=parallelName;
                         parallel[parallelIndex]=null;
                         parallel[parallelIndex+1]=null;
-                        calcSolution(parallelIndex-2, distance, straightIndex, -1);
+                        calcSolution(parallelIndex-2, distance, straightIndex, 0);
                         return true;
                     }
                     else if(parallel[parallelIndex-1]!=null){   //path is blocked by other car at near left index
@@ -311,7 +302,7 @@ public class main
                         parallel[parallelIndex-1]=parallelName;
                         parallel[parallelIndex]=null;
                         parallel[parallelIndex+1]=null;
-                        calcSolution(parallelIndex-2, distance, straightIndex, -1);
+                        calcSolution(parallelIndex-2, distance, straightIndex, 0);
                         return true;
                     }
                     else if(parallel[parallelIndex-2]!=null){   //path is blocked by other car at far left index
@@ -322,7 +313,7 @@ public class main
                         parallel[parallelIndex-1]=parallelName;
                         parallel[parallelIndex]=null;
                         parallel[parallelIndex+1]=null;
-                        calcSolution(parallelIndex-2, distance, straightIndex, -1);
+                        calcSolution(parallelIndex-2, distance, straightIndex, 0);
                         return true;
                     }
                 }
@@ -357,13 +348,44 @@ public class main
                 finalSolution[straightIndex]+=", "+parallel[parallelIndex]+" "+distance+" right";
             }
         }
-        else if(direction== -1){
+        else if(direction==0){
             if(finalSolution[straightIndex]==null){
                 finalSolution[straightIndex]=straight[straightIndex]+": "+parallel[parallelIndex]+" "+distance+" left";
             }
             else if(finalSolution[straightIndex]!=null){
                 finalSolution[straightIndex]+=", "+parallel[parallelIndex]+" "+distance+" left";
             }
+        }
+    }
+
+    public void calcMovement(int parallelIndex, int distance, int direction, int secondChar){
+        String parallelName=parallel[parallelIndex];
+        if((distance==1)&&
+        (direction==1)){
+            parallel[parallelIndex+1+secondChar]=parallelName;
+            parallel[parallelIndex-1+secondChar]=null;
+            return;
+        }
+        if((distance==2)&&
+        (direction==1)){
+            parallel[parallelIndex+2+secondChar]=parallelName;
+            parallel[parallelIndex+1+secondChar]=parallelName;
+            parallel[parallelIndex+secondChar]=null;
+            parallel[parallelIndex-1+secondChar]=null;
+            return;
+        }
+        if((distance==1)&&
+        (direction==0)){
+            parallel[parallelIndex-2+secondChar]=parallelName;
+            parallel[parallelIndex+secondChar]=null;
+            return;
+        }
+        if((distance==2)&&
+        (direction==0)){
+            parallel[parallelIndex-3+secondChar]=parallelName;
+            parallel[parallelIndex-2+secondChar]=parallelName;
+            parallel[parallelIndex-1+secondChar]=null;
+            parallel[parallelIndex+secondChar]=null;
         }
     }
 
