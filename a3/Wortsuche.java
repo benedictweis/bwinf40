@@ -7,7 +7,7 @@ import java.util.Random;
 public class Wortsuche{
 
     char[][] Gitter;
-    ArrayList<String> lines;
+    ArrayList<String> lines, original;
     String[] parts;
     int zeile;
     int spalte;
@@ -19,6 +19,7 @@ public class Wortsuche{
 
     public Wortsuche(String worte){
         einlesen(worte);
+        original=(ArrayList) lines.clone();
         datei = worte;
         zeile = Integer.parseInt(parts[0]);
         spalte = Integer.parseInt(parts[1]);
@@ -377,7 +378,7 @@ public class Wortsuche{
                 Gitter[x][y] = '#';
             }
         }
-        einlesen(datei);
+        lines=(ArrayList) original.clone();
     }
 
     private void drehen(int index){
