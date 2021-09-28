@@ -91,7 +91,7 @@ public class Wortsuche{
         }
     }
 
-    private boolean vertEinfg(String wort, int durchgang){
+    private void vertEinfg(String wort, int durchgang){
         if(durchgang>=15){
             level3();
         }else{
@@ -160,42 +160,37 @@ public class Wortsuche{
     }
 
     private boolean horiEinfgEinf(String wort, int durchgang, int lvl){
-        if(durchgang>=15){
-            if(lvl==1){
-                level1();
-            }else{
-                level2();
-            }
-        }else{
-            boolean passt = true;
-            char bst[] = wort.toCharArray();
-            Random random = new Random();
 
-            row = random.nextInt((zeile - bst.length + 1));
-            coloum = random.nextInt(spalte);
-            while(passt){
-                for(int i = 0; i < bst.length; i++){
-                    if(Gitter[row+i][coloum] == '#' || Gitter[row+i][coloum] == bst[i]){
-                        passt = true;
-                    }else{
-                        passt = false;
-                        break;
-                    }
-                }
-                break;
-            }
+        boolean passt = true;
+        char bst[] = wort.toCharArray();
+        Random random = new Random();
 
-            if(passt == true){
-                for(int i = 0;i < bst.length; i++){
-                    Gitter[row+i][coloum] = bst[i];
+        row = random.nextInt((zeile - bst.length + 1));
+        coloum = random.nextInt(spalte);
+        while(passt){
+            for(int i = 0; i < bst.length; i++){
+                if(Gitter[row+i][coloum] == '#' || Gitter[row+i][coloum] == bst[i]){
+                    passt = true;
+                }else{
+                    passt = false;
+                    break;
                 }
-            } else{
-                vertEinfgEinf(wort,durchgang+1,lvl);
             }
+            break;
         }
+
+        if(passt == true){
+            for(int i = 0;i < bst.length; i++){
+                Gitter[row+i][coloum] = bst[i];
+            }
+            return true;
+        } else{
+            return false;
+        }
+
     }
 
-    private boolean horiEinfg(String wort, int durchgang){
+    private void horiEinfg(String wort, int durchgang){
         if(durchgang>=15){
             level3();
         }else{
@@ -234,7 +229,7 @@ public class Wortsuche{
         }
     }
 
-    private boolean diagonal(String wort, int durchgang){
+    private void diagonalEinfg(String wort, int durchgang){
         if(durchgang>=15){
             level3();
         }else{
@@ -284,8 +279,9 @@ public class Wortsuche{
                         break;
                     }
                 } else if(zufall == 1){
-                    horifuellenEinf(lines.get(i),1);
-
+                    if(horiEinfgEinf(lines.get(i), 1, 1) == true){
+                        break;
+                    }
                 }
             } 
         }
@@ -302,17 +298,17 @@ public class Wortsuche{
             if(zufall2==0){
                 int zufall = random.nextInt(2);
                 if(zufall == 0){
-                    vertfuellenEinf(lines.get(i),2);
+                    vertEinfgEinf(lines.get(i),0,2);
                 } else if(zufall == 1){
-                    horifuellenEinf(lines.get(i),2);
+                    horiEinfgEinf(lines.get(i),0,2);
                 }
             }else{
                 drehen(i);
                 int zufall = random.nextInt(2);
                 if(zufall == 0){
-                    vertfuellenEinf(lines.get(i),2);
+                    vertEinfgEinf(lines.get(i),0,2);
                 } else if(zufall == 1){
-                    horifuellenEinf(lines.get(i),2);
+                    horiEinfgEinf(lines.get(i),0,2);
                 }
             }
         }
@@ -328,21 +324,21 @@ public class Wortsuche{
             if(zufall2==0){
                 int zufall = random.nextInt(4);
                 if(zufall == 0){
-                    vertfuellen(lines.get(i));
+                    vertEinfg(lines.get(i),0);
                 } else if(zufall == 1){
-                    horifuellen(lines.get(i));
+                    horiEinfg(lines.get(i),0);
                 }else{
-                    diagonal(lines.get(i));
+                    diagonalEinfg(lines.get(i),0);
                 }
             }else{
                 drehen(i);
                 int zufall = random.nextInt(4);
                 if(zufall == 0){
-                    vertfuellen(lines.get(i));
+                    vertEinfg(lines.get(i),0);
                 } else if(zufall == 1){
-                    horifuellen(lines.get(i));
+                    horiEinfg(lines.get(i),0);
                 }else{
-                    diagonal(lines.get(i));
+                    diagonalEinfg(lines.get(i),0);
                 }
             }
         }
