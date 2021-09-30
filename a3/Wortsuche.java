@@ -214,29 +214,74 @@ public class Wortsuche{
         char bst[] = wort.toCharArray();
         Random random = new Random();
 
-        row = random.nextInt((zeile - bst.length + 1));
-        coloum = random.nextInt((spalte - bst.length +1));
-        while(passt){
-            for(int i = 0; i < bst.length; i++){
-                if(Gitter[row+i][coloum+i] == '#' || Gitter[row+i][coloum+i] == bst[i]){
-                    passt = true;
-                }else{
-                    passt = false;
-                    break;
+        if(random.nextInt(2)==0){
+            row = random.nextInt((zeile - bst.length + 1));
+            coloum = random.nextInt((spalte - bst.length +1));
+            while(passt){
+                for(int i = 0; i < bst.length; i++){
+                    if(Gitter[row+i][coloum+i] == '#' || Gitter[row+i][coloum+i] == bst[i]){
+                        passt = true;
+                    }else{
+                        passt = false;
+                        break;
+                    }
+                }
+                break;
+            }
+
+            if(passt == true){
+                for(int i = 0;i < bst.length; i++){
+                    Gitter[row+i][coloum+i] = bst[i];
+                }
+                return true;
+            } else{
+                return false;
+            }
+        }else{
+            row = (bst.length+random.nextInt((zeile - bst.length)));
+            coloum = random.nextInt((spalte - bst.length +1));
+            while(passt){
+                for(int i = 0; i < bst.length; i++){
+                    if(Gitter[row-i][coloum+i] == '#' || Gitter[row-i][coloum+i] == bst[i]){
+                        passt = true;
+                    }else{
+                        passt = false;
+                        break;
+                    }
+                }
+                break;
+            }
+
+            if(passt == true){
+                for(int i = 0;i < bst.length; i++){
+                    Gitter[row-i][coloum+i] = bst[i];
+                }
+                return true;
+            } else{
+                return false;
+            }
+
+        }
+    }
+
+    public void sortieren(){
+        for(int j=2;j<(Integer.parseInt(lines.get(1))+2);j++){
+            int stelle=-1;
+            int laenge=0;
+            for(int i=j;i<(Integer.parseInt(lines.get(1))+2);i++){
+                if(lines.get(i).length()>laenge){
+                    stelle=i;
+                    laenge=lines.get(i).length();
                 }
             }
-            break;
+            tauschen(j,stelle);
         }
+    }
 
-        if(passt == true){
-            for(int i = 0;i < bst.length; i++){
-                Gitter[row+i][coloum+i] = bst[i];
-            }
-            return true;
-        } else{
-            return false;
-        }
-
+    private void tauschen(int stelle1, int stelle2){
+        String speicher=lines.get(stelle1);
+        lines.set(stelle1,lines.get(stelle2));
+        lines.set(stelle2,speicher);
     }
 
     public void level1(){
@@ -362,6 +407,7 @@ public class Wortsuche{
             }
         }
         lines=(ArrayList) original.clone();
+        sortieren();
     }
 
     private void drehen(int index){
