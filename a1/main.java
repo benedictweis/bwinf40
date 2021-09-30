@@ -134,7 +134,6 @@ public class main
             ((parallelIndex - 1)>=0)&&
             (distance==2)){   //car shall be moved two positions  
                 occupiedDistanceToCar=occupiedDistanceToCar(parallelIndex, 1, 0);
-                System.out.println(occupiedDistanceToCar+" "+parallelName);
                 if((occupiedDistanceToCar != -1)&&
                 (!moveRight(parallelIndex+(1+occupiedDistanceToCar), distance-occupiedDistanceToCar, straightIndex))) {
                     return false;
@@ -147,7 +146,6 @@ public class main
             ((parallelIndex + 2)<=parallel.length)&&
             (distance==2)){
                 occupiedDistanceToCar=occupiedDistanceToCar(parallelIndex, 1, 1);
-                System.out.println(occupiedDistanceToCar+" "+parallelName);
                 if((occupiedDistanceToCar!= -1)&&
                 (!moveRight(parallelIndex+(2+occupiedDistanceToCar), distance-occupiedDistanceToCar, straightIndex))){
                     return false;
