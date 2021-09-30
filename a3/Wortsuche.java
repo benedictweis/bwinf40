@@ -255,7 +255,6 @@ public class Wortsuche{
                         break;
                     }
                 }
-                System.out.println("nicht funktioniert!!!");
                 return;
             } 
         }
@@ -295,7 +294,6 @@ public class Wortsuche{
                         }
                     }
                 }
-                System.out.println("nicht funktioniert!!!");
                 return;
             }
         }
