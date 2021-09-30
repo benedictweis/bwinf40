@@ -264,6 +264,26 @@ public class Wortsuche{
         }
     }
 
+    public void sortieren(){
+        for(int j=2;j<(Integer.parseInt(lines.get(1))+2);j++){
+            int stelle=-1;
+            int laenge=0;
+            for(int i=j;i<(Integer.parseInt(lines.get(1))+2);i++){
+                if(lines.get(i).length()>laenge){
+                    stelle=i;
+                    laenge=lines.get(i).length();
+                }
+            }
+            tauschen(j,stelle);
+        }
+    }
+
+    private void tauschen(int stelle1, int stelle2){
+        String speicher=lines.get(stelle1);
+        lines.set(stelle1,lines.get(stelle2));
+        lines.set(stelle2,speicher);
+    }
+
     public void level1(){
         Random random = new Random();
         boolean fertig = false;
@@ -387,6 +407,7 @@ public class Wortsuche{
             }
         }
         lines=(ArrayList) original.clone();
+        sortieren();
     }
 
     private void drehen(int index){
