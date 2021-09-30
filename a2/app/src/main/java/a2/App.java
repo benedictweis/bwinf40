@@ -11,10 +11,15 @@ import java.util.Scanner;
 
 public class App {
 
+    // Turned to true if no route is possible that can make it to the end with at
+    // most 4 stops
     static boolean routeIsImpossible = false;
+
     public static void main(String[] args) {
 
-        File file = new File("src/main/resources/hotels2.txt");
+        // Reading out the test data as String and entering into lines
+        // Change this path to file you want to use
+        File file = new File("src/main/resources/hotels5.txt");
 
         System.out.println(file.getAbsolutePath());
 
@@ -36,6 +41,7 @@ public class App {
 
         System.out.println(lines);
 
+        // Saving first and second line seperately
         int num_of_hotels = Integer.parseInt(lines.get(0));
         int totalTime = Integer.parseInt(lines.get(1));
 
@@ -45,21 +51,27 @@ public class App {
         System.out.println(num_of_hotels);
         System.out.println(totalTime);
 
+        // Entering remaining lines into hotels as objetcs of class Hotel
         ArrayList<Hotel> hotels = new ArrayList<Hotel>();
 
         for (int i = 0; i < lines.size(); i++) {
             String parts[] = lines.get(i).split(" ");
-            hotels.add(new Hotel(i, Integer.parseInt(parts[0]), Float.parseFloat(parts[1])));
+            hotels.add(new Hotel(Integer.parseInt(parts[0]), Float.parseFloat(parts[1])));
         }
 
+        // Since we can drive at most 360 minutes daily for 5 days, the most we can
+        // possibly drive is 1800 minutes
+        // If this is exceeded, there is no possible route
         if (totalTime > 1800) {
-            totalTime = 1800;
+            System.out.println("Error: Total route time exceeds theoretical maximum that can be completed");
+            return;
         }
 
         float averageRating;
         ArrayList<Hotel> selectedHotels = createRoute(totalTime, hotels);
 
-        if (routeIsImpossible) return;
+        if (routeIsImpossible)
+            return;
 
         for (Hotel h : selectedHotels)
             System.out.println(h.distance + " " + h.rating);
@@ -72,6 +84,13 @@ public class App {
         System.out.println(averageRating);
     }
 
+    /*
+     * Calculates the average rating of given ArrayList<Hotel>
+     * 
+     * @param list: List of hotels
+     * 
+     * @return average Rating as float
+     */
     static float calculateAverageRating(ArrayList<Hotel> list) {
         float average = 0;
         int counter = 0;
@@ -123,9 +142,10 @@ public class App {
             selectedHotels.add(currentHotel);
             currentTravelTime = currentHotel.distance;
             // if we require more than 4 stops the route is impossible
-            if (selectedHotels.size() > 4){
+            if (selectedHotels.size() > 4) {
                 routeIsImpossible = true;
                 System.out.println("Error: No possible route found");
+                return null;
             }
         }
         return selectedHotels;
@@ -137,35 +157,49 @@ public class App {
         float averageRating;
         ArrayList<Hotel> previousRoute = new ArrayList<Hotel>();
 
+        // Keep repeating the optimization process until no further changes are made
         while (!previousRoute.equals(selectedHotels)) {
+            // Saving the pre optimization route for comparison on next loop
+            // Cast can go unchecked here, since selectedHotels.clone() will always return
+            // ArrayList<Hotel>
             previousRoute = (ArrayList<Hotel>) selectedHotels.clone();
+            // Check all currently selected hotels for optimizations
             for (int i = selectedHotels.size() - 1; i > -1; i--) {
-                // adjust the hotels to try and optimize the average rating
+                // Remember distances from starting point of previous and next hotel
+                // If we are looking at the first hotel in the route, it must be in range of the
+                // starting point instead
                 if (i == 0) {
                     previousHotelDistance = 0;
                 } else {
                     previousHotelDistance = selectedHotels.get(i - 1).distance;
                 }
+                // If we are looking at the last hotel in the route, it must be in range of the
+                // end point instead
                 if (i == selectedHotels.size() - 1) {
                     nextHotelDistance = totalTime;
                 } else {
                     nextHotelDistance = selectedHotels.get(i + 1).distance;
                 }
-
+                // go over all remaining hotels and look for improvements over currentHotel
                 Hotel currentHotel = selectedHotels.get(i);
                 for (Hotel h : getRemainingHotels(hotels, selectedHotels)) {
+                    // if Hotel h is in range of next and previous hotel and is an improvement over
+                    // currentHotel, replace currentHotel with it
                     if (h.distance - previousHotelDistance < 360 && h.distance - previousHotelDistance > 0
                             && nextHotelDistance - h.distance < 360 && nextHotelDistance - h.distance > 0
                             && currentHotel.rating < h.rating) {
                         currentHotel = h;
-                        selectedHotels.set(i, currentHotel);
                     }
                 }
-                averageRating = calculateAverageRating(selectedHotels);
+                // assign currentHotel at its place in selectedHotels
+                selectedHotels.set(i, currentHotel);
 
+                // If we still have stops left over use them to try and improve our average
+                // rating
+                averageRating = calculateAverageRating(selectedHotels);
                 while (selectedHotels.size() < 4) {
-                    // if we still have stops left over use them to try and improve our average
-                    // rating
+                    // Use the average rating to determine if the best remaining hotel will increase
+                    // it
                     averageRating = calculateAverageRating(selectedHotels);
                     Hotel bestRemaining = getBestRemainingHotel(hotels, selectedHotels);
                     if (bestRemaining.rating > averageRating)
@@ -173,6 +207,7 @@ public class App {
                     else
                         break;
                 }
+                // Sort hotels to ensure they are in correct order after changes
                 Collections.sort(selectedHotels);
             }
         }
