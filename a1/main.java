@@ -45,8 +45,8 @@ public class main
         /* Filling array with the parallel-cars */
         for(int i=2;i<lines.size();i++){
             String parallelln[]=lines.get(i).split(" ");
+            parallel[Integer.parseInt(parallelln[1])-1]=parallelln[0];
             parallel[Integer.parseInt(parallelln[1])]=parallelln[0];
-            parallel[Integer.parseInt(parallelln[1])+1]=parallelln[0];
         }
 
         for(int i = 0; i<straight.length; i++){
