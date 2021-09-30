@@ -91,39 +91,34 @@ public class Wortsuche{
         }
     }
 
-    private void vertEinfg(String wort){
-            boolean passt = true;
-            char bst[] = wort.toCharArray();
-            Random random = new Random();
+    private boolean vertEinfg(String wort){
+        boolean passt = true;
+        char bst[] = wort.toCharArray();
+        Random random = new Random();
 
-            row = random.nextInt(zeile);
-            coloum = random.nextInt((spalte - bst.length + 1));
-            while(passt){
-                for(int i = 0; i < bst.length; i++){
-                    if(Gitter[row][coloum+i] == '#' || Gitter[row][coloum+i] == bst[i]){
-                        passt = true;
-                    }else{
-                        passt = false;
-                        break;
-                    }
-                }
-                break;
-            }
-
-            if(passt == true){
-                for(int i = 0;i < bst.length; i++){
-                    Gitter[row][coloum+i] = bst[i];
-                }
-
-            } else{
-                int zuf=random.nextInt(2);
-                if(zuf==0){
-                    diagonalEinfg(wort);
+        row = random.nextInt(zeile);
+        coloum = random.nextInt((spalte - bst.length + 1));
+        while(passt){
+            for(int i = 0; i < bst.length; i++){
+                if(Gitter[row][coloum+i] == '#' || Gitter[row][coloum+i] == bst[i]){
+                    passt = true;
                 }else{
-                    horiEinfg(wort);
+                    passt = false;
+                    break;
                 }
             }
-        
+            break;
+        }
+
+        if(passt == true){
+            for(int i = 0;i < bst.length; i++){
+                Gitter[row][coloum+i] = bst[i];
+            }
+            return true;
+        } else{
+            return false;
+        }
+
     }
 
     private boolean vertEinfgEinf(String wort){
@@ -187,74 +182,64 @@ public class Wortsuche{
 
     }
 
-    private void horiEinfg(String wort){
-            boolean passt = true;
-            char bst[] = wort.toCharArray();
-            Random random = new Random();
+    private boolean horiEinfg(String wort){
+        boolean passt = true;
+        char bst[] = wort.toCharArray();
+        Random random = new Random();
 
-            row = random.nextInt((zeile - bst.length + 1));
-            coloum = random.nextInt(spalte);
-            while(passt){
-                for(int i = 0; i < bst.length; i++){
-                    if(Gitter[row+i][coloum] == '#' || Gitter[row+i][coloum] == bst[i]){
-                        passt = true;
-                    }else{
-                        passt = false;
-                        break;
-                    }
-                }
-                break;
-            }
-
-            if(passt == true){
-                for(int i = 0;i < bst.length; i++){
-                    Gitter[row+i][coloum] = bst[i];
-                }
-
-            } else{
-                int zuf=random.nextInt(2);
-                if(zuf==0){
-                    vertEinfg(wort);
+        row = random.nextInt((zeile - bst.length + 1));
+        coloum = random.nextInt(spalte);
+        while(passt){
+            for(int i = 0; i < bst.length; i++){
+                if(Gitter[row+i][coloum] == '#' || Gitter[row+i][coloum] == bst[i]){
+                    passt = true;
                 }else{
-                    diagonalEinfg(wort);
+                    passt = false;
+                    break;
                 }
             }
-        
+            break;
+        }
+
+        if(passt == true){
+            for(int i = 0;i < bst.length; i++){
+                Gitter[row+i][coloum] = bst[i];
+            }
+            return true;
+        } else{
+            return false;
+        }
+
     }
 
-    private void diagonalEinfg(String wort){
-            boolean passt = true;
-            char bst[] = wort.toCharArray();
-            Random random = new Random();
+    private boolean diagonalEinfg(String wort){
+        boolean passt = true;
+        char bst[] = wort.toCharArray();
+        Random random = new Random();
 
-            row = random.nextInt((zeile - bst.length + 1));
-            coloum = random.nextInt((spalte - bst.length +1));
-            while(passt){
-                for(int i = 0; i < bst.length; i++){
-                    if(Gitter[row+i][coloum+i] == '#' || Gitter[row+i][coloum+i] == bst[i]){
-                        passt = true;
-                    }else{
-                        passt = false;
-                        break;
-                    }
-                }
-                break;
-            }
-
-            if(passt == true){
-                for(int i = 0;i < bst.length; i++){
-                    Gitter[row+i][coloum+i] = bst[i];
-                }
-
-            } else{
-                int zuf=random.nextInt(2);
-                if(zuf==0){
-                    vertEinfg(wort);
+        row = random.nextInt((zeile - bst.length + 1));
+        coloum = random.nextInt((spalte - bst.length +1));
+        while(passt){
+            for(int i = 0; i < bst.length; i++){
+                if(Gitter[row+i][coloum+i] == '#' || Gitter[row+i][coloum+i] == bst[i]){
+                    passt = true;
                 }else{
-                    horiEinfg(wort);
+                    passt = false;
+                    break;
                 }
             }
-        
+            break;
+        }
+
+        if(passt == true){
+            for(int i = 0;i < bst.length; i++){
+                Gitter[row+i][coloum+i] = bst[i];
+            }
+            return true;
+        } else{
+            return false;
+        }
+
     }
 
     public void level1(){
@@ -273,6 +258,8 @@ public class Wortsuche{
                         break;
                     }
                 }
+                System.out.println("nicht funktioniert!!!");
+                return;
             } 
         }
 
@@ -311,6 +298,8 @@ public class Wortsuche{
                         }
                     }
                 }
+                System.out.println("nicht funktioniert!!!");
+                return;
             }
         }
 
@@ -322,25 +311,39 @@ public class Wortsuche{
         reset();
         Random random = new Random();
         for(int i = 2; i < (Integer.parseInt(lines.get(1)) + 2); i++){
-            int zufall2 = random.nextInt(2);
-            if(zufall2==0){
-                int zufall = random.nextInt(4);
-                if(zufall == 0){
-                    vertEinfg(lines.get(i));
-                } else if(zufall == 1){
-                    horiEinfg(lines.get(i));
+            for(int j = 0; j < 20; j++){
+                int zufall2 = random.nextInt(2);
+                if(zufall2==0){
+                    int zufall = random.nextInt(4);
+                    if(zufall == 0){
+                        if(vertEinfg(lines.get(i)) == true){
+                            break;
+                        }
+                    } else if(zufall == 1){
+                        if(horiEinfg(lines.get(i)) == true){
+                            break;
+                        }
+                    }else{
+                        if(diagonalEinfg(lines.get(i)) == true){
+                            break;
+                        }
+                    }
                 }else{
-                    diagonalEinfg(lines.get(i));
-                }
-            }else{
-                drehen(i);
-                int zufall = random.nextInt(4);
-                if(zufall == 0){
-                    vertEinfg(lines.get(i));
-                } else if(zufall == 1){
-                    horiEinfg(lines.get(i));
-                }else{
-                    diagonalEinfg(lines.get(i));
+                    drehen(i);
+                    int zufall = random.nextInt(4);
+                    if(zufall == 0){
+                        if(vertEinfg(lines.get(i)) == true){
+                            break;
+                        }
+                    } else if(zufall == 1){
+                        if(horiEinfg(lines.get(i)) == true){
+                            break;
+                        }
+                    }else{
+                        if(diagonalEinfg(lines.get(i)) == true){
+                            break;
+                        }
+                    }
                 }
             }
         }
