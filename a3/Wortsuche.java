@@ -15,12 +15,10 @@ public class Wortsuche{
     int count2;
     int row;
     int coloum;
-    String datei;
 
     public Wortsuche(String worte){
         einlesen(worte);
         original=(ArrayList) lines.clone();
-        datei = worte;
         zeile = Integer.parseInt(parts[0]);
         spalte = Integer.parseInt(parts[1]);
         Gitter = new char[zeile][spalte];
