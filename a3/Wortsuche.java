@@ -116,10 +116,6 @@ public class Wortsuche{
         } else{
             return false;
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> 955f68a2cb43d2aaafe1340a1a34e382b99d540a
     }
 
     private boolean vertEinfgEinf(String wort){
