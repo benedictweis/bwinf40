@@ -288,7 +288,7 @@ public class Wortsuche{
         Random random = new Random();
         boolean fertig = false;
 
-        while(!fertig){
+        
             fertig = true;
             reset();
             //System.out.println("anfang");
@@ -304,11 +304,11 @@ public class Wortsuche{
                             break;
                         }
                     }
-                    //System.out.println("nicht");
+                    System.out.println("nicht");
                     fertig = false;
                 } 
             }
-        }
+        
 
         randomAuffüllen();
         zeigen();
