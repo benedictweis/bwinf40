@@ -89,14 +89,11 @@ public class main
     public boolean moveRight(int parallelIndex, int distance, int straightIndex){
         /* Returncodes: false-> error, true->done */
         int occupiedDistanceToCar = 0;
-        int status=0;
-        if((parallelIndex-1)>=0){
-            
-        }
+        int limit=calcParallelLimit(parallelIndex, 2);
         try{
             String parallelName = parallel[parallelIndex]; 
-            if((parallel[parallelIndex-1]==parallelName)&&   //second char is to the left
-            ((parallelIndex - 1)>=0)&&
+            if((parallel[parallelIndex-1]==parallelName)&&   //second char is to the left //throws error: out of bounce
+            ((parallelIndex-1)>=0)&&
             (distance==1)&&     //car shall be moved one position
             (parallel[parallelIndex+1]==null)){    //path is empty
                 calcMovement(parallelIndex, distance, 1, 0);
@@ -348,6 +345,17 @@ public class main
                 return 0;
             }
             return 1;
+        }
+        return 0;
+    }
+    
+    public int calcParallelLimit(int parallelIndex, int limit){
+        /* Returncodes: -1*limit -> outside left from array; limit -> outside right from array; 0 -> inside of array */
+        if(parallelIndex-limit<0){
+            return -1*limit;
+        }
+        else if(parallelIndex+limit>=parallel.length){
+            return limit;
         }
         return 0;
     }
