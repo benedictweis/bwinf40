@@ -246,7 +246,7 @@ public class Wortsuche{
         while(!fertig){
             fertig = true;
             reset();
-            System.out.println("anfang");
+            //System.out.println("anfang");
             for(int i = 2; i < (Integer.parseInt(lines.get(1)) + 2); i++){
                 for(int j = 0; j < 50; j++){ 
                     int zufall = random.nextInt(2);
@@ -254,7 +254,7 @@ public class Wortsuche{
                         if(vertEinfgEinf(lines.get(i)) == true){
                             break;
                         }
-                    } else if(zufall == 1){
+                    } else{
                         if(horiEinfgEinf(lines.get(i)) == true){
                             break;
                         }
