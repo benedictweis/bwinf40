@@ -15,12 +15,10 @@ public class Wortsuche{
     int count2;
     int row;
     int coloum;
-    String datei;
 
     public Wortsuche(String worte){
         einlesen(worte);
         original=(ArrayList) lines.clone();
-        datei = worte;
         zeile = Integer.parseInt(parts[0]);
         spalte = Integer.parseInt(parts[1]);
         Gitter = new char[zeile][spalte];
@@ -118,7 +116,10 @@ public class Wortsuche{
         } else{
             return false;
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 955f68a2cb43d2aaafe1340a1a34e382b99d540a
     }
 
     private boolean vertEinfgEinf(String wort){
@@ -310,6 +311,7 @@ public class Wortsuche{
     public void level3(){
         reset();
         Random random = new Random();
+
         for(int i = 2; i < (Integer.parseInt(lines.get(1)) + 2); i++){
             for(int j = 0; j < 20; j++){
                 int zufall2 = random.nextInt(2);
@@ -347,6 +349,7 @@ public class Wortsuche{
                 }
             }
         }
+
         randomAuffüllen();
         zeigen();
     }
