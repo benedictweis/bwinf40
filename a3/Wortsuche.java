@@ -214,49 +214,80 @@ public class Wortsuche{
         char bst[] = wort.toCharArray();
         Random random = new Random();
 
-        row = random.nextInt((zeile - bst.length + 1));
-        coloum = random.nextInt((spalte - bst.length +1));
-        while(passt){
-            for(int i = 0; i < bst.length; i++){
-                if(Gitter[row+i][coloum+i] == '#' || Gitter[row+i][coloum+i] == bst[i]){
-                    passt = true;
-                }else{
-                    passt = false;
-                    break;
+        if(random.nextInt(2)==0){
+            row = random.nextInt((zeile - bst.length + 1));
+            coloum = random.nextInt((spalte - bst.length +1));
+            while(passt){
+                for(int i = 0; i < bst.length; i++){
+                    if(Gitter[row+i][coloum+i] == '#' || Gitter[row+i][coloum+i] == bst[i]){
+                        passt = true;
+                    }else{
+                        passt = false;
+                        break;
+                    }
                 }
+                break;
             }
-            break;
-        }
 
-        if(passt == true){
-            for(int i = 0;i < bst.length; i++){
-                Gitter[row+i][coloum+i] = bst[i];
+            if(passt == true){
+                for(int i = 0;i < bst.length; i++){
+                    Gitter[row+i][coloum+i] = bst[i];
+                }
+                return true;
+            } else{
+                return false;
             }
-            return true;
-        } else{
-            return false;
-        }
+        }else{
+            row = (bst.length+random.nextInt((zeile - bst.length)));
+            coloum = random.nextInt((spalte - bst.length +1));
+            while(passt){
+                for(int i = 0; i < bst.length; i++){
+                    if(Gitter[row-i][coloum+i] == '#' || Gitter[row-i][coloum+i] == bst[i]){
+                        passt = true;
+                    }else{
+                        passt = false;
+                        break;
+                    }
+                }
+                break;
+            }
 
+            if(passt == true){
+                for(int i = 0;i < bst.length; i++){
+                    Gitter[row-i][coloum+i] = bst[i];
+                }
+                return true;
+            } else{
+                return false;
+            }
+
+        }
     }
 
     public void level1(){
-        reset();
         Random random = new Random();
+        boolean fertig = false;
 
-        for(int i = 2; i < (Integer.parseInt(lines.get(1)) + 2); i++){
-            for(int j = 0; j < 20; j++){ 
-                int zufall = random.nextInt(2);
-                if(zufall == 0){
-                    if(vertEinfgEinf(lines.get(i)) == true){
-                        break;
+        while(!fertig){
+            fertig = true;
+            reset();
+            System.out.println("anfang");
+            for(int i = 2; i < (Integer.parseInt(lines.get(1)) + 2); i++){
+                for(int j = 0; j < 50; j++){ 
+                    int zufall = random.nextInt(2);
+                    if(zufall == 0){
+                        if(vertEinfgEinf(lines.get(i)) == true){
+                            break;
+                        }
+                    } else if(zufall == 1){
+                        if(horiEinfgEinf(lines.get(i)) == true){
+                            break;
+                        }
                     }
-                } else if(zufall == 1){
-                    if(horiEinfgEinf(lines.get(i)) == true){
-                        break;
-                    }
-                }
-                return;
-            } 
+                    //System.out.println("nicht");
+                    fertig = false;
+                } 
+            }
         }
 
         randomAuffüllen();
@@ -268,7 +299,7 @@ public class Wortsuche{
         Random random = new Random();
 
         for(int i = 2; i < (Integer.parseInt(lines.get(1)) + 2); i++){
-            for(int j = 0; j < 20; j++){
+            for(int j = 0; j < 50; j++){
                 int zufall2 = random.nextInt(2);
                 if(zufall2==0){
                     int zufall = random.nextInt(2);
@@ -294,6 +325,7 @@ public class Wortsuche{
                         }
                     }
                 }
+
                 return;
             }
         }
@@ -307,7 +339,7 @@ public class Wortsuche{
         Random random = new Random();
 
         for(int i = 2; i < (Integer.parseInt(lines.get(1)) + 2); i++){
-            for(int j = 0; j < 20; j++){
+            for(int j = 0; j < 50; j++){
                 int zufall2 = random.nextInt(2);
                 if(zufall2==0){
                     int zufall = random.nextInt(4);
