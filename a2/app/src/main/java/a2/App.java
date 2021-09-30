@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 public class App {
 
+    static boolean routeIsImpossible = false;
     public static void main(String[] args) {
 
         File file = new File("src/main/resources/hotels2.txt");
@@ -44,13 +45,11 @@ public class App {
         System.out.println(num_of_hotels);
         System.out.println(totalTime);
 
-        // 
         ArrayList<Hotel> hotels = new ArrayList<Hotel>();
 
         for (int i = 0; i < lines.size(); i++) {
             String parts[] = lines.get(i).split(" ");
             hotels.add(new Hotel(i, Integer.parseInt(parts[0]), Float.parseFloat(parts[1])));
-            //
         }
 
         if (totalTime > 1800) {
@@ -58,9 +57,9 @@ public class App {
         }
 
         float averageRating;
-        ArrayList<Hotel> selectedHotels = new ArrayList<Hotel>();
+        ArrayList<Hotel> selectedHotels = createRoute(totalTime, hotels);
 
-        selectedHotels = createRoute(totalTime, hotels);
+        if (routeIsImpossible) return;
 
         for (Hotel h : selectedHotels)
             System.out.println(h.distance + " " + h.rating);
@@ -82,18 +81,6 @@ public class App {
         }
         average = average / counter;
         return average;
-    }
-
-    static Hotel getBestHotelWithinRange(ArrayList<Hotel> list, int currentTraveltime) {
-        Hotel current = null;
-        for (Hotel h : list) {
-            if (current == null)
-                current = h;
-            if (current.rating <= h.rating && h.distance - currentTraveltime <= 360
-                    && h.distance - currentTraveltime > 0)
-                current = h;
-        }
-        return current;
     }
 
     static Hotel getFarthestHotelWithinRange(ArrayList<Hotel> list, int currentTraveltime) {
@@ -135,6 +122,11 @@ public class App {
             Hotel currentHotel = getFarthestHotelWithinRange(hotels, currentTravelTime);
             selectedHotels.add(currentHotel);
             currentTravelTime = currentHotel.distance;
+            // if we require more than 4 stops the route is impossible
+            if (selectedHotels.size() > 4){
+                routeIsImpossible = true;
+                System.out.println("Error: No possible route found");
+            }
         }
         return selectedHotels;
     }
