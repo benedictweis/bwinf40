@@ -15,7 +15,7 @@ public class App {
 
         // Reading out the test data as String and entering into lines
         // Change this path to file you want to use
-        File file = new File("src/main/resources/hotels1.txt");
+        File file = new File("src/main/resources/hotels5.txt");
 
         System.out.println(file.getAbsolutePath());
 
@@ -26,7 +26,12 @@ public class App {
             Scanner scanner = new Scanner(file);
 
             while (scanner.hasNext()) {
-                lines.add(scanner.nextLine());
+
+                String line = scanner.nextLine();
+
+                if (!line.startsWith("// ")) {
+                    lines.add(line);
+                }
             }
 
             scanner.close();
