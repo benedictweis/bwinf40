@@ -11,15 +11,11 @@ import java.util.Scanner;
 
 public class App {
 
-    // Turned to true if no route is possible that can make it to the end with at
-    // most 4 stops
-    static boolean routeIsImpossible = false;
-
     public static void main(String[] args) {
 
         // Reading out the test data as String and entering into lines
         // Change this path to file you want to use
-        File file = new File("src/main/resources/hotels5.txt");
+        File file = new File("src/main/resources/hotels1.txt");
 
         System.out.println(file.getAbsolutePath());
 
@@ -68,7 +64,7 @@ public class App {
         float averageRating;
         ArrayList<Hotel> selectedHotels = createRoute(totalTime, hotels);
 
-        if (routeIsImpossible)
+        if (selectedHotels == null)
             return;
 
         selectedHotels = optimizeRoute(totalTime, selectedHotels, hotels);
@@ -163,7 +159,6 @@ public class App {
             currentTravelTime = currentHotel.distance;
             // if we require more than 4 stops the route is impossible
             if (selectedHotels.size() > 4) {
-                routeIsImpossible = true;
                 System.out.println("Error: No possible route found");
                 return null;
             }
