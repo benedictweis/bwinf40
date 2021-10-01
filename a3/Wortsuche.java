@@ -264,7 +264,7 @@ public class Wortsuche{
         }
     }
 
-    public void sortieren(){
+    private void sortieren(){
         for(int j=2;j<(Integer.parseInt(lines.get(1))+2);j++){
             int stelle=-1;
             int laenge=0;
@@ -387,7 +387,7 @@ public class Wortsuche{
             }
         }
 
-        //randomAuffüllen();
+        randomAuffüllen();
         zeigen();
     }
 
