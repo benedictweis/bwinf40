@@ -39,8 +39,6 @@ public class App {
             e.printStackTrace();
         }
 
-        System.out.println(lines);
-
         // Saving first and second line seperately
         int num_of_hotels = Integer.parseInt(lines.get(0));
         int totalTime = Integer.parseInt(lines.get(1));
@@ -48,8 +46,8 @@ public class App {
         lines.remove(1);
         lines.remove(0);
 
-        System.out.println(num_of_hotels);
-        System.out.println(totalTime);
+        System.out.println("Number of Hotels: " + num_of_hotels);
+        System.out.println("Total Distance (Time in minutes): " + totalTime);
 
         // Entering remaining lines into hotels as objetcs of class Hotel
         ArrayList<Hotel> hotels = new ArrayList<Hotel>();
@@ -73,19 +71,19 @@ public class App {
         if (routeIsImpossible)
             return;
 
-        for (Hotel h : selectedHotels)
-            System.out.println(h.distance + " " + h.rating);
-        System.out.println("------");
         selectedHotels = optimizeRoute(totalTime, selectedHotels, hotels);
 
+        //Output
+        System.out.println();
+        System.out.println("Selected Hotels:");
+        for (int i = 0; i < selectedHotels.size(); i++)
+            System.out.println("    Hotel " + i + ": " + selectedHotels.get(i).distance + " " + selectedHotels.get(i).rating);
         averageRating = calculateAverageRating(selectedHotels);
-        for (Hotel h : selectedHotels)
-            System.out.println(h.distance + " " + h.rating);
-        System.out.println(averageRating);
+        System.out.println("Average Rating: " + averageRating);
     }
 
     /**
-     * Calculates the average rating of given ArrayList<Hotel>
+     * Calculates the average rating of given ArrayList of Hotels
      * 
      * @param list List of hotels
      * @return average Rating as float
