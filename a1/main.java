@@ -92,8 +92,8 @@ public class main
         int limit=calcParallelLimit(parallelIndex, 2);
         try{
             String parallelName = parallel[parallelIndex]; 
-            if((parallel[parallelIndex-1]==parallelName)&&   //second char is to the left //throws error: out of bounce
-            ((parallelIndex-1)>=0)&&
+            if(((parallelIndex-1)>=0)&&
+            (parallel[parallelIndex-1]==parallelName)&&   //second char is to the left //throws error: out of bounce
             (distance==1)&&     //car shall be moved one position
             (parallel[parallelIndex+1]==null)){    //path is empty
                 calcMovement(parallelIndex, distance, 1, 0);
@@ -276,6 +276,7 @@ public class main
     }
 
     public void calcSolution(int parallelIndex, int distance, int straightIndex, int direction){
+        //TODO direction array
         if(direction==1){
             if(finalSolution[straightIndex]==null){
                 finalSolution[straightIndex]=straight[straightIndex]+": "+parallel[parallelIndex]+" "+distance+" right";
@@ -320,7 +321,6 @@ public class main
             parallel[parallelIndex-(1-secondChar)]=null;
             parallel[parallelIndex+secondChar]=null;
         }
-        return;
     }
     
     public int occupiedDistanceToCar(int parallelIndex,int direction, int secondChar){
