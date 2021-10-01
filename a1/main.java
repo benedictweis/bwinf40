@@ -250,10 +250,20 @@ public class main
     }
 
     public int calcSecondChar(int parallelIndex){
-        //TODO 
         //Returncodes: 0-> secondChar is left; 1-> secondChar is right
-        int limit=calcParallelLimit(parallelIndex, 2);
-        return 1;
+        int limit=calcParallelLimit(parallelIndex, 1);
+        if(limit==1){   //
+            return 0;
+        }
+        else if(limit== -1){    //
+            return 1;
+        }
+        else{
+            if(parallel[parallelIndex]==parallel[parallelIndex+1]){
+                return 1;
+            }
+            return 0;
+        }
     }
     
     /**
