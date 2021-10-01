@@ -61,8 +61,8 @@ public class main
             }
         }
         finalSolution=new String[straight.length];
+        // Visualization of the two arrays for better understanding of the solution
         System.out.println("Searching solution of: \""+fileName+"\" ☺\n");
-
         System.out.println("straight cars: \t"+visualizeStraight);
         System.out.println("parallel cars: \t"+visualizeParallel);
     }
@@ -86,7 +86,7 @@ public class main
      *  distance: how many positions the car shall be moved
      *  parallelIndex: to which car the operations should be assosiated with
      **/
-    public boolean moveRight(int parallelIndex, int distance, int straightIndex){
+    public boolean moveDirection(int parallelIndex, int distance, int straightIndex, int direction){
         /* Returncodes: false-> error, true->done */
         int occupiedDistanceToCar = 0;
         int limit=calcParallelLimit(parallelIndex, 2);
@@ -96,7 +96,7 @@ public class main
             (parallel[parallelIndex-1]==parallelName)&&   //second char is to the left //throws error: out of bounce
             (distance==1)&&     //car shall be moved one position
             (parallel[parallelIndex+1]==null)){    //path is empty
-                calcMovement(parallelIndex, distance, 1, 0);
+                calcMovement(parallelIndex, distance, direction, 0);
                 calcSolution(parallelIndex+1, distance, straightIndex, 1);
                 return true;
             }
@@ -104,10 +104,10 @@ public class main
             ((parallelIndex - 1)>=0)&&
             (distance==1)&&     //car shall be moved one position
             (parallel[parallelIndex+1]!=null)){   //path is blocked
-                if(!moveRight(parallelIndex+1, distance, straightIndex)) {
+                if(!moveDirection(parallelIndex+1, distance, straightIndex, direction)) {
                     return false;
                 }
-                calcMovement(parallelIndex, distance, 1, 0);
+                calcMovement(parallelIndex, distance, direction, 0);
                 calcSolution(parallelIndex+1, distance, straightIndex, 1);
                 return true;
             }
@@ -115,7 +115,7 @@ public class main
             ((parallelIndex + 2)<=parallel.length)&&
             (distance==1)&&
             (parallel[parallelIndex+2]==null)){    //path is empty
-                calcMovement(parallelIndex, distance, 1, 1);
+                calcMovement(parallelIndex, distance, direction, 1);
                 calcSolution(parallelIndex+1, distance, straightIndex, 1);
                 return true;
             }
@@ -123,10 +123,10 @@ public class main
             ((parallelIndex + 2)<=parallel.length)&&
             (distance==1)&&
             (parallel[parallelIndex+2]!=null)){   //path is blocked
-                if(!moveRight(parallelIndex+2, distance, straightIndex)) {
+                if(!moveDirection(parallelIndex+2, distance, straightIndex, direction)) {
                     return false;
                 }
-                calcMovement(parallelIndex, distance, 1, 1);
+                calcMovement(parallelIndex, distance, direction, 1);
                 calcSolution(parallelIndex+1, distance, straightIndex, 1);
                 return true;
             }
@@ -135,10 +135,10 @@ public class main
             (distance==2)){   //car shall be moved two positions  
                 occupiedDistanceToCar=occupiedDistanceToCar(parallelIndex, 1, 0);
                 if((occupiedDistanceToCar != -1)&&
-                (!moveRight(parallelIndex+(1+occupiedDistanceToCar), distance-occupiedDistanceToCar, straightIndex))) {
+                (!moveDirection(parallelIndex+(1+occupiedDistanceToCar), distance-occupiedDistanceToCar, straightIndex, direction))) {
                     return false;
                 }
-                calcMovement(parallelIndex, distance, 1, 0);
+                calcMovement(parallelIndex, distance, direction, 0);
                 calcSolution(parallelIndex+2, distance, straightIndex, 1);
                 return true;
             }
@@ -147,10 +147,10 @@ public class main
             (distance==2)){
                 occupiedDistanceToCar=occupiedDistanceToCar(parallelIndex, 1, 1);
                 if((occupiedDistanceToCar!= -1)&&
-                (!moveRight(parallelIndex+(2+occupiedDistanceToCar), distance-occupiedDistanceToCar, straightIndex))){
+                (!moveDirection(parallelIndex+(2+occupiedDistanceToCar), distance-occupiedDistanceToCar, straightIndex, direction))){
                     return false;
                 }
-                calcMovement(parallelIndex, distance, 1, 1);
+                calcMovement(parallelIndex, distance, direction, 1);
                 calcSolution(parallelIndex+2, distance, straightIndex, 1);
                 return true;
             }
@@ -161,106 +161,7 @@ public class main
             return false;
         }
     }
-    //(int parallelIndex, int distance, int direction, int secondChar){
-    /**
-     *  moves the selected parallel car one or two positions to the left
-     *  index: location of the car
-     *  distance: how many positions the car shall be moved
-     *  parallelIndex: to which car the operations should be assosiated with
-     **/
-    public boolean moveLeft(int parallelIndex, int distance, int straightIndex){
-        /* Returncodes: false-> error, true->done */
-        try{
-            String parallelName=parallel[parallelIndex];
-            if((parallel[parallelIndex-1]==parallelName)&&
-            ((parallelIndex - 1)>=0)&&
-            (distance==1)){
-                if(parallel[parallelIndex-2]==null){ //path is empty
-                    calcMovement(parallelIndex, distance, 0, 0);
-                    calcSolution(parallelIndex-1, distance, straightIndex, 0);
-                    return true;
-                } else if(parallel[parallelIndex-2]!=null){   //path is blocked
-                    if(!moveLeft(parallelIndex-2, distance, straightIndex)) {
-                        return false;
-                    }
-                    calcMovement(parallelIndex, distance, 0, 0);
-                    calcSolution(parallelIndex-1, distance, straightIndex, 0);
-                    return true;
-                }
-            }
-            if(((parallelIndex+1)<=parallel.length)&&
-            (parallel[parallelIndex + 1]==parallelName)&&
-            (distance==1)){
-                if(parallel[parallelIndex-1]==null){
-                    calcMovement(parallelIndex, distance, 0, 1);
-                    calcSolution(parallelIndex-1, distance, straightIndex, 0);
-                    return true;
-                }
-                else if(parallel[parallelIndex-1]!=null){
-                    if(!moveLeft(parallelIndex-1, distance, straightIndex)) {
-                        return false;
-                    }
-                    calcMovement(parallelIndex, distance, 0, 1);
-                    calcSolution(parallelIndex-1, distance, straightIndex, 0);
-                    return true;
-                }
-            }
-            if((parallelIndex-1>=0)&&
-            (parallel[parallelIndex-1]==parallelName)&&
-            (distance==2)){   //second char is to the left
-                if(parallel[parallelIndex-3]==null){    //path is empty
-                    calcMovement(parallelIndex, distance, 0, 0);
-                    calcSolution(parallelIndex-2, distance, straightIndex, 0);
-                    return true;
-                }
-                else if(parallel[parallelIndex-2]!=null){   //if path is blocked by other car at left right index
-                    if(!moveRight(parallelIndex-2, distance, straightIndex)) {
-                        return false;
-                    }
-                    calcMovement(parallelIndex, distance, 0, 0);
-                    calcSolution(parallelIndex-2, distance, straightIndex, 0);
-                    return true;
-                }
-                else if(parallel[parallelIndex-3]!=null){   //path is blocked by other car at far left index
-                    if(!moveRight(parallelIndex-3, distance-1, straightIndex)){
-                        return false;
-                    }
-                    calcMovement(parallelIndex, distance, 0, 0);
-                    calcSolution(parallelIndex-2, distance, straightIndex, 0);
-                    return true;
-                }
-            }
-            if(((parallelIndex+2)<=parallel.length)&&
-            (parallel[parallelIndex+1]==parallelName)&&
-            (distance==2)){   //second char is to the right
-                if(parallel[parallelIndex-2]==null){    //path is empty
-                    calcMovement(parallelIndex, distance, 0, 1);
-                    calcSolution(parallelIndex-2, distance, straightIndex, 0);
-                    return true;
-                }
-                else if(parallel[parallelIndex-1]!=null){   //path is blocked by other car at near left index
-                    if(!moveRight(parallelIndex-1, distance, straightIndex)) {
-                        return false;
-                    }
-                    calcMovement(parallelIndex, distance, 0, 1);
-                    calcSolution(parallelIndex-2, distance, straightIndex, 0);
-                    return true;
-                }
-                else if(parallel[parallelIndex-2]!=null){   //path is blocked by other car at far left index
-                    if(!moveLeft(parallelIndex-2, distance-1, straightIndex)){
-                        return false;
-                    }
-                    calcMovement(parallelIndex, distance, 0, 1);
-                    calcSolution(parallelIndex-2, distance, straightIndex, 0);
-                    return true;
-                }
-            }
-            return false;
-        }catch(Exception e){
-            return false;
-        }
-    }
-
+   
     /**
      *  resets the parallel cars to their start position
      **/
@@ -276,22 +177,12 @@ public class main
     }
 
     public void calcSolution(int parallelIndex, int distance, int straightIndex, int direction){
-        //TODO direction array
-        if(direction==1){
-            if(finalSolution[straightIndex]==null){
-                finalSolution[straightIndex]=straight[straightIndex]+": "+parallel[parallelIndex]+" "+distance+" right";
-            }
-            else if(finalSolution[straightIndex]!=null){
-                finalSolution[straightIndex]+=", "+parallel[parallelIndex]+" "+distance+" right";
-            }
+        String[] directions= {"left","right"};
+        if(finalSolution[straightIndex]==null){
+            finalSolution[straightIndex]=straight[straightIndex]+": "+parallel[parallelIndex]+" "+distance+" "+directions[direction];
         }
-        else if(direction==0){
-            if(finalSolution[straightIndex]==null){
-                finalSolution[straightIndex]=straight[straightIndex]+": "+parallel[parallelIndex]+" "+distance+" left";
-            }
-            else if(finalSolution[straightIndex]!=null){
-                finalSolution[straightIndex]+=", "+parallel[parallelIndex]+" "+distance+" left";
-            }
+        else if(finalSolution[straightIndex]!=null){
+            finalSolution[straightIndex]+=", "+parallel[parallelIndex]+" "+distance+" "+directions[direction];
         }
     }
 
@@ -322,7 +213,7 @@ public class main
             parallel[parallelIndex+secondChar]=null;
         }
     }
-    
+
     public int occupiedDistanceToCar(int parallelIndex,int direction, int secondChar){
         if((direction==1)&&
         ((parallelIndex+(2+secondChar))<=parallel.length)){
@@ -346,7 +237,7 @@ public class main
         }
         return 0;
     }
-    
+
     public int calcParallelLimit(int parallelIndex, int limit){
         /* Returncodes: -1*limit -> outside left from array; limit -> outside right from array; 0 -> inside of array */
         if(parallelIndex-limit<0){
@@ -363,6 +254,7 @@ public class main
      *  index: location of the straight car the shall be moved out
      **/
     public void findPath(int straightIndex){
+        //TODO arrayLimit mit einbeziehen
         String parallelName=parallel[straightIndex];
         try{
             if(parallel[straightIndex]==null){  //exit path is empty
@@ -375,20 +267,20 @@ public class main
                     if((straightIndex-2)<0){
                     }
                     else if(parallel[straightIndex-2]==null){   //free space to the right side
-                        if(moveLeft(straightIndex, 1, straightIndex)){
+                        if(moveDirection(straightIndex, 1, straightIndex, 0)){
                             return;
                         }
                     }
                     if((straightIndex+2)>parallel.length){
                     }
                     else if(parallel[straightIndex+1]==null){   // empty space to the left side
-                        if(moveRight(straightIndex, 2, straightIndex)){
+                        if(moveDirection(straightIndex, 2, straightIndex, 1)){
                             return;
                         }
                     }
                     //no free space at all
-                    if(!moveLeft(straightIndex, 1, straightIndex)){
-                        moveRight(straightIndex, 2, straightIndex);
+                    if(!moveDirection(straightIndex, 1, straightIndex, 0)){
+                        moveDirection(straightIndex, 2, straightIndex, 1);
                     }
                     return;
                 }
@@ -398,17 +290,17 @@ public class main
                     if((straightIndex+2)>=parallel.length){
                     }
                     else if(parallel[straightIndex+2]==null){   //empty space to right side
-                        moveRight(straightIndex, 1 , straightIndex);
+                        moveDirection(straightIndex, 1 , straightIndex, 1);
                         return;
                     }
                     if((straightIndex-2)<0){
                     }
                     else if(parallel[straightIndex-1]==null){
-                        moveLeft(straightIndex, 2, straightIndex);
+                        moveDirection(straightIndex, 2, straightIndex, 0);
                         return;
                     }
-                    if(!moveRight(straightIndex, 1, straightIndex)){
-                        moveLeft(straightIndex, 2, straightIndex);
+                    if(!moveDirection(straightIndex, 1, straightIndex, 1)){
+                        moveDirection(straightIndex, 2, straightIndex, 0);
                     }
                     return;
                 }
