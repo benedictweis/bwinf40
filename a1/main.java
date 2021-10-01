@@ -249,6 +249,13 @@ public class main
         return 0;
     }
 
+    public int calcSecondChar(int parallelIndex){
+        //TODO 
+        //Returncodes: 0-> secondChar is left; 1-> secondChar is right
+        int limit=calcParallelLimit(parallelIndex, 2);
+        return 1;
+    }
+    
     /**
      *  chooses the optimal way to move out the selected car
      *  index: location of the straight car the shall be moved out
