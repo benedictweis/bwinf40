@@ -88,11 +88,12 @@ public class main
      **/
     public boolean moveDirection(int parallelIndex, int distance, int straightIndex, int direction){
         /* Returncodes: false-> error, true->done */
+        // 1 2 1 1
         int occupiedDistanceToCar = 0;
         int secondChar=calcSecondChar(parallelIndex);
         try{
             String parallelName = parallel[parallelIndex]; 
-            if((calcParallelLimit(parallelIndex, 1)==0)&&
+            if((canMove(parallelIndex, distance, direction))&&
             (secondChar==0)&&   //second char is to the left
             (distance==1)&&     //car shall be moved one position
             (parallel[parallelIndex+1]==null)){    //path is empty
@@ -130,7 +131,7 @@ public class main
                 calcSolution(parallelIndex+1, distance, straightIndex, 1);
                 return true;
             }
-            if((calcParallelLimit(parallelIndex, 2)==0)&&
+            if((calcParallelLimit(parallelIndex, 2)!= 2)&&
             (secondChar==0)&&  //second char is to the left
             (distance==2)){   //car shall be moved two positions  
                 occupiedDistanceToCar=occupiedDistanceToCar(parallelIndex, 1, 0);
@@ -267,6 +268,14 @@ public class main
         }
     }
     
+    public boolean canMove(int parallelIndex, int distance, int direction){
+        int limit=calcParallelLimit(parallelIndex, distance);
+        if((limit != distance&&direction==1)||(limit!=(-1+distance)&direction==0)){
+            return true;
+        }
+        return false;
+    }
+    
     /**
      *  chooses the optimal way to move out the selected car
      *  index: location of the straight car the shall be moved out
@@ -274,14 +283,13 @@ public class main
     public void findPath(int straightIndex){
         //TODO arrayLimit mit einbeziehen
         String parallelName=parallel[straightIndex];
+        int secondChar=calcSecondChar(straightIndex);
         try{
             if(parallel[straightIndex]==null){  //exit path is empty
                 finalSolution[straightIndex]=straight[straightIndex]+": ";
             }
             else{
-                if((straightIndex - 1)<0){
-                }
-                else if(parallel[straightIndex - 1]==parallelName){ //second char is to the left
+                if(secondChar==0){ //second char is to the left
                     if((straightIndex-2)<0){
                     }
                     else if(parallel[straightIndex-2]==null){   //free space to the right side
@@ -302,18 +310,16 @@ public class main
                     }
                     return;
                 }
-                if((straightIndex + 1)>parallel.length){
-                }
-                else if(parallel[straightIndex+1]==parallelName){ //second char is to the right
+                if(secondChar==1){ //second char is to the right
                     if((straightIndex+2)>=parallel.length){
                     }
-                    else if(parallel[straightIndex+2]==null){   //empty space to right side
+                    else if((calcParallelLimit(straightIndex, 2)==0)&&(parallel[straightIndex+2]==null)){   //empty space to right side
                         moveDirection(straightIndex, 1 , straightIndex, 1);
                         return;
                     }
                     if((straightIndex-2)<0){
                     }
-                    else if(parallel[straightIndex-1]==null){
+                    else if((calcParallelLimit(straightIndex, 2)==0)&&(parallel[straightIndex-1]==null)){
                         moveDirection(straightIndex, 2, straightIndex, 0);
                         return;
                     }
