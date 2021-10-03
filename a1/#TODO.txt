@@ -1,3 +1,7 @@
 TODO:	moveDirection verschiebt alles nur nur rechts und gibt bei geplanter linker verschiebung einen error.	//done
 	parallelIndex=0 gibt error.(outOfBounce)	//done
-	parallelIndex=15 == null
+	parallelIndex=15 == null(p4)
+	p0, p2, p3(letzten), 
+	index=15 == null(p5)
+	warscheinlich wegen findPath nicht gut
+	p98 jedes 2te. move left funktioniert nicht vlt auch wegen findPath
