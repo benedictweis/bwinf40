@@ -84,71 +84,6 @@ public class App {
     }
 
     /**
-     * Calculates the average rating of given ArrayList of Hotels
-     * 
-     * @param list List of hotels
-     * @return average Rating as float
-     */
-    static float calculateAverageRating(ArrayList<Hotel> list) {
-        float average = 0;
-        int counter = 0;
-        for (Hotel h : list) {
-            average += h.rating;
-            counter++;
-        }
-        average = average / counter;
-        return average;
-    }
-
-    /**
-     * Finds the farthest Hotel from list that is reachable from currentTravelTime
-     * @param list List of Hotels to choose from
-     * @param currentTravelTime specified point from which the Hotel must be reachable
-     * @return farthest Hotel that is reachable from currentTravelTime
-     */
-    static Hotel getFarthestHotelWithinRange(ArrayList<Hotel> list, int currentTravelTime) {
-        Hotel current = null;
-        for (Hotel h : list) {
-            if (current == null)
-                current = h;
-            if (current.distance <= h.distance && h.distance - currentTravelTime <= 360
-                    && h.distance - currentTravelTime > 0)
-                current = h;
-        }
-        return current;
-    }
-    /**
-     * Finds the Hotel with the highest rating that is in allHotels but not in selectedHotels
-     * @param allHotels List of all Hotels
-     * @param selectedHotels List of Hotels that may not be chosen
-     * @return Hotel with highest rating from allHotels which is not in selectedHotels
-     */
-    static Hotel getBestRemainingHotel(ArrayList<Hotel> allHotels, ArrayList<Hotel> selectedHotels) {
-
-        ArrayList<Hotel> remainingHotels = getRemainingHotels(allHotels, selectedHotels);
-        Hotel bestHotel = null;
-        for (Hotel h : remainingHotels) {
-            if (bestHotel == null || bestHotel.rating < h.rating)
-                bestHotel = h;
-        }
-        return bestHotel;
-    }
-
-    /**
-     * Removes selectedHotels from allHotels to get Hotels that are only in allHotels
-     * @param allHotels List of all Hotels
-     * @param selectedHotels List of Hotels to be removed
-     * @return List of remaining Hotels
-     */
-    static ArrayList<Hotel> getRemainingHotels(ArrayList<Hotel> allHotels, ArrayList<Hotel> selectedHotels) {
-        ArrayList<Hotel> remainingHotels = allHotels;
-        for (Hotel h : selectedHotels) {
-            remainingHotels.remove(h);
-        }
-        return remainingHotels;
-    }
-
-    /**
      * Creates a route through list hotels, always picking the farthest still reachable Hotels to minimize the amount of stops required
      * @param totalTime Endpoint that must be reached from the last Hotel in the route
      * @param hotels List of all Hotels
@@ -170,7 +105,6 @@ public class App {
         }
         return selectedHotels;
     }
-
     /**
      * Optimize the route of Hotels given in selectedHotels to maximise the average Score
      * @param totalTime Endpoint that must be reached from the last Hotel in the route
@@ -240,4 +174,70 @@ public class App {
         }
         return selectedHotels;
     }
+
+    /**
+     * Finds the farthest Hotel from list that is reachable from currentTravelTime
+     * @param list List of Hotels to choose from
+     * @param currentTravelTime specified point from which the Hotel must be reachable
+     * @return farthest Hotel that is reachable from currentTravelTime
+     */
+    static Hotel getFarthestHotelWithinRange(ArrayList<Hotel> list, int currentTravelTime) {
+        Hotel current = null;
+        for (Hotel h : list) {
+            if (current == null)
+                current = h;
+            if (current.distance <= h.distance && h.distance - currentTravelTime <= 360
+                    && h.distance - currentTravelTime > 0)
+                current = h;
+        }
+        return current;
+    }
+
+    /**
+     * Removes selectedHotels from allHotels to get Hotels that are only in allHotels
+     * @param allHotels List of all Hotels
+     * @param selectedHotels List of Hotels to be removed
+     * @return List of remaining Hotels
+     */
+    static ArrayList<Hotel> getRemainingHotels(ArrayList<Hotel> allHotels, ArrayList<Hotel> selectedHotels) {
+        ArrayList<Hotel> remainingHotels = allHotels;
+        for (Hotel h : selectedHotels) {
+            remainingHotels.remove(h);
+        }
+        return remainingHotels;
+    }
+
+    /**
+     * Calculates the average rating of given ArrayList of Hotels
+     * 
+     * @param list List of hotels
+     * @return average Rating as float
+     */
+    static float calculateAverageRating(ArrayList<Hotel> list) {
+        float average = 0;
+        int counter = 0;
+        for (Hotel h : list) {
+            average += h.rating;
+            counter++;
+        }
+        average = average / counter;
+        return average;
+    }
+
+    /**
+     * Finds the Hotel with the highest rating that is in allHotels but not in selectedHotels
+     * @param allHotels List of all Hotels
+     * @param selectedHotels List of Hotels that may not be chosen
+     * @return Hotel with highest rating from allHotels which is not in selectedHotels
+     */
+    static Hotel getBestRemainingHotel(ArrayList<Hotel> allHotels, ArrayList<Hotel> selectedHotels) {
+
+        ArrayList<Hotel> remainingHotels = getRemainingHotels(allHotels, selectedHotels);
+        Hotel bestHotel = null;
+        for (Hotel h : remainingHotels) {
+            if (bestHotel == null || bestHotel.rating < h.rating)
+                bestHotel = h;
+        }
+        return bestHotel;
+    } 
 }
