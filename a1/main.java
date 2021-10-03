@@ -101,7 +101,7 @@ public class main
                 calcSolution(parallelIndex+1, distance, straightIndex, 1);
                 return true;
             }
-            else if((calcParallelLimit(parallelIndex, 1)==0)&&
+            else if((canMove(parallelIndex, distance, direction))&&
             (secondChar==0)&&   //second char is to the left
             (distance==1)&&     //car shall be moved one position
             (parallel[parallelIndex+1]!=null)){   //path is blocked
@@ -112,7 +112,7 @@ public class main
                 calcSolution(parallelIndex+1, distance, straightIndex, 1);
                 return true;
             }
-            if((calcParallelLimit(parallelIndex, 1)==0)&&
+            if((canMove(parallelIndex, distance, direction))&&
             (secondChar==1)&&  //second char is to the right
             (distance==1)&&
             (parallel[parallelIndex+2]==null)){    //path is empty
@@ -120,7 +120,7 @@ public class main
                 calcSolution(parallelIndex+1, distance, straightIndex, 1);
                 return true;
             }
-            else if((calcParallelLimit(parallelIndex, 1)==0)&&
+            else if((canMove(parallelIndex, distance, direction))&&
             (secondChar==1)&&  //second char is to the right
             (distance==1)&&
             (parallel[parallelIndex+2]!=null)){   //path is blocked
@@ -131,7 +131,7 @@ public class main
                 calcSolution(parallelIndex+1, distance, straightIndex, 1);
                 return true;
             }
-            if((calcParallelLimit(parallelIndex, 2)!= 2)&&
+            if((canMove(parallelIndex, distance, direction))&&
             (secondChar==0)&&  //second char is to the left
             (distance==2)){   //car shall be moved two positions  
                 occupiedDistanceToCar=occupiedDistanceToCar(parallelIndex, 1, 0);
@@ -143,7 +143,7 @@ public class main
                 calcSolution(parallelIndex+2, distance, straightIndex, 1);
                 return true;
             }
-            else if((calcParallelLimit(parallelIndex, 2)==0)&&
+            else if((canMove(parallelIndex, distance, direction))&&
             (secondChar==1)&& //second char is to the right
             (distance==2)){
                 occupiedDistanceToCar=occupiedDistanceToCar(parallelIndex, 1, 1);
