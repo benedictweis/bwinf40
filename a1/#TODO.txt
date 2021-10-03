@@ -1,0 +1,3 @@
+TODO:	moveDirection verschiebt alles nur nur rechts und gibt bei geplanter linker verschiebung einen error.
+	parallelIndex=0 gibt error.(outOfBounce)
+	
