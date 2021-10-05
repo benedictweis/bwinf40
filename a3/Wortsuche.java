@@ -264,7 +264,7 @@ public class Wortsuche{
         }
     }
 
-    public void sortieren(){
+    private void sortieren(){
         for(int j=2;j<(Integer.parseInt(lines.get(1))+2);j++){
             int stelle=-1;
             int laenge=0;
@@ -286,25 +286,22 @@ public class Wortsuche{
 
     public void level1(){
         Random random = new Random();
+        reset();
 
-            reset();
-            //System.out.println("anfang");
-            for(int i = 2; i < (Integer.parseInt(lines.get(1)) + 2); i++){
-                for(int j = 0; j < 50; j++){ 
-                    int zufall = random.nextInt(2);
-                    if(zufall == 0){
-                        if(vertEinfgEinf(lines.get(i)) == true){
-                            break;
-                        }
-                    } else{
-                        if(horiEinfgEinf(lines.get(i)) == true){
-                            break;
-                        }
+        for(int i = 2; i < (Integer.parseInt(lines.get(1)) + 2); i++){
+            for(int j = 0; j < 50; j++){ 
+                int zufall = random.nextInt(2);
+                if(zufall == 0){
+                    if(vertEinfgEinf(lines.get(i)) == true){
+                        break;
                     }
-                    System.out.println("nicht");
-                } 
-            }
-        
+                } else{
+                    if(horiEinfgEinf(lines.get(i)) == true){
+                        break;
+                    }
+                }                    
+            } 
+        }
 
         randomAuffüllen();
         zeigen();
@@ -341,8 +338,6 @@ public class Wortsuche{
                         }
                     }
                 }
-
-                return;
             }
         }
 
