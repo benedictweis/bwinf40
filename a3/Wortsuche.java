@@ -206,7 +206,6 @@ public class Wortsuche{
         } else{
             return false;
         }
-
     }
 
     private boolean diagonalEinfg(String wort){
