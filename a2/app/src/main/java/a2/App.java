@@ -14,8 +14,18 @@ public class App {
     public static void main(String[] args) {
 
         // Reading out the test data as String and entering into lines
-        // Change this path to file you want to use
+        // to run with custom test Files replace yourPath with the path of that file:
+        // ./gradlew run --args="yourPath"
+        // Standard test file
         File file = new File("src/main/resources/hotels1.txt");
+
+        if (args.length == 1) {
+            try {
+                file = new File(args[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         System.out.println(file.getAbsolutePath());
 
