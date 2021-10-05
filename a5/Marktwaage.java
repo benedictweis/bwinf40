@@ -29,7 +29,19 @@ public class Marktwaage{
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
-
-        //parts = lines.get(0).split(" ");
+    }
+    
+    public void wiegen(){
+        for(int i = 10; i <= 10000; i += 10){
+            if(istMöglich(i) == true){
+                System.out.println(i +" g: möglich");
+            } else{
+                System.out.println(i +" g: nicht möglich");
+            }
+        }
+    }
+    
+    public boolean istMöglich(int gewicht){
+        return false;
     }
 }
