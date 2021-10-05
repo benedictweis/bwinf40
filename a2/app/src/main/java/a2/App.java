@@ -18,7 +18,8 @@ public class App {
         // ./gradlew run --args="yourPath"
         // Standard test file
         File file = new File("src/main/resources/hotels1.txt");
-
+        
+        //reading out path from arguments
         if (args.length == 1) {
             try {
                 file = new File(args[0]);
