@@ -15,7 +15,7 @@ public class App {
 
         // Reading out the test data as String and entering into lines
         // Change this path to file you want to use
-        File file = new File("src/main/resources/hotels5.txt");
+        File file = new File("src/main/resources/hotels1.txt");
 
         System.out.println(file.getAbsolutePath());
 
@@ -221,7 +221,7 @@ public class App {
             counter++;
         }
         average = average / counter;
-        return average;
+        return (float)Math.round(average*1000)/1000;
     }
 
     /**
