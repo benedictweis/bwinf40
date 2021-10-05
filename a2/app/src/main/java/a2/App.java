@@ -14,8 +14,18 @@ public class App {
     public static void main(String[] args) {
 
         // Reading out the test data as String and entering into lines
-        // Change this path to file you want to use
-        File file = new File("src/main/resources/hotels5.txt");
+        // to run with custom test Files replace yourPath with the path of that file:
+        // ./gradlew run --args="yourPath"
+        // Standard test file
+        File file = new File("src/main/resources/hotels1.txt");
+
+        if (args.length == 1) {
+            try {
+                file = new File(args[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         System.out.println(file.getAbsolutePath());
 
@@ -40,22 +50,29 @@ public class App {
             e.printStackTrace();
         }
 
-        // Saving first and second line seperately
-        int num_of_hotels = Integer.parseInt(lines.get(0));
-        int totalTime = Integer.parseInt(lines.get(1));
-
-        lines.remove(1);
-        lines.remove(0);
-
-        System.out.println("Number of Hotels: " + num_of_hotels);
-        System.out.println("Total Distance (Time in minutes): " + totalTime);
-
-        // Entering remaining lines into hotels as objetcs of class Hotel
+        int num_of_hotels;
+        int totalTime;
         ArrayList<Hotel> hotels = new ArrayList<Hotel>();
 
-        for (int i = 0; i < lines.size(); i++) {
-            String parts[] = lines.get(i).split(" ");
-            hotels.add(new Hotel(Integer.parseInt(parts[0]), Float.parseFloat(parts[1])));
+        try {
+            // Saving first and second line seperately
+            num_of_hotels = Integer.parseInt(lines.get(0));
+            totalTime = Integer.parseInt(lines.get(1));
+
+            lines.remove(1);
+            lines.remove(0);
+
+            System.out.println("Number of Hotels: " + num_of_hotels);
+            System.out.println("Total Distance (Time in minutes): " + totalTime);
+
+            // Entering remaining lines into hotels as objetcs of class Hotel
+            for (int i = 0; i < lines.size(); i++) {
+                String parts[] = lines.get(i).split(" ");
+                hotels.add(new Hotel(Integer.parseInt(parts[0]), Float.parseFloat(parts[1])));
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return;
         }
 
         // Since we can drive at most 360 minutes daily for 5 days, the most we can
@@ -74,19 +91,23 @@ public class App {
 
         selectedHotels = optimizeRoute(totalTime, selectedHotels, hotels);
 
-        //Output
+        // Output
         System.out.println();
         System.out.println("Selected Hotels:");
         for (int i = 0; i < selectedHotels.size(); i++)
-            System.out.println("    Hotel " + i + ": " + selectedHotels.get(i).distance + " " + selectedHotels.get(i).rating);
+            System.out.println(
+                    "    Hotel " + i + ": " + selectedHotels.get(i).distance + " " + selectedHotels.get(i).rating);
         averageRating = calculateAverageRating(selectedHotels);
         System.out.println("Average Rating: " + averageRating);
     }
 
     /**
-     * Creates a route through list hotels, always picking the farthest still reachable Hotels to minimize the amount of stops required
-     * @param totalTime Endpoint that must be reached from the last Hotel in the route
-     * @param hotels List of all Hotels
+     * Creates a route through list hotels, always picking the farthest still
+     * reachable Hotels to minimize the amount of stops required
+     * 
+     * @param totalTime Endpoint that must be reached from the last Hotel in the
+     *                  route
+     * @param hotels    List of all Hotels
      * @return List of Hotels representing the route
      */
     static ArrayList<Hotel> createRoute(int totalTime, ArrayList<Hotel> hotels) {
@@ -105,11 +126,15 @@ public class App {
         }
         return selectedHotels;
     }
+
     /**
-     * Optimize the route of Hotels given in selectedHotels to maximise the average Score
-     * @param totalTime Endpoint that must be reached from the last Hotel in the route
+     * Optimize the route of Hotels given in selectedHotels to maximise the average
+     * Score
+     * 
+     * @param totalTime      Endpoint that must be reached from the last Hotel in
+     *                       the route
      * @param selectedHotels Route to be optimized
-     * @param hotels List of all Hotels
+     * @param hotels         List of all Hotels
      * @return optimized Route as a List of Hotels
      */
     static ArrayList<Hotel> optimizeRoute(int totalTime, ArrayList<Hotel> selectedHotels, ArrayList<Hotel> hotels) {
@@ -177,8 +202,10 @@ public class App {
 
     /**
      * Finds the farthest Hotel from list that is reachable from currentTravelTime
-     * @param list List of Hotels to choose from
-     * @param currentTravelTime specified point from which the Hotel must be reachable
+     * 
+     * @param list              List of Hotels to choose from
+     * @param currentTravelTime specified point from which the Hotel must be
+     *                          reachable
      * @return farthest Hotel that is reachable from currentTravelTime
      */
     static Hotel getFarthestHotelWithinRange(ArrayList<Hotel> list, int currentTravelTime) {
@@ -194,8 +221,10 @@ public class App {
     }
 
     /**
-     * Removes selectedHotels from allHotels to get Hotels that are only in allHotels
-     * @param allHotels List of all Hotels
+     * Removes selectedHotels from allHotels to get Hotels that are only in
+     * allHotels
+     * 
+     * @param allHotels      List of all Hotels
      * @param selectedHotels List of Hotels to be removed
      * @return List of remaining Hotels
      */
@@ -221,14 +250,17 @@ public class App {
             counter++;
         }
         average = average / counter;
-        return average;
+        return (float) Math.round(average * 1000) / 1000;
     }
 
     /**
-     * Finds the Hotel with the highest rating that is in allHotels but not in selectedHotels
-     * @param allHotels List of all Hotels
+     * Finds the Hotel with the highest rating that is in allHotels but not in
+     * selectedHotels
+     * 
+     * @param allHotels      List of all Hotels
      * @param selectedHotels List of Hotels that may not be chosen
-     * @return Hotel with highest rating from allHotels which is not in selectedHotels
+     * @return Hotel with highest rating from allHotels which is not in
+     *         selectedHotels
      */
     static Hotel getBestRemainingHotel(ArrayList<Hotel> allHotels, ArrayList<Hotel> selectedHotels) {
 
@@ -239,5 +271,5 @@ public class App {
                 bestHotel = h;
         }
         return bestHotel;
-    } 
+    }
 }
