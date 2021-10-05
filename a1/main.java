@@ -217,6 +217,7 @@ public class main
     }
 
     public int occupiedDistanceToCar(int parallelIndex,int direction, int secondChar){
+        //TODO kann man zsm fassen mit dir0=-1
         if((direction==1)&&
         ((parallelIndex+(2+secondChar))<=parallel.length)){
             if(parallel[parallelIndex+(2+secondChar)]==null){
@@ -243,7 +244,7 @@ public class main
     public int calcParallelLimit(int parallelIndex, int limit){
         /* Returncodes: -1*limit -> outside left from array; limit -> outside right from array; 0 -> inside of array */
         if(parallelIndex-limit<0){
-            return -1*limit;
+            return -limit;
         }
         else if(parallelIndex+limit>=parallel.length){
             return limit;
@@ -270,10 +271,46 @@ public class main
     
     public boolean canMove(int parallelIndex, int distance, int direction){
         int limit=calcParallelLimit(parallelIndex, distance);
-        if((limit != distance&&direction==1)||(limit!=(-1+distance)&direction==0)){
+        if((limit != distance&&direction==1)||(limit!= -distance&&direction==0)){
             return true;
         }
         return false;
+    }
+    
+    public int[] calcFreeSpace(int parallelIndex){
+        int secondChar=calcSecondChar(parallelIndex);
+        int[] freeSpace=new int[2];
+        String parallelName=parallel[parallelIndex];
+        for(int R=parallelIndex;R<parallel.length;R++){
+            if((R==parallel.length-1)&&(parallel[R]==null)){
+                freeSpace[1]=R-parallelIndex;
+                break;
+            }
+            else if((parallel[R]!=null)&&(parallel[R]!=parallelName)){
+                freeSpace[1]=R-parallelIndex-1;
+                break;
+            }
+            freeSpace[1]=0;
+        }
+        for(int L=parallelIndex;L>0;L--){
+            if((L==0)&&(parallel[L]==null)){
+                freeSpace[0]=L-parallelIndex;
+                break;
+            }
+            else if((parallel[L]!=null)&&(parallel[L]!=parallelName)){
+                freeSpace[0]=parallelIndex-L-1;
+                break;
+            }
+            freeSpace[0]=0;
+        }
+        
+        if((secondChar==1)&&(freeSpace[1]!=0)){
+            freeSpace[1]--;
+        }
+        else if((secondChar==0)&&(freeSpace[0]!=0)){
+            freeSpace[0]--;
+        }
+        return freeSpace;
     }
     
     /**
@@ -289,10 +326,10 @@ public class main
                 finalSolution[straightIndex]=straight[straightIndex]+": ";
             }
             else{
-                if(secondChar==0){ //second char is to the left
-                    if((straightIndex-2)<0){
-                    }
-                    else if(parallel[straightIndex-2]==null){   //free space to the right side
+                if((secondChar==0)&&(calcParallelLimit(straightIndex, 2)==0)){ //second char is to the left
+                    
+                    
+                    if(parallel[straightIndex-2]==null){   //free space to the right side
                         if(moveDirection(straightIndex, 1, straightIndex, 0)){
                             return;
                         }
