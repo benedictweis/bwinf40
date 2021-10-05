@@ -286,10 +286,7 @@ public class Wortsuche{
 
     public void level1(){
         Random random = new Random();
-        boolean fertig = false;
 
-        
-            fertig = true;
             reset();
             //System.out.println("anfang");
             for(int i = 2; i < (Integer.parseInt(lines.get(1)) + 2); i++){
@@ -305,7 +302,6 @@ public class Wortsuche{
                         }
                     }
                     System.out.println("nicht");
-                    fertig = false;
                 } 
             }
         
