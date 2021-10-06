@@ -324,12 +324,19 @@ public class main
      *  index: location of the straight car the shall be moved out
      **/
     public boolean findPath(int straightIndex){
-        //TODO p4: K u wird mitverschoben????   B verschiebt r 2 mal und kein q 1 2 1 1 funct aber
+        //TODO p4: B verschiebt r 2 mal und kein q soll mD 1 2 1 1 funct aber
         String parallelName=parallel[straightIndex];
         int secondChar=calcSecondChar(straightIndex);
         int[] freeSpace=calcFreeSpace(straightIndex);
         int movingDirection=freeSpace[1]>freeSpace[0] ? 1 : 0;
-        if(freeSpace[1]==freeSpace[0]){
+        //calcMoveDir
+        if(secondChar==1&&freeSpace[1]>0){
+            movingDirection=1;
+        }
+        else if(secondChar==0&&freeSpace[0]>0){
+            movingDirection=0;
+        }
+        else if(freeSpace[1]==freeSpace[0]){
             movingDirection=secondChar;
         }
         try{
@@ -349,7 +356,8 @@ public class main
                     }
                     return true;
                 }
-                
+                //difference dir1/0 ist distance
+                // einfach ein movingDir berechnen und dann verschiebenlassen
             }
             return false;
         }
