@@ -10,3 +10,5 @@ TODO:	moveDirection verschiebt alles nur nur rechts und gibt bei geplanter linke
 	index=15 == null(p5)
 	warscheinlich wegen findPath nicht gut
 	p98 jedes 2te. move left funktioniert nicht vlt auch wegen findPath
+	
+	!!! 1 1 1 1 gibt true und verschiebt hinten dran (p4)

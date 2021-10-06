@@ -284,39 +284,45 @@ public class main
     }
 
     public int[] calcFreeSpace(int parallelIndex){
-        int secondChar=calcSecondChar(parallelIndex);
         int[] freeSpace=new int[2];
-        String parallelName=parallel[parallelIndex];
-        for(int R=parallelIndex;R<parallel.length;R++){
-            if((R==parallel.length-1)&&(parallel[R]==null)){
-                freeSpace[1]=R-parallelIndex;
-                break;
-            }
-            else if((parallel[R]!=null)&&(parallel[R]!=parallelName)){
-                freeSpace[1]=R-parallelIndex-1;
-                break;
-            }
-            freeSpace[1]=0;
+        int secondChar=calcSecondChar(parallelIndex);
+        if(parallelIndex<0||parallelIndex>=parallel.length){
+            freeSpace[0]= -1;
+            freeSpace[1]= -1;
+            return freeSpace;
         }
-        for(int L=parallelIndex;L>0;L--){
-            if((L==0)&&(parallel[L]==null)){
-                freeSpace[0]=L-parallelIndex;
-                break;
+        else {
+            String parallelName=parallel[parallelIndex];
+            for(int R=parallelIndex;R<parallel.length;R++){
+                if((R==parallel.length-1)&&(parallel[R]==null)){
+                    freeSpace[1]=R-parallelIndex;
+                    break;
+                }
+                else if((parallel[R]!=null)&&(parallel[R]!=parallelName)){
+                    freeSpace[1]=R-parallelIndex-1;
+                    break;
+                }
+                freeSpace[1]=0;
             }
-            else if((parallel[L]!=null)&&(parallel[L]!=parallelName)){
-                freeSpace[0]=parallelIndex-L-1;
-                break;
+            for(int L=parallelIndex;L>0;L--){
+                if((L==0)&&(parallel[L]==null)){
+                    freeSpace[0]=L-parallelIndex;
+                    break;
+                }
+                else if((parallel[L]!=null)&&(parallel[L]!=parallelName)){
+                    freeSpace[0]=parallelIndex-L-1;
+                    break;
+                }
+                freeSpace[0]=0;
             }
-            freeSpace[0]=0;
+            if((secondChar==1)&&(freeSpace[1]!=0)){
+                freeSpace[1]--;
+            }
+            else if((secondChar==0)&&(freeSpace[0]!=0)){
+                freeSpace[0]--;
+            }
+            return freeSpace;
         }
-
-        if((secondChar==1)&&(freeSpace[1]!=0)){
-            freeSpace[1]--;
-        }
-        else if((secondChar==0)&&(freeSpace[0]!=0)){
-            freeSpace[0]--;
-        }
-        return freeSpace;
     }
 
     /**
@@ -336,6 +342,13 @@ public class main
         else if(secondChar==0&&freeSpace[0]>0){
             movingDirection=0;
         }
+        else if(freeSpace[1]==0&&freeSpace[0]==0){
+            //hier auf autos nebendran gucken
+            int[] rightSpace=calcFreeSpace(straightIndex+secondChar+1);
+            int[] leftSpace=calcFreeSpace(straightIndex-1-(1-secondChar));
+            //hier überprüfen ob eins -1 -1 hat und welches platz hat meist 0 x oder x 0
+            movingDirection=secondChar;
+        }
         else if(freeSpace[1]==freeSpace[0]){
             movingDirection=secondChar;
         }
@@ -346,7 +359,7 @@ public class main
             else{
                 if((movingDirection==1)){ //second char is to the left and free space to the left side
                     if(!moveDirection(straightIndex, 2-secondChar, straightIndex, movingDirection)){
-                         return false;
+                        return false;
                     }
                     return true;
                 }
