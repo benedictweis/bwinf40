@@ -90,11 +90,9 @@ public class main
         /* Returncodes: false-> error, true->done */
         // 0 1 0 1 überschreibt R
         //rekursives verschieben funktioniert momentan nur für rechts -> direction mit einbringen in rechnung
-        int occupiedDistanceToCar = 0;
         int secondChar=calcSecondChar(parallelIndex);
         int freePath=calcFreeSpace(parallelIndex)[direction];
         try{
-            String parallelName = parallel[parallelIndex]; 
             if((canMove(parallelIndex, distance, direction))&&
             (freePath>=distance)){      //car shall be moved one position
                 calcMovement(parallelIndex, distance, direction);
@@ -103,11 +101,15 @@ public class main
             }
             else if((canMove(parallelIndex, distance, direction))&&
             (freePath<distance)){     //car shall be moved one position
-                int newSpace=calcFreeSpace(parallelIndex+secondChar)[direction];
+                int newSpace=calcFreeSpace((parallelIndex-(2-secondChar))+((secondChar+2)*direction))[direction];
                 if(newSpace>1){
                     newSpace=1;
                 }
-                if(!moveDirection(parallelIndex+distance+secondChar, distance-newSpace, straightIndex, direction)) {
+                int newDistance=1;
+                if(distance==2){
+                    newDistance-=newSpace;
+                }
+                if(!moveDirection(parallelIndex+distance+secondChar, newDistance, straightIndex, direction)) {
                     return false;
                 }
                 calcMovement(parallelIndex, distance, direction);
