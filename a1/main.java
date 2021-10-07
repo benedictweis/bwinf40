@@ -110,8 +110,8 @@ public class main
                 if(newSpace>1){
                     newSpace=1;
                 }
-                int newDistance=2;
-                if(distance==1){
+                int newDistance=1;
+                if(distance==2){
                     newDistance-=newSpace;
                 }
                 if(!moveDirection(newParallelIndex, newDistance, straightIndex, direction)) {
