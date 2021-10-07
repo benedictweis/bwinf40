@@ -44,16 +44,22 @@ public class Marktwaage{
     }
 
     public boolean istMöglich(int gewicht){
-        for(int i = 1; i < lines.size() - 1; i++){
+        for(int i = 1; i < lines.size(); i++){
             if(gewicht == Integer.parseInt(lines.get(i))){
                 return true;
             }
         }
         
-        for(int i = lines.size(); i < 1; i--){
-            if((gewicht - Integer.parseInt(lines.get(i))) > 0){
+        for(int i = lines.size() - 1; i > 0; i--){
+            if((gewicht - Integer.parseInt(lines.get(i))) >= 0){
+                //System.out.println(gewicht + ", " + lines.get(i));
                 gewicht -= Integer.parseInt(lines.get(i));
+                
+                if(gewicht == 0){
+                    return true;
+                }
             }
+            //System.out.println("ende " + i + ": " + lines.get(i));
         }
         
         return false;
@@ -64,7 +70,7 @@ public class Marktwaage{
         for(int i=1;i<lines.size();i+=2){
             binar+="0";
         }
-        if(
+        //if(
         
         
         return false;
