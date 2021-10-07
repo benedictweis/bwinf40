@@ -10,8 +10,7 @@ public class Marktwaage{
     String gewichte;
 
     public Marktwaage(String input){
-        gewichte = input;
-        einlesen(gewichte);
+        einlesen(input);
     }
 
     private void einlesen(String input){
@@ -59,4 +58,15 @@ public class Marktwaage{
         
         return false;
     }
-}
+
+    public boolean Rekursionftw(int gewicht){
+        String binar="1";
+        for(int i=1;i<lines.size();i+=2){
+            binar+="0";
+        }
+        if(
+        
+        
+        return false;
+        }
+    }
