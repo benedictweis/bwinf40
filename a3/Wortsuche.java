@@ -408,22 +408,4 @@ public class Wortsuche{
         }
         lines.set(index, umgekehrt);
     }
-
-    public void test1(int anz){
-        for(int i=0; i<anz;i++){
-            level1();
-        }
-    }
-
-    public void test2(int anz){
-        for(int i=0; i<anz;i++){
-            level2();
-        }
-    }
-
-    public void test3(int anz){
-        for(int i=0; i<anz;i++){
-            level3();
-        }
-    }
 }
