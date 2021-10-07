@@ -49,24 +49,64 @@ public class Marktwaage{
                 return true;
             }
         }
-        
+
         for(int i = lines.size(); i < 1; i--){
             if((gewicht - Integer.parseInt(lines.get(i))) > 0){
                 gewicht -= Integer.parseInt(lines.get(i));
             }
         }
-        
+
         return false;
     }
 
-    public boolean Rekursionftw(int gewicht){
-        String binar="1";
-        for(int i=1;i<lines.size();i+=2){
-            binar+="0";
-        }
-        if(
-        
-        
-        return false;
+    /*public void NilsMethode(){
+        for(int i=10;i<=10000;i+=10){
+            if(noRekursion(i)){
+                System.out.println(i +" g: möglich");
+            }else{
+                System.out.println(i +" g: nicht möglich");
+            }
         }
     }
+    
+    private boolean noRekursion(int gewicht){
+        String binar="1";
+        int gegengewicht;
+        for(int i=1;i<lines.size();i++){
+            binar+="0";
+        }
+        for(int i=0;i<10000;i++){
+            gegengewicht=0;
+            char[] tf=binar.toCharArray();
+            for(int h=0;h<tf.length;h++){
+                if(tf[h]=='1'){
+                    gegengewicht+=Integer.parseInt(lines.get(h+1));
+                }
+            }
+            if(gegengewicht==gewicht){
+                return true;
+            }else{
+                binar=binarAddieren(binar);
+            }
+        }
+        return false;
+    }
+
+    private String binarAddieren(String binar){
+        String ausgabe="";
+        char[] ne=binar.toCharArray();
+        for(int i=0;i<ne.length;i++){
+            if(ne[i]==0){
+                ne[i]=1;
+                for(int h=i;h>=0;h--){
+                    ne[h]=0;
+                }
+                break;
+            }
+        }
+        for(int i=0;i<ne.length;i++){
+            ausgabe+=ne[i];
+        }
+        return ausgabe;
+    }*/
+}
