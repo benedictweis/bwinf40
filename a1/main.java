@@ -99,8 +99,7 @@ public class main
                 calcMovement(parallelIndex, distance, direction);
                 calcSolution(parallelIndex, distance, straightIndex, direction);
                 return true;
-            }
-            else if((canMove(parallelIndex, distance, direction))&&
+            } else if((canMove(parallelIndex, distance, direction))&&
             (freePath<distance)){     
                 int newParallelIndex=parallelIndex-(2-secondChar)-freePath;
                 if(direction==1){
@@ -148,14 +147,12 @@ public class main
         String[] directions= {"left","right"};
         if(direction==0){
             parallelIndex-=distance;
-        }
-        else {
+        } else {
             parallelIndex+=distance;
         }
         if(finalSolution[straightIndex]==null){
             finalSolution[straightIndex]=straight[straightIndex]+": "+parallel[parallelIndex]+" "+distance+" "+directions[direction];
-        }
-        else if(finalSolution[straightIndex]!=null){
+        } else if(finalSolution[straightIndex]!=null){
             finalSolution[straightIndex]+=", "+parallel[parallelIndex]+" "+distance+" "+directions[direction];
         }
     }
@@ -167,20 +164,17 @@ public class main
         (direction==1)){
             parallel[parallelIndex+(1+secondChar)]=parallelName;
             parallel[parallelIndex-(1-secondChar)]=null;
-        }
-        else if((distance==2)&&
+        } else if((distance==2)&&
         (direction==1)){
             parallel[parallelIndex+(2+secondChar)]=parallelName;
             parallel[parallelIndex+(1+secondChar)]=parallelName;
             parallel[parallelIndex+secondChar]=null;
             parallel[parallelIndex-(1-secondChar)]=null;
-        }
-        else if((distance==1)&&
+        } else if((distance==1)&&
         (direction==0)){
             parallel[parallelIndex-(2-secondChar)]=parallelName;
             parallel[parallelIndex+(secondChar)]=null;
-        }
-        else if((distance==2)&&
+        } else if((distance==2)&&
         (direction==0)){
             parallel[parallelIndex-(3-secondChar)]=parallelName;
             parallel[parallelIndex-(2-secondChar)]=parallelName;
@@ -193,8 +187,7 @@ public class main
         /* Returncodes: -1*limit -> outside left from array; limit -> outside right from array; 0 -> inside of array */
         if(parallelIndex-limit<0){
             return -limit;
-        }
-        else if(parallelIndex+limit>=parallel.length){
+        } else if(parallelIndex+limit>=parallel.length){
             return limit;
         }
         return 0;
@@ -257,7 +250,7 @@ public class main
         }
         return freeSpace;
     }
-    
+
     /**
      *  chooses the optimal way to move out the selected car
      *  index: location of the straight car the shall be moved out
@@ -290,7 +283,7 @@ public class main
             if(parallel[straightIndex]==null){  //exit path is empty
                 finalSolution[straightIndex]=straight[straightIndex]+": ";
             } else{
-                if((movingDirection==1)){ //second char is to the left and free space to the left side
+                if((movingDirection==1)){
                     if(!moveDirection(straightIndex, 2-secondChar, straightIndex, movingDirection)){
                         return false;
                     }
