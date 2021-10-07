@@ -88,8 +88,6 @@ public class main
      **/
     public boolean moveDirection(int parallelIndex, int distance, int straightIndex, int direction){
         /* Returncodes: false-> error, true->done */
-        // 0 1 0 1 überschreibt R
-        //rekursives verschieben funktioniert momentan nur für rechts -> direction mit einbringen in rechnung
         int secondChar=calcSecondChar(parallelIndex);
         int freePath=calcFreeSpace(parallelIndex)[direction];
         try{
@@ -101,15 +99,19 @@ public class main
             }
             else if((canMove(parallelIndex, distance, direction))&&
             (freePath<distance)){     //car shall be moved one position
-                int newSpace=calcFreeSpace((parallelIndex-(2-secondChar))+((secondChar+2)*direction))[direction];
+                int newParallelIndex=parallelIndex-(2-secondChar)-freePath;
+                if(direction==1){
+                    newParallelIndex=parallelIndex+secondChar+1+freePath;
+                }
+                int newSpace=calcFreeSpace((parallelIndex-(2-secondChar)-freePath)+((secondChar+2+freePath)*direction))[direction];
                 if(newSpace>1){
                     newSpace=1;
                 }
-                int newDistance=1;
+                int newDistance=2;
                 if(distance==2){
                     newDistance-=newSpace;
                 }
-                if(!moveDirection(parallelIndex+distance+secondChar, newDistance, straightIndex, direction)) {
+                if(!moveDirection(newParallelIndex, newDistance, straightIndex, direction)) {
                     return false;
                 }
                 calcMovement(parallelIndex, distance, direction);
@@ -222,10 +224,10 @@ public class main
     public int calcSecondChar(int parallelIndex){
         //Returncodes: 0-> secondChar is left; 1-> secondChar is right
         int limit=calcParallelLimit(parallelIndex, 1);
-        if(limit==1){   //
+        if(limit==1){   
             return 0;
         }
-        else if(limit== -1){    //
+        else if(limit== -1){    
             return 1;
         }
         else{
@@ -287,7 +289,6 @@ public class main
      *  index: location of the straight car the shall be moved out
      **/
     public boolean findPath(int straightIndex){
-        //TODO p4: B verschiebt r 2 mal und kein q soll mD 1 2 1 1 funct aber
         String parallelName=parallel[straightIndex];
         int secondChar=calcSecondChar(straightIndex);
         int[] freeSpace=calcFreeSpace(straightIndex);
