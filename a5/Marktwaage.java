@@ -10,8 +10,7 @@ public class Marktwaage{
     String gewichte;
 
     public Marktwaage(String input){
-        gewichte = input;
-        einlesen(gewichte);
+        einlesen(input);
     }
 
     private void einlesen(String input){
@@ -30,7 +29,7 @@ public class Marktwaage{
             e.printStackTrace();
         }
     }
-    
+
     public void wiegen(){
         for(int i = 10; i <= 10000; i += 10){
             if(istMöglich(i) == true){
@@ -40,8 +39,19 @@ public class Marktwaage{
             }
         }
     }
-    
+
     public boolean istMöglich(int gewicht){
         return false;
     }
-}
+
+    public boolean Rekursionftw(int gewicht){
+        String binar="1";
+        for(int i=1;i<lines.size();i+=2){
+            binar+="0";
+        }
+        if(
+        
+        
+        return false;
+        }
+    }
