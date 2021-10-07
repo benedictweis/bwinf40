@@ -89,72 +89,25 @@ public class main
     public boolean moveDirection(int parallelIndex, int distance, int straightIndex, int direction){
         /* Returncodes: false-> error, true->done */
         // 0 1 0 1 überschreibt R
+        //rekursives verschieben funktioniert momentan nur für rechts -> direction mit einbringen in rechnung
         int occupiedDistanceToCar = 0;
         int secondChar=calcSecondChar(parallelIndex);
         int freePath=calcFreeSpace(parallelIndex)[direction];
         try{
             String parallelName = parallel[parallelIndex]; 
             if((canMove(parallelIndex, distance, direction))&&
-            (secondChar==0)&&   //second char is to the left
-            (distance==1)&&
             (freePath>=distance)){      //car shall be moved one position
                 calcMovement(parallelIndex, distance, direction);
                 calcSolution(parallelIndex, distance, straightIndex, direction);
                 return true;
             }
             else if((canMove(parallelIndex, distance, direction))&&
-            (secondChar==0)&&   //second char is to the left
-            (distance==1)&&
             (freePath<distance)){     //car shall be moved one position
-                if(!moveDirection(parallelIndex+1, distance, straightIndex, direction)) {
-                    return false;
+                int newSpace=calcFreeSpace(parallelIndex+secondChar)[direction];
+                if(newSpace>1){
+                    newSpace=1;
                 }
-                calcMovement(parallelIndex, distance, direction);
-                calcSolution(parallelIndex, distance, straightIndex, direction);
-                return true;
-            }
-            if((canMove(parallelIndex, distance, direction))&&
-            (secondChar==1)&&  //second char is to the right
-            (distance==1)&&
-            (freePath>=distance)){
-                calcMovement(parallelIndex, distance, direction);
-                calcSolution(parallelIndex, distance, straightIndex, direction);
-                return true;
-            }
-            else if((canMove(parallelIndex, distance, direction))&&
-            (secondChar==1)&&  //second char is to the right
-            (distance==1)&&
-            (freePath<distance)){
-                if(!moveDirection(parallelIndex+2, distance, straightIndex, direction)) {
-                    return false;
-                }
-                calcMovement(parallelIndex, distance, direction);
-                calcSolution(parallelIndex, distance, straightIndex, direction);
-                return true;
-            }
-            if((canMove(parallelIndex, distance, direction))&&
-            (secondChar==0)&&  //second char is to the left
-            (distance==2)&&
-            (freePath<distance)){   //car shall be moved two positions 
-                //freeSpace machen
-                int newSpace=calcFreeSpace(parallelIndex+secondChar+distance)[direction];
-                //0 or 1 or 2
-                occupiedDistanceToCar=occupiedDistanceToCar(parallelIndex, 1, 0);
-                if((occupiedDistanceToCar != -1)&&
-                (!moveDirection(parallelIndex+(1+occupiedDistanceToCar), distance-occupiedDistanceToCar, straightIndex, direction))) {
-                    return false;
-                }
-                calcMovement(parallelIndex, distance, direction);
-                calcSolution(parallelIndex, distance, straightIndex, direction);
-                return true;
-            }
-            else if((canMove(parallelIndex, distance, direction))&&
-            (secondChar==1)&& //second char is to the right
-            (distance==2)&&
-            (freePath<distance)){
-                occupiedDistanceToCar=occupiedDistanceToCar(parallelIndex, 1, 1);
-                if((occupiedDistanceToCar!= -1)&&
-                (!moveDirection(parallelIndex+(2+occupiedDistanceToCar), distance-occupiedDistanceToCar, straightIndex, direction))){
+                if(!moveDirection(parallelIndex+distance+secondChar, distance-newSpace, straightIndex, direction)) {
                     return false;
                 }
                 calcMovement(parallelIndex, distance, direction);
