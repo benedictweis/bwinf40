@@ -21,16 +21,19 @@ public class Marktwaage{
             Scanner scanner = new Scanner(file);
             while(scanner.hasNext()){
                 parts = (scanner.nextLine()).split(" ");
-                lines.add(parts[0]);
                 if(parts.length == 2){
-                    lines.add(parts[1]);
+                    for(int i = 0; i < Integer.parseInt(parts[1]); i++){
+                        lines.add(parts[0]);   
+                    }
+                } else{
+                    lines.add(parts[0]);
                 }
             }
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
     }
-    
+
     public void wiegen(){
         for(int i = 10; i <= 10000; i += 10){
             if(istMöglich(i) == true){
@@ -40,8 +43,20 @@ public class Marktwaage{
             }
         }
     }
-    
+
     public boolean istMöglich(int gewicht){
+        for(int i = 1; i < lines.size() - 1; i++){
+            if(gewicht == Integer.parseInt(lines.get(i))){
+                return true;
+            }
+        }
+        
+        for(int i = lines.size(); i < 1; i--){
+            if((gewicht - Integer.parseInt(lines.get(i))) > 0){
+                gewicht -= Integer.parseInt(lines.get(i));
+            }
+        }
+        
         return false;
     }
 }
