@@ -14,7 +14,7 @@ public class main
     /**
      *  fills the straight- & parallel-car arrays with the content of the .txt file   
      **/
-    public main(int fileIndex)
+    public main(int fileIndex, boolean autoSolve)
     {   
         fileName="parkplatz"+fileIndex+".txt";
         String visualizeStraight = "";
@@ -65,6 +65,9 @@ public class main
         System.out.println("Searching solution of: \""+fileName+"\" ☺\n");
         System.out.println("straight cars: \t"+visualizeStraight);
         System.out.println("parallel cars: \t"+visualizeParallel);
+        if(autoSolve){
+            AutosAusparken();
+        }
     }
 
     /**
@@ -108,7 +111,7 @@ public class main
                     newSpace=1;
                 }
                 int newDistance=2;
-                if(distance==2){
+                if(distance==1){
                     newDistance-=newSpace;
                 }
                 if(!moveDirection(newParallelIndex, newDistance, straightIndex, direction)) {

@@ -5,10 +5,8 @@ TODO:	moveDirection verschiebt alles nur nur rechts und gibt bei geplanter linke
 
 
 
-	parallelIndex=15 == null(p4)
-	p0, p2, p3(letzten), 
+	p2, p3(letzten), 
 	index=15 == null(p5)
 	warscheinlich wegen findPath nicht gut
 	p98 jedes 2te. move left funktioniert nicht vlt auch wegen findPath
-	
-	!!! 1 1 1 1 gibt true und verschiebt hinten dran (p4)
+	p1 e könnte o & p 1l verschieben, momentan q 1r  p 2r
