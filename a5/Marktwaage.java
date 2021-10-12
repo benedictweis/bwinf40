@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class Marktwaage{
 
     ArrayList<String> lines;
+    ArrayList<Integer> ungeloeste;
     String[] parts;
     String gewichte;
 
@@ -38,6 +39,8 @@ public class Marktwaage{
     }
 
     public void wiegen(){
+        ungeloeste = new ArrayList<Integer>();
+
         for(int i = 10; i <= 10000; i += 10){
             if(istMöglich(i) == true){
                 System.out.println(i +" g: möglich");
@@ -48,18 +51,37 @@ public class Marktwaage{
     }
 
     public boolean istMöglich(int gewicht){
-        for(int i = 1; i < lines.size() - 1; i++){
-            if(gewicht == Integer.parseInt(lines.get(i))){
+        int startgewicht = gewicht;
+
+        for(int i = 1; i < lines.size(); i++){
+            if(startgewicht == Integer.parseInt(lines.get(i))){
                 return true;
             }
         }
 
-        for(int i = lines.size(); i < 1; i--){
-            if((gewicht - Integer.parseInt(lines.get(i))) > 0){
+        for(int i = lines.size() - 1; i > 0; i--){
+            if((gewicht - Integer.parseInt(lines.get(i))) >= 0){
                 gewicht -= Integer.parseInt(lines.get(i));
+                if(gewicht == 0){
+                    return true;
+                }
             }
         }
 
+        for(int j = lines.size() - 1; j > 0; j--){
+            int nilsIstBad = Integer.parseInt(lines.get(j));
+            for(int i = lines.size() - 1; i > 0; i--){
+                int maxIstGut = Integer.parseInt(lines.get(i));
+                if(nilsIstBad - maxIstGut >= startgewicht){
+                    nilsIstBad -= maxIstGut;
+                    if(nilsIstBad == startgewicht){
+                        return true;
+                    }
+                }
+            }
+        } 
+
+        //ungeloeste.add(startgewicht);
         return false;
     }
 
