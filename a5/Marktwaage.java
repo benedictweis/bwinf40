@@ -69,18 +69,41 @@ public class Marktwaage{
         }
 
         for(int j = lines.size() - 1; j > 0; j--){
-            int nilsIstBad = Integer.parseInt(lines.get(j));
+            int jWert = Integer.parseInt(lines.get(j));
             for(int i = lines.size() - 1; i > 0; i--){
-                int maxIstGut = Integer.parseInt(lines.get(i));
-                if(nilsIstBad - maxIstGut >= startgewicht){
-                    nilsIstBad -= maxIstGut;
-                    if(nilsIstBad == startgewicht){
+                int iWert = Integer.parseInt(lines.get(i));
+                if(jWert - iWert >= startgewicht){
+                    jWert -= iWert;
+                    if(jWert == startgewicht){
                         return true;
                     }
                 }
             }
         } 
-
+        
+        for(int i = lines.size() - 1; i > 0; i--){
+            int iWert = Integer.parseInt(lines.get(i));
+            System.out.println("i: " + iWert);
+            for(int j = 1; j < lines.size(); j++){
+                int jWert = Integer.parseInt(lines.get(j));
+                System.out.println("j: " + jWert);
+                for(int k = lines.size() - 1; k > 0; k--){
+                    int kWert = Integer.parseInt(lines.get(k));
+                    System.out.println("k: " + kWert);
+                    
+                    iWert += jWert;
+                    System.out.println(iWert);
+                    if(iWert - kWert >= startgewicht){
+                        System.out.println(iWert + " - " + kWert);
+                        iWert -= kWert;
+                        if(iWert == startgewicht){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        
         //ungeloeste.add(startgewicht);
         return false;
     }
