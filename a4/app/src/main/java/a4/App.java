@@ -70,18 +70,47 @@ public class App {
             System.out.println();
         }
 
-        int[] wins = new int[dice.size()-1];
+        int[] wins = new int[dice.size()];
 
         for(int j = 0; j < dice.size(); j++) {
             for (int i = j+1; i < dice.size(); i++) {
                 
                 System.out.print(j +" VS "+i+", ");
-                //Player p1 = new Player();
-                System.out.println(" ");
+
+                for (int k = 0; k < 100; k++) {
+                    Player p1 = new Player(dice.get(i), 0);
+                Player p2 = new Player(dice.get(j), 20);
+
+                
+                while(true) {
+                    
+                    if (p1.takeTurn()) {
+                        wins[i]++;
+                        break;
+                    }
+
+                    if (p2.takeTurn()) {
+                        wins[j]++;
+                        break;
+                    }
+                }
+                }
+                
+                
             }
         }
 
+        System.out.println("");
 
+        int currentBest = 0;
+        for (int i= 0; i < wins.length; i++) {
+            if (wins[i] > wins[currentBest]) {
+                currentBest = i;
+            }
+            System.out.println("dice "+i+": "+wins[i]);
+        }
+        
+        System.out.println("best dice: "+currentBest);
 
     }
 }
