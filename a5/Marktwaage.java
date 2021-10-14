@@ -80,7 +80,7 @@ public class Marktwaage{
                 }
             }
         } 
-        
+
         for(int i = lines.size() - 1; i > 0; i--){
             int iWert = Integer.parseInt(lines.get(i));
             System.out.println("i: " + iWert);
@@ -90,7 +90,7 @@ public class Marktwaage{
                 for(int k = lines.size() - 1; k > 0; k--){
                     int kWert = Integer.parseInt(lines.get(k));
                     System.out.println("k: " + kWert);
-                    
+
                     iWert += jWert;
                     System.out.println(iWert);
                     if(iWert - kWert >= startgewicht){
@@ -103,15 +103,14 @@ public class Marktwaage{
                 }
             }
         }
-        
+
         //ungeloeste.add(startgewicht);
         return false;
     }
-}
 
-/*    public void NilsMethode(){
+    public void NilsMethode(){
         for(int i=10;i<=10000;i+=10){
-            if(noRekursion(i)){
+            if(wiegenNils(i)){
                 System.out.println(i +" g: möglich");
             }else{
                 System.out.println(i +" g: nicht möglich");
@@ -127,85 +126,72 @@ public class Marktwaage{
         return ergebnis;
     }
 
-    public boolean noRekursion(int gewicht){
-        String binar="1";
-        int gegengewicht;
-        int gewichtsadd;
+    public boolean wiegenNils(int gewicht){
+        int durchlaufe=potenzieren(2,lines.size());
+        String binarGA="0";
         for(int i=1;i<lines.size();i++){
-            binar+="0";
+            binarGA+="0";
         }
-        for(int i=0;i<3;i++){
-            for(int k=0;k<potenzieren(2,(lines.size()-1));k++){
-                gegengewicht=0;
-                gewichtsadd=0;
-                char[] tf=binar.toCharArray();
-                for(int h=0;h<(tf.length-1);h++){
-                    if(tf[h]=='1'){
-                        gegengewicht+=Integer.parseInt(lines.get(h+1));
+
+        for(int i=0;i<durchlaufe;i++){
+            for(int h=0;h<durchlaufe;h++){
+                int gegengewicht=0;
+                int gewichtsadd=0;
+                String binarGG="1";
+                boolean doppel=false;
+
+                for(int j=1;i<lines.size();i++){
+                    binarGG+="0";
+                }
+
+                char[] gg=binarGG.toCharArray();
+                char[] ga=binarGA.toCharArray();
+
+                for(int j=0;j<gg.length;j++){
+                    if(gg[j]=='1'){
+                        gegengewicht+=Integer.parseInt(lines.get(j));
                     }
                 }
-                for(int h=0;h<(tf.length-1);h++){
-                    if(tf[h]=='2'){
-                        gewichtsadd+=Integer.parseInt(lines.get(h+1));
+
+                for(int j=0;j<ga.length;j++){
+                    if(ga[j]=='1'){
+                        gewichtsadd+=Integer.parseInt(lines.get(j));
                     }
                 }
-                if(gegengewicht==(gewicht-gewichtsadd)){
+                
+                for(int j=0;j<gg.length;j++){
+                    if(ga[j]==gg[j]){
+                        doppel=true;
+                    }
+                }
+                
+                if((gegengewicht==(gewicht+gewichtsadd))&&doppel==false){
                     return true;
                 }else{
-                    binar=binarAddieren(binar,i);
+                    binarAddieren(binarGG);
                 }
             }
+            binarAddieren(binarGA);
         }
         return false;
     }
 
-    private String binarAddieren(String binar, int durchgang){
+    public String binarAddieren(String binar){
         String ausgabe="";
         char[] ne=binar.toCharArray();
 
-        if(durchgang==0){
-            for(int i=0;i<ne.length;i++){
-                if(ne[i]=='0'){
-                    ne[i]='1';
-                    for(int h=(i-1);h>=0;h--){
-                        ne[h]='0';
-                    }
-                    break;
+        for(int i=0;i<ne.length;i++){
+            if(ne[i]=='0'){
+                ne[i]='1';
+                for(int h=(i-1);h>=0;h--){
+                    ne[h]='0';
                 }
+                break;
             }
-            for(int i=0;i<ne.length;i++){
-                ausgabe+=ne[i];
-            }
-            return ausgabe;
-        } else if(durchgang==1){
-            for(int i=0;i<ne.length;i++){
-                if(ne[i]=='1'){
-                    ne[i]='2';
-                    for(int h=(i-1);h>=0;h--){
-                        ne[h]='1';
-                    }
-                    break;
-                }
-            }
-            for(int i=0;i<ne.length;i++){
-                ausgabe+=ne[i];
-            }
-            return ausgabe;
-        }else{
-            for(int i=(ne.length-1);i>=0;i--){
-                if(ne[i]=='2'){
-                    ne[i]='1';
-                    for(int h=(i+1);h<ne.length;h++){
-                        ne[h]='0';
-                    }
-                    break;
-                }
-            }
-            for(int i=0;i<ne.length;i++){
-                ausgabe+=ne[i];
-            }
-            return ausgabe;
         }
+        for(int i=0;i<ne.length;i++){
+            ausgabe+=ne[i];
+        }
+        return ausgabe;
     }
 }
-*/
