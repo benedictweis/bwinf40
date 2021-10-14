@@ -276,10 +276,12 @@ public class main
         iterations[1]=0;
         iterations[0]=0;
         selectSolution[0]=null;
+        selectSolution[1]=null;
         int secondChar=calcSecondChar(straightIndex);
         if(parallel[straightIndex]==null){  //exit path is empty
             finalSolution[straightIndex]=straight[straightIndex]+": ";
         } else{
+            //                                  v-- this is stupid
             for(int i=1;i>=0 && parallel[straightIndex]!=null;i--){// for-loop to get both directions
                 moveDirection(straightIndex, (1+secondChar)*(1-i)+(2-secondChar)*i, straightIndex, i);
             }
