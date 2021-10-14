@@ -6,7 +6,6 @@ import java.util.Scanner;
 public class Marktwaage{
 
     ArrayList<String> lines;
-    ArrayList<Integer> ungeloeste;
     String[] parts;
     String gewichte;
 
@@ -33,14 +32,13 @@ public class Marktwaage{
                     lines.add(parts[0]);
                 }
             }
+            scanner.close();
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
     }
 
     public void wiegen(){
-        ungeloeste = new ArrayList<Integer>();
-
         for(int i = 10; i <= 10000; i += 10){
             if(istMöglich(i) == true){
                 System.out.println(i +" g: möglich");
@@ -52,7 +50,9 @@ public class Marktwaage{
 
     public boolean istMöglich(int gewicht){
         int startgewicht = gewicht;
+        int diff;
 
+        //wenn das gesuchte Gewicht bereits unter unseren Gewichten vorhanden ist, ist es möglich
         for(int i = 1; i < lines.size(); i++){
             if(startgewicht == Integer.parseInt(lines.get(i))){
                 return true;
@@ -173,8 +173,10 @@ public class Marktwaage{
             }
             binarAddieren(binarGA);
         }
-        return false;
+        
+        return nähsterIndex;
     }
+}
 
     public String binarAddieren(String binar){
         String ausgabe="";
