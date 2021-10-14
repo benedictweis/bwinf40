@@ -68,18 +68,22 @@ public class main
         System.out.println("straight cars: \t"+visualizeStraight);
         System.out.println("parallel cars: \t"+visualizeParallel);
         if(autoSolve){
-            AutosAusparken();
+            AutosAusparken(0);
         }
     }
 
     /**
      *  goes through all straight cars and calls the "findPath" function on them
      **/
-    public void AutosAusparken()
+    public void AutosAusparken(int method)
     {   
         System.out.println("\n\n"+"Solution: \n");
         for(int straightIndex=0;straightIndex<straight.length;straightIndex++){
-            findPath(straightIndex);
+            if(method==0){
+                findPath(straightIndex);
+            } else {
+                imagineBruteforce(straightIndex);
+            }
             resetCars();
             System.out.println(finalSolution[straightIndex]);
         }
@@ -147,17 +151,15 @@ public class main
     }
 
     public void calcSolution(int parallelIndex, int distance, int straightIndex, int direction){
-        //schreibt in selectSolution für Bruteforce, finalSolution für findPath algo
-        //finalSolution[]<- da muss direction für BF, straightIndex für algo
         String[] directions= {"left","right"};
         if(direction==0){
             parallelIndex-=distance;
         } else {
             parallelIndex+=distance;
         }
-        if(finalSolution[direction]==null){
+        if(selectSolution[direction]==null){
             selectSolution[direction]=straight[straightIndex]+": "+parallel[parallelIndex]+" "+distance+" "+directions[direction];
-        } else if(finalSolution[direction]!=null){
+        } else if(selectSolution[direction]!=null){
             selectSolution[direction]+=", "+parallel[parallelIndex]+" "+distance+" "+directions[direction];
         }
     }
@@ -210,7 +212,7 @@ public class main
                 return 1;
             }
             return 0;
-        }
+        }  
     }
 
     public boolean[] noArrayBoundaries(int parallelIndex, int distance){
@@ -323,27 +325,22 @@ public class main
         }
         catch(Exception e){
             e.printStackTrace();
-            return false;
+            return false;   
         }
     }
 
     public boolean imagineBruteforce(int straightIndex){
         iterations[1]=0;
         iterations[0]=0;
-        selectSolution[1]=null;
         selectSolution[0]=null;
         int secondChar=calcSecondChar(straightIndex);
         if(parallel[straightIndex]==null){  //exit path is empty
             finalSolution[straightIndex]=straight[straightIndex]+": ";
         } else{
             for(int i=1;i>=0;i--){// for-loop to get both directions
-                if(secondChar==1){
-                    moveDirection(straightIndex, (1+secondChar)*(1-i)+(2-secondChar)*i, straightIndex, i);
-                } else if(secondChar==0){
-                    moveDirection(straightIndex, (1+secondChar)*(1-i)+(2-secondChar)*i, straightIndex, i);
-                }
+                moveDirection(straightIndex, (1+secondChar)*(1-i)+(2-secondChar)*i, straightIndex, i);
             }
-            if(iterations[1]>=iterations[0]){
+            if(iterations[1]<=iterations[0]){
                 finalSolution[straightIndex]=selectSolution[1];
             } else {
                 finalSolution[straightIndex]=selectSolution[0];
