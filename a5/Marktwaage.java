@@ -107,8 +107,9 @@ public class Marktwaage{
         //ungeloeste.add(startgewicht);
         return false;
     }
+}
 
-    public void NilsMethode(){
+/*    public void NilsMethode(){
         for(int i=10;i<=10000;i+=10){
             if(noRekursion(i)){
                 System.out.println(i +" g: möglich");
@@ -118,10 +119,10 @@ public class Marktwaage{
         }
     }
 
-    public int potenzieren(int basis, int expo){
+    private int potenzieren(int basis, int expo){
         int ergebnis=basis;
         for(int i=1;i<expo;i++){
-            ergebnis*=ergebnis;
+            ergebnis=ergebnis*basis;
         }
         return ergebnis;
     }
@@ -134,7 +135,7 @@ public class Marktwaage{
             binar+="0";
         }
         for(int i=0;i<3;i++){
-            for(int k=0;k<(lines.size()-1);k++){
+            for(int k=0;k<potenzieren(2,(lines.size()-1));k++){
                 gegengewicht=0;
                 gewichtsadd=0;
                 char[] tf=binar.toCharArray();
@@ -158,7 +159,7 @@ public class Marktwaage{
         return false;
     }
 
-    public String binarAddieren(String binar, int durchgang){
+    private String binarAddieren(String binar, int durchgang){
         String ausgabe="";
         char[] ne=binar.toCharArray();
 
@@ -207,3 +208,4 @@ public class Marktwaage{
         }
     }
 }
+*/
