@@ -6,7 +6,6 @@ import java.util.Scanner;
 public class Marktwaage{
 
     ArrayList<String> lines;
-    ArrayList<Integer> ungeloeste;
     String[] parts;
     String gewichte;
 
@@ -40,7 +39,6 @@ public class Marktwaage{
     }
 
     public void wiegen(){
-        ungeloeste = new ArrayList<Integer>();
 
         for(int i = 10; i <= 10000; i += 10){
             if(istMöglich(i) == true){
