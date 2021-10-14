@@ -68,22 +68,18 @@ public class main
         System.out.println("straight cars: \t"+visualizeStraight);
         System.out.println("parallel cars: \t"+visualizeParallel);
         if(autoSolve){
-            AutosAusparken(0);
+            AutosAusparken();
         }
     }
 
     /**
      *  goes through all straight cars and calls the "findPath" function on them
      **/
-    public void AutosAusparken(int method)
+    public void AutosAusparken()
     {   
         System.out.println("\n\n"+"Solution: \n");
         for(int straightIndex=0;straightIndex<straight.length;straightIndex++){
-            if(method==0){
-                findPath(straightIndex);
-            } else {
-                imagineBruteforce(straightIndex);
-            }
+            imagineBruteforce(straightIndex);
             resetCars();
             System.out.println(finalSolution[straightIndex]);
         }
@@ -112,14 +108,14 @@ public class main
                 if(direction==1){
                     newParallelIndex=parallelIndex+secondChar+1+freePath;
                 }
-                int newSpace=calcFreeSpace((parallelIndex-(2-secondChar)-freePath)+((secondChar+2+freePath)*direction))[direction];
+                int newSpace=calcFreeSpace(newParallelIndex)[direction];
                 if(newSpace>1){
                     newSpace=1;
                 }
                 int newDistance=1;
                 if(distance==2){
                     newDistance=2;
-                    newDistance-=newSpace;
+                    newDistance-=freePath;
                 }
                 if(!moveDirection(newParallelIndex, newDistance, straightIndex, direction)) {
                     return false;
@@ -275,60 +271,7 @@ public class main
         }
         return freeSpace;
     }
-
-    /**
-     *  chooses the optimal way to move out the selected car
-     *  index: location of the straight car the shall be moved out
-     **/
-    public boolean findPath(int straightIndex){
-        int secondChar=calcSecondChar(straightIndex);
-        int[] freeSpace=calcFreeSpace(straightIndex);
-        int movingDirection=freeSpace[1]>freeSpace[0] ? 1 : 0;
-        //calcMoveDir
-        //noCarBoundaries kann helfen die richtige entscheidung zu treffen (p1 b)
-        if(secondChar==1&&freeSpace[1]>0){
-            movingDirection=1;
-        } else if(secondChar==0&&freeSpace[0]>0){
-            movingDirection=0;
-        } else if(freeSpace[1]==0&&freeSpace[0]==0){
-            //hier auf autos nebendran gucken
-            int rightSpace=calcFreeSpace(straightIndex+secondChar+1)[1];
-            int leftSpace=calcFreeSpace(straightIndex-1-(1-secondChar))[0];
-            if(rightSpace!= -1&&rightSpace!=0){
-                movingDirection=1;
-            } else if(leftSpace!= -1&&leftSpace!=0){
-                movingDirection=0;
-            }
-            //hier überprüfen ob eins -1 -1 hat und welches platz hat, 0 x oder x 
-        }
-
-        //vlt später in AutosAusparken
-        try{
-            if(parallel[straightIndex]==null){  //exit path is empty
-                finalSolution[straightIndex]=straight[straightIndex]+": ";
-            } else{
-                if((movingDirection==1)){
-                    if(!moveDirection(straightIndex, 2-secondChar, straightIndex, movingDirection)){
-                        return false;
-                    }
-                    return true;
-                } else if((movingDirection==0)){
-                    if(!moveDirection(straightIndex, 1+secondChar, straightIndex, movingDirection)){
-                        return false;
-                    }
-                    return true;
-                }
-                //difference dir1/0 ist distance
-                // einfach ein movingDir berechnen und dann verschiebenlassen
-            }
-            return false;
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            return false;   
-        }
-    }
-
+    
     public boolean imagineBruteforce(int straightIndex){
         iterations[1]=0;
         iterations[0]=0;
@@ -337,12 +280,12 @@ public class main
         if(parallel[straightIndex]==null){  //exit path is empty
             finalSolution[straightIndex]=straight[straightIndex]+": ";
         } else{
-            for(int i=1;i>=0;i--){// for-loop to get both directions
+            for(int i=1;i>=0 && parallel[straightIndex]!=null;i--){// for-loop to get both directions
                 moveDirection(straightIndex, (1+secondChar)*(1-i)+(2-secondChar)*i, straightIndex, i);
             }
-            if(iterations[1]<=iterations[0]){
+            if(iterations[1]<=iterations[0] || iterations[0]==0){
                 finalSolution[straightIndex]=selectSolution[1];
-            } else {
+            } else if(iterations[1]>iterations[0] || iterations[1]==0){
                 finalSolution[straightIndex]=selectSolution[0];
             }
             return true;
