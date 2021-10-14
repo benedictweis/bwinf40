@@ -50,6 +50,7 @@ public class Marktwaage{
 
     public boolean istMöglich(int gewicht){
         int startgewicht = gewicht;
+        int diff;
 
         //wenn das gesuchte Gewicht bereits unter unseren Gewichten vorhanden ist, ist es möglich
         for(int i = 1; i < lines.size(); i++){
@@ -79,31 +80,48 @@ public class Marktwaage{
                 }
             }
         } 
+        
+        if(gewicht > Integer.parseInt(lines.get(nähsterIndex(startgewicht)))){
+            diff = gewicht - Integer.parseInt(lines.get(nähsterIndex(startgewicht)));
+        } else{
+            diff = Integer.parseInt(lines.get(nähsterIndex(startgewicht))) - gewicht;
+        }
 
-        for(int i = lines.size() - 1; i > 0; i--){
-            int iWert = Integer.parseInt(lines.get(i));
-            //System.out.println("i: " + iWert);
-            for(int j = 1; j < lines.size(); j++){
-                int jWert = Integer.parseInt(lines.get(j));
-                iWert += jWert;
-                //System.out.println("j: " + jWert);
-                //System.out.println("ni: " + iWert);
-                for(int k = lines.size() - 1; k > 0; k--){
-                    int kWert = Integer.parseInt(lines.get(k));
-                    //System.out.println("k: " + kWert);
-                    if(iWert - kWert >= startgewicht){
-                        //System.out.println(iWert + " - " + kWert);
-                        iWert -= kWert;
-                        if(iWert == startgewicht){
-                            return true;
-                        }
+        for(int j = lines.size() - 1; j > 0; j--){
+            int jWert = Integer.parseInt(lines.get(j));
+            for(int i = lines.size() - 1; i > 0; i--){
+                int iWert = Integer.parseInt(lines.get(i));
+                if(jWert - iWert >= diff){
+                    jWert -= iWert;
+                    if(jWert == diff){
+                        return true;
                     }
                 }
             }
-        }
-
-        //ungeloeste.add(startgewicht);
+        } 
+        
         return false;
+    }
+    
+    public int nähsterIndex(int gewicht){
+        int nähsterIndex = 0;
+        int diff = 1000000000;
+        
+        for(int i = 1; i < lines.size(); i++){
+            if(gewicht > Integer.parseInt(lines.get(i))){
+                if((gewicht - Integer.parseInt(lines.get(i))) < diff){
+                    diff = gewicht - Integer.parseInt(lines.get(i));
+                    nähsterIndex = i;
+                }
+            } else{
+                if((Integer.parseInt(lines.get(i)) - gewicht) < diff){
+                    diff = Integer.parseInt(lines.get(i)) - gewicht;
+                    nähsterIndex = i;
+                }
+            }
+        }
+        
+        return nähsterIndex;
     }
 }
 
