@@ -105,14 +105,14 @@ public class main
                 if(direction==1){
                     newParallelIndex=parallelIndex+secondChar+1+freePath;
                 }
-                int newSpace=calcFreeSpace((parallelIndex-(2-secondChar)-freePath)+((secondChar+2+freePath)*direction))[direction];
+                int newSpace=calcFreeSpace(newParallelIndex)[direction];
                 if(newSpace>1){
                     newSpace=1;
                 }
                 int newDistance=1;
                 if(distance==2){
                     newDistance=2;
-                    newDistance-=newSpace;
+                    newDistance-=freePath;
                 }
                 if(!moveDirection(newParallelIndex, newDistance, straightIndex, direction)) {
                     return false;
