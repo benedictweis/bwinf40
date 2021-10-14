@@ -94,12 +94,12 @@ public class main
         int secondChar=calcSecondChar(parallelIndex);
         int freePath=calcFreeSpace(parallelIndex)[direction];
         try{
-            if((canMove(parallelIndex, distance, direction))&&
+            if((noArrayBoundaries(parallelIndex, distance)[direction])&&
             (freePath>=distance)){      
                 calcMovement(parallelIndex, distance, direction);
                 calcSolution(parallelIndex, distance, straightIndex, direction);
                 return true;
-            } else if((canMove(parallelIndex, distance, direction))&&
+            } else if((noArrayBoundaries(parallelIndex, distance)[direction])&&
             (freePath<distance)){     
                 int newParallelIndex=parallelIndex-(2-secondChar)-freePath;
                 if(direction==1){
@@ -208,12 +208,30 @@ public class main
         }
     }
 
-    public boolean canMove(int parallelIndex, int distance, int direction){
+    public boolean[] noArrayBoundaries(int parallelIndex, int distance){
         int limit=calcParallelLimit(parallelIndex, distance);
-        if((limit != distance && direction==1)||(limit != -distance && direction==0)){
-            return true;
+        int secondChar=calcSecondChar(parallelIndex);
+        boolean moveLR[]={true, true};
+        if(limit == -distance){
+            moveLR[0]=false;
         }
-        return false;
+        if(limit == distance){
+            moveLR[0]=false;
+        }
+        return moveLR;
+    }
+    
+    public boolean[] noCarBoundaries(int parallelIndex, int distance){
+        //Basicly the same as "noArrayBoundaries" but also includes other cars in its judgement
+        int limit[]=calcFreeSpace(parallelIndex);
+        boolean moveLR[]={false, false};
+        if(limit[1]>=distance){
+            moveLR[1]=true;
+        }
+        if(limit[0]>=distance){
+            moveLR[0]=true;
+        }
+        return moveLR;
     }
 
     public int[] calcFreeSpace(int parallelIndex){
@@ -261,7 +279,7 @@ public class main
         int[] freeSpace=calcFreeSpace(straightIndex);
         int movingDirection=freeSpace[1]>freeSpace[0] ? 1 : 0;
         //calcMoveDir
-        //parallelLimit kann helfen die richtige entscheidung zu treffen (p1 b)
+        //noCarBoundaries kann helfen die richtige entscheidung zu treffen (p1 b)
         if(secondChar==1&&freeSpace[1]>0){
             movingDirection=1;
         } else if(secondChar==0&&freeSpace[0]>0){
@@ -275,10 +293,12 @@ public class main
             } else if(leftSpace!= -1&&leftSpace!=0){
                 movingDirection=0;
             }
-            //hier überprüfen ob eins -1 -1 hat und welches platz hat, 0 x oder x 0
-        } else if(freeSpace[1]==freeSpace[0]){
-            movingDirection=secondChar;
+            //hier überprüfen ob eins -1 -1 hat und welches platz hat, 0 x oder x 
         }
+        
+        
+        
+        //vlt später in AutosAusparken
         try{
             if(parallel[straightIndex]==null){  //exit path is empty
                 finalSolution[straightIndex]=straight[straightIndex]+": ";
