@@ -32,6 +32,7 @@ public class Marktwaage{
                     lines.add(parts[0]);
                 }
             }
+            scanner.close();
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
@@ -50,6 +51,7 @@ public class Marktwaage{
     public boolean istMöglich(int gewicht){
         int startgewicht = gewicht;
 
+        //wenn das gesuchte Gewicht bereits unter unseren Gewichten vorhanden ist, ist es möglich
         for(int i = 1; i < lines.size(); i++){
             if(startgewicht == Integer.parseInt(lines.get(i))){
                 return true;
