@@ -33,6 +33,7 @@ public class Marktwaage{
                     lines.add(parts[0]);
                 }
             }
+            scanner.close();
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
