@@ -76,7 +76,9 @@ public class App {
             for (int i = j+1; i < dice.size(); i++) {
                 
                 System.out.print(j +" VS "+i+", ");
-                Player p1 = new Player(dice.get(i), 0);
+
+                for (int k = 0; k < 100; k++) {
+                    Player p1 = new Player(dice.get(i), 0);
                 Player p2 = new Player(dice.get(j), 20);
 
                 
@@ -92,16 +94,23 @@ public class App {
                         break;
                     }
                 }
+                }
+                
                 
             }
         }
 
         System.out.println("");
 
+        int currentBest = 0;
         for (int i= 0; i < wins.length; i++) {
-            System.out.println("Würfel "+i+": "+wins[i]);
+            if (wins[i] > wins[currentBest]) {
+                currentBest = i;
+            }
+            System.out.println("dice "+i+": "+wins[i]);
         }
-
+        
+        System.out.println("best dice: "+currentBest);
 
     }
 }
