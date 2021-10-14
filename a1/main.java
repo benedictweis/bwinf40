@@ -11,6 +11,8 @@ public class main
     String straight[];
     String parallel[];
     String fileName = "parkplatz1.txt";
+    String selectSolution[]= new String[2];
+    int iterations[]={0, 0};
     /**
      *  fills the straight- & parallel-car arrays with the content of the .txt file   
      **/
@@ -93,6 +95,7 @@ public class main
         /* Returncodes: false-> error, true->done */
         int secondChar=calcSecondChar(parallelIndex);
         int freePath=calcFreeSpace(parallelIndex)[direction];
+        iterations[direction]++;
         try{
             if((noArrayBoundaries(parallelIndex, distance)[direction])&&
             (freePath>=distance)){      
@@ -144,16 +147,18 @@ public class main
     }
 
     public void calcSolution(int parallelIndex, int distance, int straightIndex, int direction){
+        //schreibt in selectSolution für Bruteforce, finalSolution für findPath algo
+        //finalSolution[]<- da muss direction für BF, straightIndex für algo
         String[] directions= {"left","right"};
         if(direction==0){
             parallelIndex-=distance;
         } else {
             parallelIndex+=distance;
         }
-        if(finalSolution[straightIndex]==null){
-            finalSolution[straightIndex]=straight[straightIndex]+": "+parallel[parallelIndex]+" "+distance+" "+directions[direction];
-        } else if(finalSolution[straightIndex]!=null){
-            finalSolution[straightIndex]+=", "+parallel[parallelIndex]+" "+distance+" "+directions[direction];
+        if(finalSolution[direction]==null){
+            selectSolution[direction]=straight[straightIndex]+": "+parallel[parallelIndex]+" "+distance+" "+directions[direction];
+        } else if(finalSolution[direction]!=null){
+            selectSolution[direction]+=", "+parallel[parallelIndex]+" "+distance+" "+directions[direction];
         }
     }
 
@@ -220,7 +225,7 @@ public class main
         }
         return moveLR;
     }
-    
+
     public boolean[] noCarBoundaries(int parallelIndex, int distance){
         //Basicly the same as "noArrayBoundaries" but also includes other cars in its judgement
         int limit[]=calcFreeSpace(parallelIndex);
@@ -274,7 +279,6 @@ public class main
      *  index: location of the straight car the shall be moved out
      **/
     public boolean findPath(int straightIndex){
-        String parallelName=parallel[straightIndex];
         int secondChar=calcSecondChar(straightIndex);
         int[] freeSpace=calcFreeSpace(straightIndex);
         int movingDirection=freeSpace[1]>freeSpace[0] ? 1 : 0;
@@ -295,9 +299,7 @@ public class main
             }
             //hier überprüfen ob eins -1 -1 hat und welches platz hat, 0 x oder x 
         }
-        
-        
-        
+
         //vlt später in AutosAusparken
         try{
             if(parallel[straightIndex]==null){  //exit path is empty
@@ -323,5 +325,31 @@ public class main
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean imagineBruteforce(int straightIndex){
+        iterations[1]=0;
+        iterations[0]=0;
+        selectSolution[1]=null;
+        selectSolution[0]=null;
+        int secondChar=calcSecondChar(straightIndex);
+        if(parallel[straightIndex]==null){  //exit path is empty
+            finalSolution[straightIndex]=straight[straightIndex]+": ";
+        } else{
+            for(int i=1;i>=0;i--){// for-loop to get both directions
+                if(secondChar==1){
+                    moveDirection(straightIndex, (1+secondChar)*(1-i)+(2-secondChar)*i, straightIndex, i);
+                } else if(secondChar==0){
+                    moveDirection(straightIndex, (1+secondChar)*(1-i)+(2-secondChar)*i, straightIndex, i);
+                }
+            }
+            if(iterations[1]>=iterations[0]){
+                finalSolution[straightIndex]=selectSolution[1];
+            } else {
+                finalSolution[straightIndex]=selectSolution[0];
+            }
+            return true;
+        }
+        return true;
     }
 }
