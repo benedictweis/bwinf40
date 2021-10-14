@@ -76,7 +76,7 @@ public class App {
             for (int i = j+1; i < dice.size(); i++) {
                 
                 System.out.print(j +" VS "+i+", ");
-                Player p1 = new Player();
+                //Player p1 = new Player();
                 System.out.println(" ");
             }
         }
