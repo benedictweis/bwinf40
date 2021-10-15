@@ -95,12 +95,12 @@ public class main
         /* Returncodes: false-> error, true->done */
         int secondChar=calcSecondChar(parallelIndex);
         int freePath=calcFreeSpace(parallelIndex)[direction];
-        iterations[direction]++;
         try{
             if((noArrayBoundaries(parallelIndex, distance)[direction])&&
             (freePath>=distance)){      
                 calcMovement(parallelIndex, distance, direction);
                 calcSolution(parallelIndex, distance, straightIndex, direction);
+                iterations[direction]+=distance;
                 return true;
             } else if((noArrayBoundaries(parallelIndex, distance)[direction])&&
             (freePath<distance)){     
@@ -122,12 +122,14 @@ public class main
                 }
                 calcMovement(parallelIndex, distance, direction);
                 calcSolution(parallelIndex, distance, straightIndex, direction);
+                iterations[direction]+=distance;
                 return true;
             }
             return false;
         }
         catch (Exception e){
             e.printStackTrace();
+            iterations[direction]=0;
             return false;
         }
     }
@@ -219,7 +221,7 @@ public class main
             moveLR[0]=false;
         }
         if(limit == distance){
-            moveLR[0]=false;
+            moveLR[1]=false;
         }
         return moveLR;
     }
@@ -281,13 +283,17 @@ public class main
         if(parallel[straightIndex]==null){  //exit path is empty
             finalSolution[straightIndex]=straight[straightIndex]+": ";
         } else{
-            //                                  v-- this is stupid
-            for(int i=1;i>=0 && parallel[straightIndex]!=null;i--){// for-loop to get both directions
+            for(int i=1;i>=0    ;i--){// for-loop to get both directions
                 moveDirection(straightIndex, (1+secondChar)*(1-i)+(2-secondChar)*i, straightIndex, i);
+                resetCars();
             }
-            if(iterations[1]<=iterations[0] || iterations[0]==0){
+            if(iterations[0]==0 || selectSolution[0]==null){
                 finalSolution[straightIndex]=selectSolution[1];
-            } else if(iterations[1]>iterations[0] || iterations[1]==0){
+            } else if(iterations[1]==0 || selectSolution[1]==null){
+                finalSolution[straightIndex]=selectSolution[0];
+            } else if(iterations[1]<=iterations[0]){
+                finalSolution[straightIndex]=selectSolution[1];
+            } else if(iterations[1]>iterations[0]){
                 finalSolution[straightIndex]=selectSolution[0];
             }
             return true;
