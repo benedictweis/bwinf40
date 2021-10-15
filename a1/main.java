@@ -73,7 +73,7 @@ public class main
         System.out.println("parallel cars: \t"+visualizeParallel);
         if(canSolve()==0){
             System.out.println("\nNote:\nBased on the composition of the parallel cars, no Solution for the straight cars exist");
-        } else if(settings.AUTOSOLVE){
+        } else if(settings.getSettings()[1]){
             AutosAusparken();
         }
     }
