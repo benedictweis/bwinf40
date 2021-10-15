@@ -26,14 +26,15 @@ public class main
         String visualizeStraight = "";
         String visualizeParallel = "";
         /* Reading File */
-        File file = new File(fileName);
         try{
+            File file = new File(fileName);
             Scanner scanner = new Scanner(file);
             while(scanner.hasNext()){
                 lines.add(scanner.nextLine());
             }
         } catch (FileNotFoundException e){
-            e.printStackTrace();
+            System.out.println("ERROR: Invalid filename");            
+            return;
         }
         /* Getting each char, line by line  */
         String firstln[]=lines.get(0).split(" ");
@@ -103,7 +104,6 @@ public class main
      *  parallelIndex: to which car the operations should be assosiated with
      **/
     public boolean moveDirection(int parallelIndex, int distance, int straightIndex, int direction){
-        /* Returncodes: false-> error, true->done */
         int secondChar=calcSecondChar(parallelIndex);
         int freePath=calcFreeSpace(parallelIndex)[direction];
         try{
@@ -115,14 +115,7 @@ public class main
                 return true;
             } else if((noArrayBoundaries(parallelIndex, distance)[direction])&&
             (freePath<distance)){     
-                int newParallelIndex=parallelIndex-(2-secondChar)-freePath;
-                if(direction==1){
-                    newParallelIndex=parallelIndex+secondChar+1+freePath;
-                }
-                int newSpace=calcFreeSpace(newParallelIndex)[direction];
-                if(newSpace>1){
-                    newSpace=1;
-                }
+                int newParallelIndex=(parallelIndex-(2-secondChar)-freePath)*(1-direction)+(parallelIndex+secondChar+1+freePath)*direction;
                 int newDistance=1;
                 if(distance==2){
                     newDistance=2;
@@ -139,7 +132,6 @@ public class main
             return false;
         }
         catch (Exception e){
-            e.printStackTrace();
             iterations[direction]=0;
             return false;
         }
@@ -292,14 +284,11 @@ public class main
                 j++;
             }
         }
-        if(j==0){
-            //nicht lösbar
+        if(j==0){   //nicht lösbar
             return 0;
-        } else if(j==1){
-            //nur die hälfte lösbar
+        } else if(j==1){    //nur die hälfte lösbar
             return 0.5;
-        } else if(j>=2){
-            //sollte lösbar sein
+        } else if(j>=2){    //sollte lösbar sein
             return 1;
         }
         return -1;
@@ -315,7 +304,7 @@ public class main
             finalSolution[straightIndex]=straight[straightIndex]+": ";
             return true;
         } else{
-            for(int i=1;i>=0    ;i--){// for-loop to get both directions
+            for(int i=1;i>=0;i--){// for-loop to get both directions
                 moveDirection(straightIndex, (1+secondChar)*(1-i)+(2-secondChar)*i, straightIndex, i);
                 resetCars();
             }
