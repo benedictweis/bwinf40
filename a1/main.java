@@ -8,23 +8,21 @@ public class main
     Settings settings = new Settings();
     String alphabet[]="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     ArrayList<String> lines=new ArrayList<String>();
-    String finalSolution[];
-    String straight[];
-    String parallel[];
-    String fileName = "parkplatz1.txt";
+    String finalSolution[], straight[], parallel[];
     String selectSolution[]= new String[2];
     int iterations[]={0, 0};
     /**
-     *  fills the straight- & parallel-car arrays with the content of the .txt file   
+     *  fills the straight- & parallel-car arrays with the content of the .txt file
+     *  and doing some visuialization stuff for better understanding of the solution
      **/
     public main(int fileIndex)
     {   
-        //Clearing the Screen
+        //Clearing the console
         if(settings.getSettings()[0]){
             System.out.print('\u000C');
         }
         //Initializing variables for the visualization
-        fileName="parkplatz"+fileIndex+".txt";
+        String fileName="parkplatz"+fileIndex+".txt";
         String visualizeStraight = "";
         String visualizeParallel = "";
         /* Reading File */
@@ -80,9 +78,6 @@ public class main
         }
     }
 
-    /**
-     *  goes through all straight cars and calls the "findPath" function on them
-     **/
     public void AutosAusparken()
     {   
         if(canSolve()==0.5){
@@ -90,11 +85,14 @@ public class main
             System.out.println("\n\n"+"Solution: \n"); 
         } else if(canSolve()==1){
             System.out.println("\n\n"+"Solution: \n");
-            for(int straightIndex=0;straightIndex<straight.length;straightIndex++){
-                imagineBruteforce(straightIndex);
-                resetCars();
+        }
+        for(int straightIndex=0;straightIndex<straight.length;straightIndex++){
+            if(imagineBruteforce(straightIndex)){
                 System.out.println(finalSolution[straightIndex]);
+            } else {
+                System.out.println(straight[straightIndex]+": No solution for this car");
             }
+            resetCars();
         }
     }
 
@@ -148,7 +146,7 @@ public class main
     }
 
     /**
-     *  resets the parallel cars to their start position
+     *  resets the parallel cars to their original position
      **/
     public void resetCars(){
         for(int i=0;i<parallel.length;i++){ //overwriting the array with "null"
@@ -315,12 +313,15 @@ public class main
         int secondChar=calcSecondChar(straightIndex);
         if(parallel[straightIndex]==null){  //exit path is empty
             finalSolution[straightIndex]=straight[straightIndex]+": ";
+            return true;
         } else{
             for(int i=1;i>=0    ;i--){// for-loop to get both directions
                 moveDirection(straightIndex, (1+secondChar)*(1-i)+(2-secondChar)*i, straightIndex, i);
                 resetCars();
             }
-            if(iterations[0]==0 || selectSolution[0]==null){
+            if(selectSolution[1]==null && selectSolution[0]==null){
+                return false;
+            } else if(iterations[0]==0 || selectSolution[0]==null){
                 finalSolution[straightIndex]=selectSolution[1];
             } else if(iterations[1]==0 || selectSolution[1]==null){
                 finalSolution[straightIndex]=selectSolution[0];
@@ -331,6 +332,5 @@ public class main
             }
             return true;
         }
-        return true;
     }
 }
