@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.util.Arrays;
 public class main
 {
+    Settings settings = new Settings();
     String alphabet[]="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     ArrayList<String> lines=new ArrayList<String>();
     String finalSolution[];
@@ -16,10 +17,12 @@ public class main
     /**
      *  fills the straight- & parallel-car arrays with the content of the .txt file   
      **/
-    public main(int fileIndex, boolean autoSolve)
+    public main(int fileIndex)
     {   
         //Clearing the Screen
-        System.out.print('\u000C');
+        if(settings.getSettings()[0]){
+            System.out.print('\u000C');
+        }
         //Initializing variables for the visualization
         fileName="parkplatz"+fileIndex+".txt";
         String visualizeStraight = "";
@@ -70,8 +73,9 @@ public class main
         System.out.println("Searching solution of: \""+fileName+"\" ☺\n");
         System.out.println("straight cars: \t"+visualizeStraight);
         System.out.println("parallel cars: \t"+visualizeParallel);
-        canSolve();
-        if(autoSolve){
+        if(canSolve()==0){
+            System.out.println("\nNote:\nBased on the composition of the parallel cars, no Solution for the straight cars exist");
+        } else if(settings.AUTOSOLVE){
             AutosAusparken();
         }
     }
@@ -81,11 +85,16 @@ public class main
      **/
     public void AutosAusparken()
     {   
-        System.out.println("\n\n"+"Solution: \n");
-        for(int straightIndex=0;straightIndex<straight.length;straightIndex++){
-            imagineBruteforce(straightIndex);
-            resetCars();
-            System.out.println(finalSolution[straightIndex]);
+        if(canSolve()==0.5){
+            System.out.println("\nNote:\nBased on the composition of the parallel cars, not all of the straight cars have a Solution");
+            System.out.println("\n\n"+"Solution: \n"); 
+        } else if(canSolve()==1){
+            System.out.println("\n\n"+"Solution: \n");
+            for(int straightIndex=0;straightIndex<straight.length;straightIndex++){
+                imagineBruteforce(straightIndex);
+                resetCars();
+                System.out.println(finalSolution[straightIndex]);
+            }
         }
     }
 
@@ -287,11 +296,9 @@ public class main
         }
         if(j==0){
             //nicht lösbar
-            System.out.println("\nNote:\nBased on the C oncelation of the parallel Cars, no straight Car can leave the parking Lot");
-            
             return 0;
         } else if(j==1){
-            //nur die hälfte lösbar        
+            //nur die hälfte lösbar
             return 0.5;
         } else if(j>=2){
             //sollte lösbar sein
