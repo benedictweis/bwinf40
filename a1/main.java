@@ -18,6 +18,9 @@ public class main
      **/
     public main(int fileIndex, boolean autoSolve)
     {   
+        //Clearing the Screen
+        System.out.print('\u000C');
+        //Initializing variables for the visualization
         fileName="parkplatz"+fileIndex+".txt";
         String visualizeStraight = "";
         String visualizeParallel = "";
@@ -284,6 +287,8 @@ public class main
         }
         if(j==0){
             //nicht lösbar
+            System.out.println("\nNote:\nBased on the C oncelation of the parallel Cars, no straight Car can leave the parking Lot");
+            
             return 0;
         } else if(j==1){
             //nur die hälfte lösbar        
