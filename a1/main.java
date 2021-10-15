@@ -65,6 +65,7 @@ public class main
         System.out.println("Searching solution of: \""+fileName+"\" ☺\n");
         System.out.println("straight cars: \t"+visualizeStraight);
         System.out.println("parallel cars: \t"+visualizeParallel);
+        canSolve();
         if(autoSolve){
             AutosAusparken();
         }
@@ -267,6 +268,26 @@ public class main
             freeSpace[0]--;
         }
         return freeSpace;
+    }
+    
+    public double canSolve(){
+        int j=0;
+        for(int i=0;i<parallel.length;i++){
+            if(parallel[i]==null){
+                j++;
+            }
+        }
+        if(j==0){
+            //nicht lösbar
+            return 0;
+        } else if(j==1){
+            //nur die hälfte lösbar        
+            return 0.5;
+        } else if(j>=2){
+            //sollte lösbar sein
+            return 1;
+        }
+        return -1;
     }
 
     /**

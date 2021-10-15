@@ -10,3 +10,10 @@ TODO:	moveDirection verschiebt alles nur nur rechts und gibt bei geplanter linke
 	warscheinlich wegen findPath nicht gut
 	p98 jedes 2te. move left funktioniert nicht vlt auch wegen findPath
 	p1 e könnte o & p 1l verschieben, momentan q 1r  p 2r
+
+
+
+	Fehlermöglichkeiten: 	2 freie Autoplätze: alle sollten eine lösung haben
+				1 freier Platz: nur die hälte sind lösbar
+				0 Plätze: keine lösungen möglich
+				
