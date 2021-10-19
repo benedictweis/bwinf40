@@ -53,64 +53,64 @@ public class App {
         for (int i = 1; i < lines.size(); i++) {
 
             String[] faces = lines.get(i).split(" ");
-            int[] die = new int[faces.length-1];
+            int[] die = new int[faces.length - 1];
 
             for (int j = 1; j < faces.length; j++) {
 
-                die[j-1] = Integer.parseInt(faces[j]);
+                die[j - 1] = Integer.parseInt(faces[j]);
             }
 
             dice.add(die);
         }
 
-        for(int[] die: dice){
+        for (int[] die : dice) {
             for (int i = 0; i < die.length; i++) {
-                System.out.print(die[i] +" ");
+                System.out.print(die[i] + " ");
             }
             System.out.println();
         }
 
         int[] wins = new int[dice.size()];
 
-        for(int j = 0; j < dice.size(); j++) {
-            for (int i = j+1; i < dice.size(); i++) {
-                
-                System.out.print(j +" VS "+i+", ");
+        for (int j = 0; j < dice.size(); j++) {
+            for (int i = j + 1; i < dice.size(); i++) {
+
+                System.out.print(j + " VS " + i + ", ");
 
                 for (int k = 0; k < 100; k++) {
-                    Player p1 = new Player(dice.get(i), 0);
-                Player p2 = new Player(dice.get(j), 20);
+                    Player p1 = new Player(dice.get(i), -20);
+                    Player p2 = new Player(dice.get(j), 20);
+                    p1.setOpponent(p2);
+                    p2.setOpponent(p1);
 
-                
-                while(true) {
-                    
-                    if (p1.takeTurn()) {
-                        wins[i]++;
-                        break;
-                    }
+                    while (true) {
 
-                    if (p2.takeTurn()) {
-                        wins[j]++;
-                        break;
+                        if (p1.takeTurn()) {
+                            wins[i]++;
+                            break;
+                        }
+
+                        if (p2.takeTurn()) {
+                            wins[j]++;
+                            break;
+                        }
                     }
                 }
-                }
-                
-                
+
             }
         }
 
         System.out.println("");
 
         int currentBest = 0;
-        for (int i= 0; i < wins.length; i++) {
+        for (int i = 0; i < wins.length; i++) {
             if (wins[i] > wins[currentBest]) {
                 currentBest = i;
             }
-            System.out.println("dice "+i+": "+wins[i]);
+            System.out.println("dice " + i + ": " + wins[i]);
         }
-        
-        System.out.println("best dice: "+currentBest);
+
+        System.out.println("best dice: " + currentBest);
 
     }
 }

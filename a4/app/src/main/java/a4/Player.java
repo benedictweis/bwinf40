@@ -6,6 +6,7 @@ public class Player {
     int[] die;
     int[] pieces;
     int delta;
+    Player opponent;
 
     public Player(int[] die, int delta) {
         this.die = die;
@@ -34,11 +35,15 @@ public class Player {
         for (int i = 0; i < pieces.length; i++) {
             if (number == 6 && pieces[i] == 1 && takenPlace(pieces[i] + number) == -1) {
                 pieces[i] += number;
+                kickOutOpponent(pieces[i]);
+                takeTurn();
                 return false;
             }
 
             if (number == 6 && pieces[i] == 0 && takenPlace(1) == -1) {
                 pieces[i] = 1;
+                kickOutOpponent(pieces[i]);
+                takeTurn();
                 return false;
             }
             
@@ -49,14 +54,16 @@ public class Player {
         }
         if (farthestPiece > 0) {
             pieces[farthestPieceIndex] += number;
+            kickOutOpponent(pieces[farthestPieceIndex]);
         }
+        if (number == 6 && !gameWon()) takeTurn();
+        // hier ist ein Problem
         return gameWon();
     }
 
     public int takenPlace(int place){
         for (int i = 0; i < pieces.length; i++) {
             if(pieces[i] == place){
-                System.out.println("hallo");
                 return i;
             }
         }
@@ -64,10 +71,21 @@ public class Player {
     }
 
     public boolean gameWon(){
-        String piecesPosition = pieces.toString();
-        if (piecesPosition.contains("49") && piecesPosition.contains("50") && piecesPosition.contains("51") && piecesPosition.contains("52")){
-            return true;
+        for (int i: pieces){
+            if (i<41) return false;
         }
-        return false;
+        return true;
+    }
+
+    public void setOpponent(Player opponent){
+        this.opponent = opponent;
+    }
+
+    public void kickOutOpponent(int position){
+        for (int i = 0; i < opponent.pieces.length; i++) {
+            if (opponent.pieces[i] != 0 && opponent.pieces[i] < 41 && opponent.pieces[i] + delta == position){
+                opponent.pieces[i] = 0;
+            }
+        }
     }
 }
