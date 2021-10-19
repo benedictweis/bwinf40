@@ -34,6 +34,7 @@ public class Player {
         for (int i = 0; i < pieces.length; i++) {
             if (number == 6 && pieces[i] == 1 && takenPlace(pieces[i] + number) == -1) {
                 pieces[i] += number;
+                return false;
             }
 
             if (number == 6 && pieces[i] == 0 && takenPlace(1) == -1) {
@@ -41,15 +42,15 @@ public class Player {
                 return false;
             }
             
-            if (pieces[i] > farthestPiece) {
+            if (pieces[i] > farthestPiece && pieces[i] + number < 53 && takenPlace(pieces[i] + number) == -1) {
                 farthestPiece = pieces[i];
                 farthestPieceIndex = i;
             }
         }
-        if (farthestPiece > 0 && takenPlace(pieces[farthestPieceIndex] + number) == -1) {
+        if (farthestPiece > 0) {
             pieces[farthestPieceIndex] += number;
         }
-        return true;
+        return gameWon();
     }
 
     public int takenPlace(int place){
@@ -60,5 +61,13 @@ public class Player {
             }
         }
         return -1;
+    }
+
+    public boolean gameWon(){
+        String piecesPosition = pieces.toString();
+        if (piecesPosition.contains("49") && piecesPosition.contains("50") && piecesPosition.contains("51") && piecesPosition.contains("52")){
+            return true;
+        }
+        return false;
     }
 }
