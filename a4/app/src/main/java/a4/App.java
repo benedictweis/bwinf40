@@ -77,9 +77,11 @@ public class App {
 
                 System.out.print(j + " VS " + i + ", ");
 
-                for (int k = 0; k < 100; k++) {
+                for (int k = 0; k < 1000; k++) {
                     Player p1 = new Player(dice.get(i), -20);
                     Player p2 = new Player(dice.get(j), 20);
+                    if (p1.faultyDice()) break;
+                    if (p2.faultyDice()) break;
                     p1.setOpponent(p2);
                     p2.setOpponent(p1);
 

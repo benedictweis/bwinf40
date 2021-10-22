@@ -57,7 +57,6 @@ public class Player {
             kickOutOpponent(pieces[farthestPieceIndex]);
         }
         if (number == 6 && !gameWon()) takeTurn();
-        // hier ist ein Problem
         return gameWon();
     }
 
@@ -87,5 +86,24 @@ public class Player {
                 opponent.pieces[i] = 0;
             }
         }
+    }
+
+    public boolean faultyDice(){
+        for (int i: die){
+            if (i != 6) return false;
+        }
+        return true;
+    }
+
+    public boolean possibleWin(){
+        for (int piece: pieces){
+            int lowestNumberOnDice = die[0];
+            int distanceToWin = 44-piece;
+            if(distanceToWin % lowestNumberOnDice != 0){
+                return false;
+            } 
+                
+        }
+        return true;
     }
 }
