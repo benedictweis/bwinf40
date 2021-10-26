@@ -94,7 +94,7 @@ public class SchiebeParkplatz
             } else {
                 System.out.println(straight[straightIndex]+": No solution for this car");
             }
-            resetCars();
+            resetParallelCars();
         }
     }
 
@@ -142,7 +142,7 @@ public class SchiebeParkplatz
     /**
      *  resets the parallel cars to their original position
      **/
-    private void resetCars(){
+    private void resetParallelCars(){
         for(int i=0;i<parallel.length;i++){ //overwriting the array with "null"
             parallel[i]=null;
         }
@@ -222,7 +222,7 @@ public class SchiebeParkplatz
         } else{
             for(int i=1;i>=0;i--){// for-loop to get both directions
                 moveParallelCar(straightIndex, (1+secondChar)*(1-i)+(2-secondChar)*i, straightIndex, i);
-                resetCars();
+                resetParallelCars();
             }
             if(selectSolution[1]==null && selectSolution[0]==null){
                 return false;
@@ -237,5 +237,8 @@ public class SchiebeParkplatz
             }
             return true;
         }
+    }
+    public int[] test(){
+        return parallelAuto.calcFreeSpace(0);
     }
 }
