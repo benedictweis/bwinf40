@@ -1,4 +1,4 @@
-# Willkommen 👋
+# Willkommen 👋✌️
 
 ## 40. Bundeswettbewerb Informatik
 
