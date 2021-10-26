@@ -6,17 +6,20 @@ package a4;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class App {
+
     static ArrayList<int[]> dice = new ArrayList<int[]>();
+
     public static void main(String[] args) {
         // to run with custom test Files replace yourPath with the path of that file:
         // ./gradlew run --args="yourPath"
         // Standard test file
         File file = new File("src/main/resources/wuerfel0.txt");
-        
-        //reading out path from arguments
+
+        // reading out path from arguments
         if (args.length == 1) {
             try {
                 file = new File(args[0]);
@@ -27,6 +30,7 @@ public class App {
 
         System.out.println(file.getAbsolutePath());
 
+        // reading out data
         ArrayList<String> lines = new ArrayList<String>();
 
         try {
@@ -48,14 +52,132 @@ public class App {
             e.printStackTrace();
         }
 
-        for (int i = 1; i<lines.size(); i++){
+        // adding data to array dice
+        for (int i = 1; i < lines.size(); i++) {
+
             String[] faces = lines.get(i).split(" ");
-            int[] die = new int[faces.length];
-            for (int j = 0; j<faces.length; j++){
-                die[j] = Integer.parseInt(faces[j]);
+            int[] die = new int[faces.length - 1];
+
+            for (int j = 1; j < faces.length; j++) {
+
+                die[j - 1] = Integer.parseInt(faces[j]);
             }
+
             dice.add(die);
         }
 
+        for (int[] die : dice) {
+            for (int i = 0; i < die.length; i++) {
+                System.out.print(die[i] + " ");
+            }
+            System.out.println();
+        }
+
+        // running rounds
+        int[] wins = new int[dice.size()];
+
+        for (int j = 0; j < dice.size(); j++) {
+            for (int i = j + 1; i < dice.size(); i++) {
+
+                System.out.print(j + " VS " + i + ", ");
+
+                playRound(j, i, wins, 500);
+
+            }
+        }
+
+        // making sure no dice have the same amount of wins
+        HashMap<Integer, Integer> sameWins = new HashMap<Integer, Integer>();
+        boolean inProgress = true;
+        while (inProgress) {
+            sameWins.clear();
+            for (int i = 0; i < dice.size(); i++) {
+                if (sameWins.containsKey(i))
+                    playRound(i, sameWins.get(i), wins, 10);
+            }
+            for (int i = 0; i < dice.size(); i++) {
+                for (int j = i + 1; j < dice.size(); j++) {
+                    if (wins[i] == wins[j])
+                        sameWins.put(i, j);
+                }
+            }
+            if (sameWins.isEmpty())
+                inProgress = false;
+        }
+
+        // printing results
+        System.out.println("");
+
+        int currentBest = 0;
+        for (int i = 0; i < wins.length; i++) {
+            if (wins[i] > wins[currentBest]) {
+                currentBest = i;
+            }
+            System.out.println("dice " + i + ": " + wins[i]);
+        }
+
+        System.out.println("best dice: " + currentBest);
+
+    }
+
+    /**
+     * Plays a specified amount of rounds with two dices, switching who starts to
+     * ensure fairness.
+     * 
+     * @param id1    Index of first die in dice[].
+     * @param id2    Index of second die in dice[].
+     * @param wins   Array of integers to write wins to.
+     * @param rounds The amount of rounds played. Each round includes 2 games, one
+     *               with each dice starting.
+     */
+    private static void playRound(int id1, int id2, int[] wins, int rounds) {
+        for (int k = 0; k < rounds; k++) {
+
+            Player p1 = new Player(dice.get(id1), -20);
+            Player p2 = new Player(dice.get(id2), 20);
+            if (p1.faultyDice())
+                break;
+            if (p2.faultyDice())
+                break;
+            p1.setOpponent(p2);
+            p2.setOpponent(p1);
+
+            while (true) {
+
+                if (p1.takeTurn()) {
+                    wins[id1]++;
+                    break;
+                }
+
+                if (p2.takeTurn()) {
+                    wins[id2]++;
+                    break;
+                }
+
+                if (!p1.possibleWin() && !p2.possibleWin())
+                    break;
+            }
+
+            p1 = new Player(dice.get(id1), -20);
+            p2 = new Player(dice.get(id2), 20);
+            p1.setOpponent(p2);
+            p2.setOpponent(p1);
+
+            while (true) {
+
+                if (p2.takeTurn()) {
+                    wins[id2]++;
+                    break;
+                }
+
+                if (p1.takeTurn()) {
+                    wins[id1]++;
+                    break;
+                }
+
+                if (!p1.possibleWin() && !p2.possibleWin())
+                    break;
+            }
+        }
     }
 }
