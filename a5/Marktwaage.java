@@ -8,9 +8,13 @@ public class Marktwaage{
     ArrayList<String> lines;
     String[] parts;
     String gewichte;
+    char binarGA[];
+    char binarGG[];
 
     public Marktwaage(String input){
         einlesen(input);
+        binarGG=new char[lines.size()-1];
+        binarGA=new char[lines.size()-1];
     }
 
     public Marktwaage(){
@@ -38,83 +42,33 @@ public class Marktwaage{
         }
     }
 
-    public void wiegen(){
-        for(int i = 10; i <= 10000; i += 10){
-            if(istMöglich(i) == true){
-                System.out.println(i +" g: möglich");
-            } else{
-                System.out.println(i +" g: nicht möglich");
-            }
-        }
-    }
-
-    public boolean istMöglich(int gewicht){
-        int startgewicht = gewicht;
-        int diff;
-
-        //wenn das gesuchte Gewicht bereits unter unseren Gewichten vorhanden ist, ist es möglich
-        for(int i = 1; i < lines.size(); i++){
-            if(startgewicht == Integer.parseInt(lines.get(i))){
-                return true;
-            }
-        }
-
-        for(int i = lines.size() - 1; i > 0; i--){
-            if((gewicht - Integer.parseInt(lines.get(i))) >= 0){
-                gewicht -= Integer.parseInt(lines.get(i));
-                if(gewicht == 0){
-                    return true;
-                }
-            }
-        }
-
-        for(int j = lines.size() - 1; j > 0; j--){
-            int jWert = Integer.parseInt(lines.get(j));
-            for(int i = lines.size() - 1; i > 0; i--){
-                int iWert = Integer.parseInt(lines.get(i));
-                if(jWert - iWert >= startgewicht){
-                    jWert -= iWert;
-                    if(jWert == startgewicht){
-                        return true;
-                    }
-                }
-            }
-        } 
-        
-        for(int i = lines.size() - 1; i > 0; i--){
-            int iWert = Integer.parseInt(lines.get(i));
-            System.out.println("i: " + iWert);
-            for(int j = 1; j < lines.size(); j++){
-                int jWert = Integer.parseInt(lines.get(j));
-                System.out.println("j: " + jWert);
-                for(int k = lines.size() - 1; k > 0; k--){
-                    int kWert = Integer.parseInt(lines.get(k));
-                    System.out.println("k: " + kWert);
-                    
-                    iWert += jWert;
-                    System.out.println(iWert);
-                    if(iWert - kWert >= startgewicht){
-                        System.out.println(iWert + " - " + kWert);
-                        iWert -= kWert;
-                        if(iWert == startgewicht){
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        
-        //ungeloeste.add(startgewicht);
-        return false;
-    }
-}
-
-/*    public void NilsMethode(){
+    public void alleGewichte(){
         for(int i=10;i<=10000;i+=10){
-            if(noRekursion(i)){
-                System.out.println(i +" g: möglich");
+            int abstand=wiege(i);
+            if(abstand==0){
+                String links="";
+                String rechts="";
+
+                System.out.println(i +" g: \tmöglich");
+                for(int j=0;j<binarGA.length;j++){
+                    if(binarGA[j]=='1'){
+                        links+=(lines.get(j+1)+"g, ");
+                    }
+                }
+                System.out.println("linke Seite: \t"+links);
+                for(int j=0;j<binarGG.length;j++){
+                    if(binarGG[j]=='1'){
+                        rechts+=(lines.get(j+1)+"g, ");
+                    }
+                }
+                System.out.println("rechte Seite: \t"+rechts);
+                System.out.println();
+                System.out.println();
             }else{
-                System.out.println(i +" g: nicht möglich");
+                System.out.println(i +" g: \tnicht möglich");
+                System.out.println("niedrigester Abstand:\t"+abstand+"g");
+                System.out.println();
+                System.out.println();
             }
         }
     }
@@ -127,90 +81,110 @@ public class Marktwaage{
         return ergebnis;
     }
 
-    public boolean noRekursion(int gewicht){
-        String binar="1";
-        int gegengewicht;
-        int gewichtsadd;
+    private int wiege(int gewicht){
+        int abstand=10000;
+        int maxgewicht=0;
         for(int i=1;i<lines.size();i++){
-            binar+="0";
+            maxgewicht+=Integer.parseInt(lines.get(i));
         }
-        for(int i=0;i<3;i++){
-            for(int k=0;k<potenzieren(2,(lines.size()-1));k++){
-                gegengewicht=0;
-                gewichtsadd=0;
-                char[] tf=binar.toCharArray();
-                for(int h=0;h<(tf.length-1);h++){
-                    if(tf[h]=='1'){
-                        gegengewicht+=Integer.parseInt(lines.get(h+1));
+
+        binarGG[0]='1';
+        for(int i=1;i<binarGG.length;i++){
+            binarGG[i]='0';
+        }
+
+        binarGA[0]='0';
+        for(int x=1;x<(binarGA.length);x++){
+            binarGA[x]='0';
+        }
+
+        int gegengewicht=0;
+        for(int i=0;i<(potenzieren(2,binarGG.length));i++){
+            gegengewicht=0;
+            for(int j=0;j<binarGG.length;j++){
+                if(binarGG[j]=='1'){
+                    gegengewicht+=Integer.parseInt(lines.get(j+1));
+                }
+            }
+
+            if(gegengewicht==gewicht){
+                return 0;
+            }else if(gegengewicht>gewicht){
+                break;
+            }
+            binarGG=binarAddieren(binarGG);
+            if(abstand>Math.abs((gewicht-gegengewicht))){
+                abstand=Math.abs((gewicht-gegengewicht));
+            }
+        }
+
+        while(true){
+            gegengewicht=0;
+            for(int j=0;j<binarGG.length;j++){
+                if(binarGG[j]=='1'){
+                    gegengewicht+=Integer.parseInt(lines.get(j+1));
+                }
+            }
+
+            binarGA[0]='1';
+            for(int x=1;x<(binarGA.length);x++){
+                binarGA[x]='0';
+            }
+
+            while(true){
+                if(binarGA[0]=='#'){
+                    break;
+                }
+                int gewichtsadd=0;
+
+                for(int j=0;j<binarGA.length;j++){
+                    if(binarGA[j]=='1'){
+                        gewichtsadd+=Integer.parseInt(lines.get(j+1));
                     }
                 }
-                for(int h=0;h<(tf.length-1);h++){
-                    if(tf[h]=='2'){
-                        gewichtsadd+=Integer.parseInt(lines.get(h+1));
-                    }
+
+                if(gewichtsadd>=gegengewicht){
+                    break;
                 }
-                if(gegengewicht==(gewicht-gewichtsadd)){
-                    return true;
+
+                if((gegengewicht==(gewicht+gewichtsadd))){
+                    return 0;
                 }else{
-                    binar=binarAddieren(binar,i);
+                    binarGA=trinarAddieren(binarGA,binarGG);
                 }
+            }
+            if(gegengewicht==maxgewicht){
+                break;
+            }
+            binarGG=binarAddieren(binarGG);
+        }
+        return abstand;
+    }
+
+    private char[] binarAddieren(char[] binar){
+        for(int i=0;i<binar.length;i++){
+            if(binar[i]=='0'){
+                binar[i]='1';
+                for(int h=(i-1);h>=0;h--){
+                    binar[h]='0';
+                }
+                break;
             }
         }
-        
-        return nähsterIndex;
+        return binar;
     }
-}
 
-    private String binarAddieren(String binar, int durchgang){
-        String ausgabe="";
-        char[] ne=binar.toCharArray();
-
-        if(durchgang==0){
-            for(int i=0;i<ne.length;i++){
-                if(ne[i]=='0'){
-                    ne[i]='1';
-                    for(int h=(i-1);h>=0;h--){
-                        ne[h]='0';
-                    }
-                    break;
+    private char[] trinarAddieren(char[] binar, char[] vorlage){
+        for(int i=0;i<vorlage.length;i++){
+            if(vorlage[i]=='0'&&binar[i]=='0'){
+                binar[i]='1';
+                for(int h=(i-1);h>=0;h--){
+                    binar[h]='0';
                 }
+                return binar;
             }
-            for(int i=0;i<ne.length;i++){
-                ausgabe+=ne[i];
-            }
-            return ausgabe;
-        } else if(durchgang==1){
-            for(int i=0;i<ne.length;i++){
-                if(ne[i]=='1'){
-                    ne[i]='2';
-                    for(int h=(i-1);h>=0;h--){
-                        ne[h]='1';
-                    }
-                    break;
-                }
-            }
-            for(int i=0;i<ne.length;i++){
-                ausgabe+=ne[i];
-            }
-            return ausgabe;
-        }else{
-            for(int i=(ne.length-1);i>=0;i--){
-                if(ne[i]=='2'){
-                    ne[i]='1';
-                    for(int h=(i+1);h<ne.length;h++){
-                        ne[h]='0';
-                    }
-                    break;
-                }
-            }
-            for(int i=0;i<ne.length;i++){
-                ausgabe+=ne[i];
-            }
-            return ausgabe;
         }
+        binar[0]='#';
+        return binar;
     }
 }
-<<<<<<< HEAD
-=======
-*/
->>>>>>> parent of 45a1a94 (doch noch hoffnung)
