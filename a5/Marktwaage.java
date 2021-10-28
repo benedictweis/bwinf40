@@ -7,6 +7,7 @@ public class Marktwaage{
 
     ArrayList<String> lines;
     ArrayList<String> uebrigeGewichte;
+    ArrayList<String> speicher;
     String[] parts;
     String gewichte;
     char binarGA[];
@@ -188,7 +189,7 @@ public class Marktwaage{
         binar[0]='#';
         return binar;
     }
-    
+
     public void maxHoffnung(){
         for(int i = 10; i <= 10000; i += 10){
             if(istMöglich(i) == true){
@@ -198,31 +199,79 @@ public class Marktwaage{
             }
         }
     }
-    
+
     public boolean istMöglich(int gewicht){
-        for(int i = lines.size() - 1; i > 0; i--){
-            if(gewicht == Integer.parseInt(lines.get(i))){
-                return true;
-            }
-        }
-        
+
         for(int i = lines.size() - 1; i > 0; i--){
             uebrigeGewichte = (ArrayList) lines.clone();
             int iWert = Integer.parseInt(lines.get(i));
             int gewichtrechts = iWert;
             uebrigeGewichte.remove(i);
-            System.out.println(uebrigeGewichte);
-            /*for(int j = 1 ; j < uebrigeGewichte.size(); j++){
-                int jWert = Integer.parseInt(uebrigeGewichte.get(j));
-                gewichtrechts += jWert;
-                uebrigeGewichte.remove(j);
-                System.out.println(gewichtrechts);
-            }*/
+            speicher = (ArrayList) uebrigeGewichte.clone();
+            int gewichterechtsSpeicher = gewichtrechts;
+
+            if(gewichtrechts == gewicht){
+                return true;
+            }
+
+            for(int p = 1; p < uebrigeGewichte.size() - 1; p++){
+                uebrigeGewichte = (ArrayList) speicher.clone();
+                gewichtrechts = gewichterechtsSpeicher;
+                int pWert = Integer.parseInt(uebrigeGewichte.get(p));
+                gewichtrechts += pWert;
+                uebrigeGewichte.remove(p);
+                System.out.println(uebrigeGewichte);
+
+                if(gewichtrechts == gewicht){
+                    return true;
+                }
+
+                for(int j = 1 ; j < lines.size() - 2; j++){
+                    int jWert = Integer.parseInt(uebrigeGewichte.get(1));
+                    gewichtrechts += jWert;
+                    uebrigeGewichte.remove(1);
+                    System.out.println(uebrigeGewichte);
+                    System.out.println(gewichtrechts);
+
+                    if(gewichtrechts == gewicht){
+                        return true;
+                    }
+
+                    int llllll = uebrigeGewichte.size() - 1;
+
+                    for(int k = llllll; k > 0; k--){
+                        int kWert = Integer.parseInt(uebrigeGewichte.get(k));
+                        int gewichtlinks = kWert;
+                        uebrigeGewichte.remove(k);
+                        System.out.println(uebrigeGewichte);
+                        System.out.println(gewichtlinks);
+
+                        if((gewichtrechts - gewichtlinks) == gewicht){
+                            return true;
+                        }
+
+                        int kkkkkk = uebrigeGewichte.size() - 1;
+
+                        for(int l = kkkkkk; l > 0; l--){
+                            int lWert = Integer.parseInt(uebrigeGewichte.get(l));
+                            gewichtlinks += lWert;
+                            uebrigeGewichte.remove(l);
+
+                            System.out.println(uebrigeGewichte);
+                            System.out.println(gewichtlinks);
+
+                            if((gewichtrechts - gewichtlinks) == gewicht){
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
         }
-        
+
         return false;
     }
-    
+
     public void test(){
         uebrigeGewichte = (ArrayList) lines;
     }
