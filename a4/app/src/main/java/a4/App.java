@@ -66,20 +66,11 @@ public class App {
             dice.add(die);
         }
 
-        for (int[] die : dice) {
-            for (int i = 0; i < die.length; i++) {
-                System.out.print(die[i] + " ");
-            }
-            System.out.println();
-        }
-
         // running rounds
         int[] wins = new int[dice.size()];
 
         for (int j = 0; j < dice.size(); j++) {
             for (int i = j + 1; i < dice.size(); i++) {
-
-                System.out.print(j + " VS " + i + ", ");
 
                 playRound(j, i, wins, 500);
 
