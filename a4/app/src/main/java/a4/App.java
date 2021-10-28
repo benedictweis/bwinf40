@@ -93,11 +93,11 @@ public class App {
             sameWins.clear();
             for (int i = 0; i < dice.size(); i++) {
                 if (sameWins.containsKey(i))
-                    playRound(i, sameWins.get(i), wins, 10);
+                    playRound(i, sameWins.get(i), wins, 2);
             }
             for (int i = 0; i < dice.size(); i++) {
                 for (int j = i + 1; j < dice.size(); j++) {
-                    if (wins[i] == wins[j])
+                    if (wins[i] == wins[j] && wins[i] != 0)
                         sameWins.put(i, j);
                 }
             }
