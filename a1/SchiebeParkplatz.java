@@ -76,11 +76,11 @@ public class SchiebeParkplatz
         if(canSolve()==0){
             System.out.println("\nNote:\nBased on the composition of the parallel cars, no Solution for the straight cars exist");
         } else {
-            AutosAusparken();
+            autosAusparken();
         }
     }
 
-    protected void AutosAusparken()
+    protected void autosAusparken()
     {   
         if(canSolve()==0.5){
             System.out.println("\nNote:\nBased on the composition of the parallel cars, not all of the straight cars have a Solution");
