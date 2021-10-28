@@ -6,7 +6,6 @@ import java.util.Scanner;
 public class Marktwaage{
 
     ArrayList<String> lines;
-    ArrayList<String> uebrigeGewichte;
     String[] parts;
     String gewichte;
     char binarGA[];
@@ -187,43 +186,5 @@ public class Marktwaage{
         }
         binar[0]='#';
         return binar;
-    }
-    
-    public void maxHoffnung(){
-        for(int i = 10; i <= 10000; i += 10){
-            if(istMöglich(i) == true){
-                System.out.println(i + " g ist möglich");
-            } else{
-                System.out.println(i + " g ist nicht möglich");
-            }
-        }
-    }
-    
-    public boolean istMöglich(int gewicht){
-        for(int i = lines.size() - 1; i > 0; i--){
-            if(gewicht == Integer.parseInt(lines.get(i))){
-                return true;
-            }
-        }
-        
-        for(int i = lines.size() - 1; i > 0; i--){
-            uebrigeGewichte = (ArrayList) lines.clone();
-            int iWert = Integer.parseInt(lines.get(i));
-            int gewichtrechts = iWert;
-            uebrigeGewichte.remove(i);
-            System.out.println(uebrigeGewichte);
-            /*for(int j = 1 ; j < uebrigeGewichte.size(); j++){
-                int jWert = Integer.parseInt(uebrigeGewichte.get(j));
-                gewichtrechts += jWert;
-                uebrigeGewichte.remove(j);
-                System.out.println(gewichtrechts);
-            }*/
-        }
-        
-        return false;
-    }
-    
-    public void test(){
-        uebrigeGewichte = (ArrayList) lines;
     }
 }
