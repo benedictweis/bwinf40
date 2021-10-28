@@ -16,4 +16,3 @@ TODO:	moveDirection verschiebt alles nur nur rechts und gibt bei geplanter linke
 	Fehlermöglichkeiten: 	2 freie Autoplätze: alle sollten eine lösung haben
 				1 freier Platz: nur die hälte sind lösbar
 				0 Plätze: keine lösungen möglich
-				
