@@ -10,11 +10,23 @@ public class Marktwaage{
     String gewichte;
     char binarGA[];
     char binarGG[];
+    boolean datei=true;
+    long maxgewicht;
 
     public Marktwaage(String input){
         einlesen(input);
-        binarGG=new char[lines.size()-1];
-        binarGA=new char[lines.size()-1];
+        try{
+            binarGG=new char[lines.size()-1];
+            binarGA=new char[lines.size()-1];
+        }catch(NegativeArraySizeException e){
+            System.out.println("Datei nicht gefunden");
+            datei=false;
+        }
+        if(datei){
+            for(int i=1;i<lines.size();i++){
+                maxgewicht+=Long.parseLong(lines.get(i));
+            }
+        }
     }
 
     public Marktwaage(){
@@ -43,8 +55,13 @@ public class Marktwaage{
     }
 
     public void alleGewichte(){
+        if(!datei){
+            System.out.println("keine Gewichte vorhanden");
+            return;
+        }
+
         for(int i=10;i<=10000;i+=10){
-            int abstand=wiege(i);
+            long abstand=wiege(i);
             if(abstand==0){
                 String links="";
                 String rechts="";
@@ -81,30 +98,28 @@ public class Marktwaage{
         return ergebnis;
     }
 
-    private int wiege(int gewicht){
-        int abstand=10000;
-        int maxgewicht=0;
-        for(int i=1;i<lines.size();i++){
-            maxgewicht+=Integer.parseInt(lines.get(i));
-        }
+    private long wiege(int input){
+        long gewicht=Long.valueOf(input);
+        long abstand=10000;
 
         binarGG[0]='1';
+        binarGA[0]='0';
         for(int i=1;i<binarGG.length;i++){
             binarGG[i]='0';
+            binarGA[i]='0';
         }
 
-        binarGA[0]='0';
-        for(int x=1;x<(binarGA.length);x++){
-            binarGA[x]='0';
-        }
-
-        int gegengewicht=0;
+        long gegengewicht=0;
         for(int i=0;i<(potenzieren(2,binarGG.length));i++){
             gegengewicht=0;
             for(int j=0;j<binarGG.length;j++){
                 if(binarGG[j]=='1'){
-                    gegengewicht+=Integer.parseInt(lines.get(j+1));
+                    gegengewicht+=Long.parseLong(lines.get(j+1));
                 }
+            }
+
+            if(abstand>Math.abs((gewicht-gegengewicht))){
+                abstand=Math.abs((gewicht-gegengewicht));
             }
 
             if(gegengewicht==gewicht){
@@ -112,17 +127,17 @@ public class Marktwaage{
             }else if(gegengewicht>gewicht){
                 break;
             }
-            binarGG=binarAddieren(binarGG);
-            if(abstand>Math.abs((gewicht-gegengewicht))){
-                abstand=Math.abs((gewicht-gegengewicht));
+            if(gegengewicht==maxgewicht){
+                break;
             }
+            binarGG=binarAddieren(binarGG,gegengewicht);
         }
 
         while(true){
             gegengewicht=0;
             for(int j=0;j<binarGG.length;j++){
                 if(binarGG[j]=='1'){
-                    gegengewicht+=Integer.parseInt(lines.get(j+1));
+                    gegengewicht+=Long.parseLong(lines.get(j+1));
                 }
             }
 
@@ -135,11 +150,11 @@ public class Marktwaage{
                 if(binarGA[0]=='#'){
                     break;
                 }
-                int gewichtsadd=0;
+                long gewichtsadd=0;
 
                 for(int j=0;j<binarGA.length;j++){
                     if(binarGA[j]=='1'){
-                        gewichtsadd+=Integer.parseInt(lines.get(j+1));
+                        gewichtsadd+=Long.parseLong(lines.get(j+1));
                     }
                 }
 
@@ -150,18 +165,19 @@ public class Marktwaage{
                 if((gegengewicht==(gewicht+gewichtsadd))){
                     return 0;
                 }else{
-                    binarGA=trinarAddieren(binarGA,binarGG);
+                    binarGA=trinarAddieren(binarGA,binarGG,gewichtsadd);
                 }
             }
-            if(gegengewicht==maxgewicht){
+            if(gegengewicht>=maxgewicht){
                 break;
             }
-            binarGG=binarAddieren(binarGG);
+            binarGG=binarAddieren(binarGG,gegengewicht);
         }
         return abstand;
     }
 
-    private char[] binarAddieren(char[] binar){
+    private char[] binarAddieren(char[] binar,long davor){
+        long neu=0;
         for(int i=0;i<binar.length;i++){
             if(binar[i]=='0'){
                 binar[i]='1';
@@ -171,20 +187,56 @@ public class Marktwaage{
                 break;
             }
         }
-        return binar;
+
+        for(int j=0;j<binar.length;j++){
+            if(binar[j]=='1'){
+                neu+=Long.parseLong(lines.get(j+1));
+            }
+        }
+
+        if(neu==davor){
+            return binarAddieren(binar,davor);
+        }else{
+            return binar;
+        }
     }
 
-    private char[] trinarAddieren(char[] binar, char[] vorlage){
+    private char[] trinarAddieren(char[] binar, char[] vorlage, long davor){
+        long neu=0;
+        boolean aktiv=false;
+        int index=0;
+
         for(int i=0;i<vorlage.length;i++){
+            if(vorlage[i]=='1'){
+                index=i;
+            }
+        }
+
+        for(int i=0;i<index;i++){
             if(vorlage[i]=='0'&&binar[i]=='0'){
                 binar[i]='1';
                 for(int h=(i-1);h>=0;h--){
                     binar[h]='0';
                 }
-                return binar;
+                aktiv=true;
+                break;
             }
         }
-        binar[0]='#';
-        return binar;
+        if(!aktiv){
+            binar[0]='#';
+            return binar;
+        }
+
+        for(int j=0;j<binar.length;j++){
+            if(binar[j]=='1'){
+                neu+=Long.parseLong(lines.get(j+1));
+            }
+        }
+
+        if(neu==davor){
+            return trinarAddieren(binar,vorlage,davor);
+        }else{
+            return binar;
+        }
     }
 }
