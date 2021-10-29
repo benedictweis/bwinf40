@@ -15,7 +15,8 @@ public class App {
 
         // Reading out the test data as String and entering into lines
         // to run with custom test Files replace yourPath with the path of that file:
-        // ./gradlew run --args="yourPath"
+        // dev: ./gradlew run --args=<yourPath>
+        // prod: java -jar a2.jar <yourPath>
         // Standard test file
         File file = new File("src/main/resources/hotels1.txt");
         
