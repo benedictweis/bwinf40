@@ -15,7 +15,8 @@ public class App {
 
     public static void main(String[] args) {
         // to run with custom test Files replace yourPath with the path of that file:
-        // ./gradlew run --args="yourPath"
+        // dev: ./gradlew run --args=<yourPath>
+        // prod: java -jar a4.jar <yourPath>
         // Standard test file
         File file = new File("src/main/resources/wuerfel0.txt");
 
