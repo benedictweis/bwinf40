@@ -170,20 +170,22 @@ public class SchiebeParkplatz
     private void calcMovement(int parallelIndex, int distance, int direction){
         String parallelName=parallel[parallelIndex];
         int secondChar=parallelAuto.calcSecondChar(parallelIndex);
-        if((distance==1)&&
-        (direction==1)){
-            parallel[parallelIndex+(1+secondChar)]=parallelName;
-            parallel[parallelIndex-(1-secondChar)]=null;
+        /*
+           parallel[parallelIndex+(2+secondChar)*direction-(3-secondChar)*(1-direction)]=parallelName;
+            parallel[parallelIndex+(1+secondChar)*direction-(2-secondChar)*(1-direction)]=parallelName;
+            parallel[parallelIndex+secondChar*direction-(1-secondChar)*(1-direction)]=null;
+            parallel[parallelIndex-(1-secondChar)*direction+secondChar*(1-direction)]=null;
+        
+           */
+        if(direction==1){
+            parallel[parallelIndex+(1+secondChar)*direction-(2-secondChar)*(1-direction)]=parallelName;
+            parallel[parallelIndex-(1-secondChar)*direction+secondChar*(1-direction)]=null;
         } else if((distance==2)&&
         (direction==1)){
-            parallel[parallelIndex+(2+secondChar)]=parallelName;
-            parallel[parallelIndex+(1+secondChar)]=parallelName;
-            parallel[parallelIndex+secondChar]=null;
-            parallel[parallelIndex-(1-secondChar)]=null;
-        } else if((distance==1)&&
-        (direction==0)){
-            parallel[parallelIndex-(2-secondChar)]=parallelName;
-            parallel[parallelIndex+(secondChar)]=null;
+            parallel[parallelIndex+(2+secondChar)*direction]=parallelName;
+            parallel[parallelIndex+(1+secondChar)*direction]=parallelName;
+            parallel[parallelIndex+secondChar*direction]=null;
+            parallel[parallelIndex-(1-secondChar)*direction]=null;
         } else if((distance==2)&&
         (direction==0)){
             parallel[parallelIndex-(3-secondChar)]=parallelName;
