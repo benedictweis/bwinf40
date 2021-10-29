@@ -5,9 +5,9 @@ import java.util.Scanner;
 import java.util.Arrays;
 public class main{
     public static void main(String[]args){
-        String fileName="./examples/parkplatz"+args[0]+".txt";
-        for(;;){
-            File file=new File(fileName);
+        for(int i=0;i<args.length;i++){
+            String fileName="./examples/parkplatz"+args[i]+".txt";
+            File file=new File(args[i]);
             if(file==null){
             }else {
                 new SchiebeParkplatz(fileName);   
