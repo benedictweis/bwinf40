@@ -22,7 +22,7 @@ public class SchiebeParkplatz
         //Initializing variables for the visualization
         String visualizeStraight = "";
         String visualizeParallel = "";
-        /* Reading File */
+        //Reading File
         try{
             File file = new File(filePath);
             Scanner scanner = new Scanner(file);
@@ -33,12 +33,9 @@ public class SchiebeParkplatz
             System.out.println("ERROR: Invalid filename");            
             return;
         }
-        /* Getting each char, line by line  */
-        String firstln[]=lines.get(0).split(" ");
-        String thirdln[]=lines.get(2).split(" ");
-        /* Filling array with the straight-cars */
+        //Filling array with the straight-cars
         for(int i=0;i<alphabet.length;i++){
-            if(alphabet[i].equalsIgnoreCase(firstln[1])){
+            if(alphabet[i].equalsIgnoreCase(lines.get(0).split(" ")[1])){
                 straight=new String[i+1];
                 parallel=new String[i+1];
                 for(int j=0;j<straight.length;j++){
@@ -46,20 +43,17 @@ public class SchiebeParkplatz
                 }
             }
         }
-        /* Filling array with the parallel-cars */
+        //Filling array with the parallel-cars
         for(int i=2;i<lines.size();i++){
             String parallelln[]=lines.get(i).split(" ");
             parallel[Integer.parseInt(parallelln[1])+1]=parallelln[0];
             parallel[Integer.parseInt(parallelln[1])]=parallelln[0];
         }
-        
         //copying the parallel cars to the other method
         parallelAuto=new ParallelAuto(parallel);
-        
         for(int i = 0; i<straight.length; i++){
             visualizeStraight += straight[i]+" ";
         }
-
         for(int i = 0; i<parallel.length; i++){
             if(parallel[i]!=null){
                 visualizeParallel += parallel[i]+" ";
@@ -69,14 +63,7 @@ public class SchiebeParkplatz
         }
         finalSolution=new String[straight.length];
         // Visualization of the two arrays for better understanding of the solution
-        String test="";
-        for(int i=0;i<50;i++){
-            test+="-";
-        }
-        System.out.println(test);
-        System.out.println("Searching solution of: \""+filePath+"\" ☺\n");
-        System.out.println("straight cars: \t"+visualizeStraight);
-        System.out.println("parallel cars: \t"+visualizeParallel);
+        visualization(filePath, visualizeStraight, visualizeParallel);
         if(canSolve()==0){
             System.out.println("\nNote:\nBased on the composition of the parallel cars, no Solution for the straight cars exist");
         } else {
@@ -207,6 +194,17 @@ public class SchiebeParkplatz
             return 1;
         }
         return -1;
+    }
+    
+    private void visualization(String filePath, String visualizeStraight, String visualizeParallel){
+        String spacer="";
+        for(int i=0;i<50;i++){
+            spacer+="#";
+        }
+        System.out.println(spacer);
+        System.out.println("Searching solution of: \""+filePath+"\" ☺\n");
+        System.out.println("straight cars: \t"+visualizeStraight);
+        System.out.println("parallel cars: \t"+visualizeParallel);
     }
 
     private boolean selectShorterPath(int straightIndex){
