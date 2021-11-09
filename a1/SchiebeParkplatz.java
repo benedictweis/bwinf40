@@ -237,7 +237,4 @@ public class SchiebeParkplatz
             return true;
         }
     }
-    public int[] test(){
-        return parallelAuto.calcFreeSpace(0);
-    }
 }
