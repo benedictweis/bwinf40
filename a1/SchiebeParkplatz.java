@@ -15,17 +15,16 @@ public class SchiebeParkplatz
      *  fills the straight- & parallel-car arrays with the content of the .txt file
      *  and doing some visuialization stuff for better understanding of the solution
      **/
-    public SchiebeParkplatz(int fileIndex)
+    public SchiebeParkplatz(String filePath)
     {   
         //Clearing the console
-        System.out.print('\u000C');
+        //System.out.print('\u000C');
         //Initializing variables for the visualization
-        String fileName="./examples/parkplatz"+fileIndex+".txt";
         String visualizeStraight = "";
         String visualizeParallel = "";
         /* Reading File */
         try{
-            File file = new File(fileName);
+            File file = new File(filePath);
             Scanner scanner = new Scanner(file);
             while(scanner.hasNext()){
                 lines.add(scanner.nextLine());
@@ -70,7 +69,12 @@ public class SchiebeParkplatz
         }
         finalSolution=new String[straight.length];
         // Visualization of the two arrays for better understanding of the solution
-        System.out.println("Searching solution of: \""+fileName+"\" ☺\n");
+        String test="";
+        for(int i=0;i<50;i++){
+            test+="-";
+        }
+        System.out.println(test);
+        System.out.println("Searching solution of: \""+filePath+"\" ☺\n");
         System.out.println("straight cars: \t"+visualizeStraight);
         System.out.println("parallel cars: \t"+visualizeParallel);
         if(canSolve()==0){
@@ -170,29 +174,24 @@ public class SchiebeParkplatz
     private void calcMovement(int parallelIndex, int distance, int direction){
         String parallelName=parallel[parallelIndex];
         int secondChar=parallelAuto.calcSecondChar(parallelIndex);
-        if((distance==1)&&
-        (direction==1)){
-            parallel[parallelIndex+(1+secondChar)]=parallelName;
-            parallel[parallelIndex-(1-secondChar)]=null;
-        } else if((distance==2)&&
-        (direction==1)){
-            parallel[parallelIndex+(2+secondChar)]=parallelName;
-            parallel[parallelIndex+(1+secondChar)]=parallelName;
-            parallel[parallelIndex+secondChar]=null;
-            parallel[parallelIndex-(1-secondChar)]=null;
-        } else if((distance==1)&&
-        (direction==0)){
-            parallel[parallelIndex-(2-secondChar)]=parallelName;
-            parallel[parallelIndex+(secondChar)]=null;
-        } else if((distance==2)&&
-        (direction==0)){
-            parallel[parallelIndex-(3-secondChar)]=parallelName;
-            parallel[parallelIndex-(2-secondChar)]=parallelName;
-            parallel[parallelIndex-(1-secondChar)]=null;
-            parallel[parallelIndex+secondChar]=null;
+        
+        parallel[parallelIndex+((2+secondChar)*direction-(3-secondChar)*(1-direction))*(distance-1)+((1+secondChar)*direction-(2-secondChar)*(1-direction))*(2-distance)]=parallelName;
+        parallel[parallelIndex+((1+secondChar)*direction-(2-secondChar)*(1-direction))*(distance-1)+((1+secondChar)*direction-(2-secondChar)*(1-direction))*(2-distance)]=parallelName;
+        parallel[parallelIndex+(secondChar*direction-(1-secondChar)*(1-direction))*(distance-1)-((1-secondChar)*direction+secondChar*(1-direction))*(2-distance)]=null;
+        parallel[parallelIndex-((1-secondChar)*direction+secondChar*(1-direction))*(distance-1)-((1-secondChar)*direction+secondChar*(1-direction))*(2-distance)]=null;
+        /*
+        if(distance==1){
+            parallel[parallelIndex+(1+secondChar)*direction-(2-secondChar)*(1-direction)]=parallelName;
+            parallel[parallelIndex-(1-secondChar)*direction+secondChar*(1-direction)]=null;
+        } else if(distance==2){
+            parallel[parallelIndex+(2+secondChar)*direction-(3-secondChar)*(1-direction)]=parallelName;
+            parallel[parallelIndex+(1+secondChar)*direction-(2-secondChar)*(1-direction)]=parallelName;
+            parallel[parallelIndex+secondChar*direction-(1-secondChar)*(1-direction)]=null;
+            parallel[parallelIndex-(1-secondChar)*direction+secondChar*(1-direction)]=null;
         }
+        */
     }
-
+    
     private double canSolve(){
         int j=0;
         for(int i=0;i<parallel.length;i++){
