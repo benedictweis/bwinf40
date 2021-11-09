@@ -74,6 +74,7 @@ public class Marktwaage {
 
             System.out.println("linke Seite:\t"+links);
             System.out.println("rechte Seite:\t"+rechts);
+            System.out.println();
         }
     }
 
@@ -90,12 +91,11 @@ public class Marktwaage {
             if(binarGG[0]=='#'){
                 return;
             }
-
-            gegengewicht=0;
             for(int i=0;i<binarGA.length;i++){
                 binarGA[i]='0';
             }
 
+            gegengewicht=0;
             for(int i=0;i<binarGG.length;i++){
                 if(binarGG[i]=='1'){
                     gegengewicht+=Long.parseLong(lines.get(i+1));
@@ -113,40 +113,36 @@ public class Marktwaage {
                         gewichtsadd+=Long.parseLong(lines.get(i+1));
                     }
                 }
-                for(int i=10;i<1000;i++){
+                
                     long abstand;
+                    Daten neu=new Daten();
+                    abstand=Math.abs(gegengewicht-(i+gewichtsadd));
+                    neu.rechts.clear();
+                    neu.links.clear();
+
+                    for(int h=0;h<binarGG.length;h++){
+                        if(binarGG[h]=='1'){
+                            neu.rechts.add(Integer.parseInt(lines.get(h+1)));
+                        }
+                        if(binarGA[h]=='1'){
+                            neu.links.add(Integer.parseInt(lines.get(h+1)));
+                        }
+                    }
+                    
+                    for(int i=10;i<1000;i+=10){
                     if(hm.containsKey(i)){
                         Daten alt=hm.get(i);
-                        abstand=Math.abs(gegengewicht-(i+gewichtsadd));
                         if(alt.abstand>abstand){
-                            Daten neu=new Daten(i);
                             neu.abstand=abstand;
-                            for(int h=0;h<binarGG.length;h++){
-                                if(binarGG[h]=='1'){
-                                    neu.rechts.add(Integer.parseInt(lines.get(h+1)));
-                                }
-                                if(binarGA[h]=='1'){
-                                    neu.rechts.add(Integer.parseInt(lines.get(h+1)));
-                                }
-                            }
+                            hm.remove(i);
                             hm.put(i, neu);
                         }
                     }else{
-                        Daten neu=new Daten(i);
-                        abstand=Math.abs(gegengewicht-(i+gewichtsadd));
                         neu.abstand=abstand;
-                        for(int h=0;h<binarGG.length;h++){
-                            if(binarGG[h]=='1'){
-                                neu.rechts.add(Integer.parseInt(lines.get(h+1)));
-                            }
-                            if(binarGA[h]=='1'){
-                                neu.rechts.add(Integer.parseInt(lines.get(h+1)));
-                            }
-                        }
                         hm.put(i, neu);
                     }
                 }
-                binarGA=trinarAddieren(binarGA, binarGG, gewichtsadd);
+                binarGA=trinarAddieren(binarGA, binarGG, gewichtsadd, gegengewicht);
             }
             binarGG=binarAddieren(binarGG, gegengewicht);
         }
@@ -177,14 +173,14 @@ public class Marktwaage {
             }
         }
 
-        if (neu == davor) {
+        if (neu <= davor) {
             return binarAddieren(binar, davor);
         } else {
             return binar;
         }
     }
 
-    private char[] trinarAddieren(char[] binar, char[] vorlage, long davor) {
+    private char[] trinarAddieren(char[] binar, char[] vorlage, long davor, long gegengewicht) {
         long neu = 0;
         boolean aktiv = false;
         int index = 0;
@@ -205,10 +201,6 @@ public class Marktwaage {
                 break;
             }
         }
-        if (!aktiv) {
-            binar[0] = '#';
-            return binar;
-        }
 
         for (int j = 0; j < binar.length; j++) {
             if (binar[j] == '1') {
@@ -216,8 +208,13 @@ public class Marktwaage {
             }
         }
 
-        if (neu == davor) {
-            return trinarAddieren(binar, vorlage, davor);
+        if ((!aktiv)||(neu>=gegengewicht)) {
+            binar[0] = '#';
+            return binar;
+        }
+
+        if (neu <= davor) {
+            return trinarAddieren(binar, vorlage, davor, gegengewicht);
         } else {
             return binar;
         }
