@@ -53,7 +53,7 @@ public class SchiebeParkplatz
             parallel[Integer.parseInt(parallelln[1])]=parallelln[0];
         }
         
-        //coping the parallel cars to the other method
+        //copying the parallel cars to the other method
         parallelAuto=new ParallelAuto(parallel);
         
         for(int i = 0; i<straight.length; i++){
