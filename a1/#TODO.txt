@@ -1,13 +1,3 @@
-TODO:	moveDirection verschiebt alles nur nur rechts und gibt bei geplanter linker verschiebung einen error.	//done
-	parallelIndex=0 gibt error.(outOfBounce)	//done
-	rekursives calcFreeSpace weil z.B. p4 1 in die falsche richtung verschiebet(es sieht zwei 0)
-
-	p2, p3(letzten), 
-	index=15 == null(p5)
-	warscheinlich wegen findPath nicht gut
-	p98 jedes 2te. move left funktioniert nicht vlt auch wegen findPath
-	p1 e könnte o & p 1l verschieben, momentan q 1r  p 2r
-
 	Fehlermöglichkeiten: 	2 freie Autoplätze: alle sollten eine lösung haben
 				1 freier Platz: nur die hälte sind lösbar
 				0 Plätze: keine lösungen möglich
@@ -15,6 +5,7 @@ TODO:	moveDirection verschiebt alles nur nur rechts und gibt bei geplanter linke
 DOC:	Fehlende Methoden:
 	calcMovement
 	calcSolution
+
 	calcSecondChar(vlt nur 2-3 sätze)
 	calcFreeSpace(")
 	noCarBoundaries(")
