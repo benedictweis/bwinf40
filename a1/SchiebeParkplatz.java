@@ -11,17 +11,14 @@ public class SchiebeParkplatz
     String finalSolution[], straight[], parallel[];
     String selectSolution[]= new String[2];
     int iterations[]={0, 0};
+    String visualizeStraight="";
+    String visualizeParallel="";
     /**
      *  fills the straight- & parallel-car arrays with the content of the .txt file
      *  and doing some visuialization stuff for better understanding of the solution
      **/
     public SchiebeParkplatz(String filePath)
     {   
-        //Clearing the console
-        //System.out.print('\u000C');
-        //Initializing variables for the visualization
-        String visualizeStraight = "";
-        String visualizeParallel = "";
         //Reading File
         try{
             File file = new File(filePath);
@@ -40,6 +37,7 @@ public class SchiebeParkplatz
                 parallel=new String[i+1];
                 for(int j=0;j<straight.length;j++){
                     straight[j]=alphabet[j];
+                    visualizeStraight+=alphabet[j]+" ";
                 }
             }
         }
@@ -49,18 +47,15 @@ public class SchiebeParkplatz
             parallel[Integer.parseInt(parallelln[1])+1]=parallelln[0];
             parallel[Integer.parseInt(parallelln[1])]=parallelln[0];
         }
-        //copying the parallel cars to the other method
-        parallelAuto=new ParallelAuto(parallel);
-        for(int i = 0; i<straight.length; i++){
-            visualizeStraight += straight[i]+" ";
-        }
-        for(int i = 0; i<parallel.length; i++){
+        for(int i=0;i<parallel.length;i++){
             if(parallel[i]!=null){
                 visualizeParallel += parallel[i]+" ";
             } else {
                 visualizeParallel += "# ";
             }
         }
+        //copying the parallel cars to the other method
+        parallelAuto=new ParallelAuto(parallel);
         finalSolution=new String[straight.length];
         // Visualization of the two arrays for better understanding of the solution
         visualization(filePath, visualizeStraight, visualizeParallel);
@@ -161,24 +156,24 @@ public class SchiebeParkplatz
     private void calcMovement(int parallelIndex, int distance, int direction){
         String parallelName=parallel[parallelIndex];
         int secondChar=parallelAuto.calcSecondChar(parallelIndex);
-        
+
         parallel[parallelIndex+((2+secondChar)*direction-(3-secondChar)*(1-direction))*(distance-1)+((1+secondChar)*direction-(2-secondChar)*(1-direction))*(2-distance)]=parallelName;
         parallel[parallelIndex+((1+secondChar)*direction-(2-secondChar)*(1-direction))*(distance-1)+((1+secondChar)*direction-(2-secondChar)*(1-direction))*(2-distance)]=parallelName;
         parallel[parallelIndex+(secondChar*direction-(1-secondChar)*(1-direction))*(distance-1)-((1-secondChar)*direction+secondChar*(1-direction))*(2-distance)]=null;
         parallel[parallelIndex-((1-secondChar)*direction+secondChar*(1-direction))*(distance-1)-((1-secondChar)*direction+secondChar*(1-direction))*(2-distance)]=null;
         /*
         if(distance==1){
-            parallel[parallelIndex+(1+secondChar)*direction-(2-secondChar)*(1-direction)]=parallelName;
-            parallel[parallelIndex-(1-secondChar)*direction+secondChar*(1-direction)]=null;
+        parallel[parallelIndex+(1+secondChar)*direction-(2-secondChar)*(1-direction)]=parallelName;
+        parallel[parallelIndex-(1-secondChar)*direction+secondChar*(1-direction)]=null;
         } else if(distance==2){
-            parallel[parallelIndex+(2+secondChar)*direction-(3-secondChar)*(1-direction)]=parallelName;
-            parallel[parallelIndex+(1+secondChar)*direction-(2-secondChar)*(1-direction)]=parallelName;
-            parallel[parallelIndex+secondChar*direction-(1-secondChar)*(1-direction)]=null;
-            parallel[parallelIndex-(1-secondChar)*direction+secondChar*(1-direction)]=null;
+        parallel[parallelIndex+(2+secondChar)*direction-(3-secondChar)*(1-direction)]=parallelName;
+        parallel[parallelIndex+(1+secondChar)*direction-(2-secondChar)*(1-direction)]=parallelName;
+        parallel[parallelIndex+secondChar*direction-(1-secondChar)*(1-direction)]=null;
+        parallel[parallelIndex-(1-secondChar)*direction+secondChar*(1-direction)]=null;
         }
-        */
+         */
     }
-    
+
     private double canSolve(){
         int j=0;
         for(int i=0;i<parallel.length;i++){
@@ -195,13 +190,13 @@ public class SchiebeParkplatz
         }
         return -1;
     }
-    
+
     private void visualization(String filePath, String visualizeStraight, String visualizeParallel){
         String spacer="";
-        for(int i=0;i<50;i++){
-            spacer+="#";
+        for(int i=0;i<60;i++){
+            spacer+="*";
         }
-        System.out.println(spacer);
+        System.out.println("\n"+spacer+"\n");
         System.out.println("Searching solution of: \""+filePath+"\" ☺\n");
         System.out.println("straight cars: \t"+visualizeStraight);
         System.out.println("parallel cars: \t"+visualizeParallel);
