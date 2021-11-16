@@ -18,7 +18,7 @@ public class App {
         // dev: ./gradlew run --args=<yourPath>
         // prod: java -jar a4.jar <yourPath>
         // Standard test file
-        File file = new File("src/main/resources/wuerfel0.txt");
+        File file = new File("beispiele/wuerfel0.txt");
 
         // reading out path from arguments
         if (args.length == 1) {
