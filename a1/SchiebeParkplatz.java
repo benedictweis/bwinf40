@@ -2,8 +2,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
-//CODE REVIEW: java.util.Arrays is never used and can be removed
-import java.util.Arrays;
 
 public class SchiebeParkplatz {
     ParallelAuto parallelAuto;
@@ -12,22 +10,16 @@ public class SchiebeParkplatz {
     String finalSolution[], straight[], parallel[];
     String selectSolution[] = new String[2];
     int iterations[] = { 0, 0 };
-    String visualizeStraight = "";
-    String visualizeParallel = "";
-
-    /**
-     * fills the straight- & parallel-car arrays with the content of the .txt file
-     * and doing some visualization stuff to make the solution more human readable
-     **/
+    String visualizeStraight = "", visualizeParallel = "";
     public SchiebeParkplatz(String filePath) {
         // Reading File
         try {
             File file = new File(filePath);
-            // CODE REVIEW: Resource leak: 'scanner' is never closed
             Scanner scanner = new Scanner(file);
             while (scanner.hasNext()) {
                 lines.add(scanner.nextLine());
             }
+            scanner.close();
         } catch (FileNotFoundException e) {
             System.out.println("ERROR: Invalid filename");
             return;
@@ -87,11 +79,6 @@ public class SchiebeParkplatz {
         }
     }
 
-    /**
-     * moves the selected parallel car one or two positions to the right index:
-     * location of the car distance: how many positions the car shall be moved
-     * parallelIndex: to which car the operations should be associated with
-     **/
     private boolean moveParallelCar(int parallelIndex, int distance, int straightIndex, int direction) {
         int secondChar = parallelAuto.calcSecondChar(parallelIndex);
         int freePath = parallelAuto.calcFreeSpace(parallelIndex)[direction];
@@ -124,22 +111,23 @@ public class SchiebeParkplatz {
             return false;
         }
     }
-
-    /**
-     * resets the parallel cars to their original position
-     **/
+    
+    //Resettet the parallel cars to their original position
     private void resetParallelCars() {
-        for (int i = 0; i < parallel.length; i++) { // overwriting the array with "null"
+        // overwriting the array with "null"
+        for (int i = 0; i < parallel.length; i++) {
             parallel[i] = null;
         }
-        for (int i = 2; i < lines.size(); i++) { // refilling it with the data from the .txt file
+        // refilling it with the data from the .txt file
+        for (int i = 2; i < lines.size(); i++) {
             String parallelln[] = lines.get(i).split(" ");
             parallel[Integer.parseInt(parallelln[1])] = parallelln[0];
             parallel[Integer.parseInt(parallelln[1]) + 1] = parallelln[0];
         }
     }
 
-    // CODE REVIEW: isn't this more like "printSolution"?
+    //Funktion speichert zwei lösungen ab
+    //um dann später zu entscheiden welche kürzer ist
     private void calcSolution(int parallelIndex, int distance, int straightIndex, int direction) {
         String[] directions = { "left", "right" };
         if (direction == 0) {
@@ -158,8 +146,7 @@ public class SchiebeParkplatz {
     private void calcMovement(int parallelIndex, int distance, int direction) {
         String parallelName = parallel[parallelIndex];
         int secondChar = parallelAuto.calcSecondChar(parallelIndex);
-        // CODE REVIEW: please add a comment here, I have no idea what the part below
-        // this is supposed to do
+        //Überschreibt die entsprechenden Indizes mit den passenden werten
         parallel[parallelIndex + ((2 + secondChar) * direction - (3 - secondChar) * (1 - direction)) * (distance - 1)
                 + ((1 + secondChar) * direction - (2 - secondChar) * (1 - direction)) * (2 - distance)] = parallelName;
         parallel[parallelIndex + ((1 + secondChar) * direction - (2 - secondChar) * (1 - direction)) * (distance - 1)
@@ -229,8 +216,8 @@ public class SchiebeParkplatz {
                 moveParallelCar(straightIndex, (1 + secondChar) * (1 - i) + (2 - secondChar) * i, straightIndex, i);
                 resetParallelCars();
             }
-            // CODE REVIEW: please add a comment here, I once again have no idea what the
-            // part below this is supposed to do
+            //Entscheidungsbaum welche der beiden Lösungen aus dem selectSolution
+            //Array genommen wird und in das finalSolution eingetragen wird
             if (selectSolution[1] == null && selectSolution[0] == null) {
                 return false;
             } else if (iterations[0] == 0 || selectSolution[0] == null) {

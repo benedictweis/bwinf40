@@ -6,6 +6,7 @@ public class ParallelAuto {
     }
 
     protected boolean[] noArrayBoundaries(int parallelIndex, int distance) {
+        //Checks if an operatrion on the Array would exeed the Array-Boundaries
         boolean moveLR[] = { true, true };
         if (parallelIndex - distance < 0) {
             moveLR[0] = false;
@@ -17,7 +18,6 @@ public class ParallelAuto {
     }
 
     protected boolean[] noCarBoundaries(int parallelIndex, int distance) {
-        // CODE REVIEW: well yes, but what does "noArrayBoundaries" do?
         // Basicly the same as "noArrayBoundaries" but also includes other cars in its
         // judgement
         int limit[] = calcFreeSpace(parallelIndex);
@@ -31,9 +31,9 @@ public class ParallelAuto {
         return moveLR;
     }
 
-    // CODE REVIEW: please add a method description here, this method is hard to
-    // understand
     protected int[] calcFreeSpace(int parallelIndex) {
+        //Returns in an array the space a car has to its left and right
+        //Index 0 of array is for Left, index 1 for right
         int[] freeSpace = { -1, -1 };
         int secondChar = calcSecondChar(parallelIndex);
         if (parallelIndex < 0 || parallelIndex >= parallel.length) {
