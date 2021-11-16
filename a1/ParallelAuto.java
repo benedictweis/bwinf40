@@ -18,8 +18,7 @@ public class ParallelAuto {
     }
 
     protected boolean[] noCarBoundaries(int parallelIndex, int distance) {
-        // Basicly the same as "noArrayBoundaries" but also includes other cars in its
-        // judgement
+        // Basicly the same as "noArrayBoundaries" but also includes other cars in its judgement
         int limit[] = calcFreeSpace(parallelIndex);
         boolean moveLR[] = { false, false };
         if (limit[1] >= distance) {
@@ -69,7 +68,9 @@ public class ParallelAuto {
     }
 
     protected int calcSecondChar(int parallelIndex) {
-        // Returncodes: 0-> secondChar is left; 1-> secondChar is right
+        //Returns the second char of a parallel car.
+        //Return 0 -> left
+        //Return 1 -> right
         boolean[] limit = noArrayBoundaries(parallelIndex, 1);
         if (limit[1] == false) {
             return 0;

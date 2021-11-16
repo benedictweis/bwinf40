@@ -62,6 +62,7 @@ public class SchiebeParkplatz {
     }
 
     protected void autosAusparken() {
+        //Checks if a soulution is possible
         if (canSolve() == 0.5) {
             System.out.println(
                     "\nNote:\nBased on the composition of the parallel cars, not all of the straight cars have a Solution");
@@ -69,6 +70,7 @@ public class SchiebeParkplatz {
         } else if (canSolve() == 1) {
             System.out.println("\n\n" + "Solution: \n");
         }
+        //Calls the solving-method on all cars
         for (int straightIndex = 0; straightIndex < straight.length; straightIndex++) {
             if (selectShorterPath(straightIndex)) {
                 System.out.println(finalSolution[straightIndex]);
@@ -80,6 +82,11 @@ public class SchiebeParkplatz {
     }
 
     private boolean moveParallelCar(int parallelIndex, int distance, int straightIndex, int direction) {
+        //Moves a parallel car based on the parameters given
+        //parallelIndex: current position of the car
+        //distance: how many steps the car should be moved
+        //straightIndex: which straight car is responsible for the operation
+        //direction: states if the car should be moved to the left or right
         int secondChar = parallelAuto.calcSecondChar(parallelIndex);
         int freePath = parallelAuto.calcFreeSpace(parallelIndex)[direction];
         boolean noArrayBoundaries = parallelAuto.noArrayBoundaries(parallelIndex, distance)[direction];
@@ -126,9 +133,8 @@ public class SchiebeParkplatz {
         }
     }
 
-    //Funktion speichert zwei lösungen ab
-    //um dann später zu entscheiden welche kürzer ist
     private void calcSolution(int parallelIndex, int distance, int straightIndex, int direction) {
+        //Writes the solution in an array for later use
         String[] directions = { "left", "right" };
         if (direction == 0) {
             parallelIndex -= distance;
@@ -144,9 +150,9 @@ public class SchiebeParkplatz {
     }
 
     private void calcMovement(int parallelIndex, int distance, int direction) {
+        //Overwrites the appropriate Indices with the provided values by the parameters
         String parallelName = parallel[parallelIndex];
         int secondChar = parallelAuto.calcSecondChar(parallelIndex);
-        //Überschreibt die entsprechenden Indizes mit den passenden werten
         parallel[parallelIndex + ((2 + secondChar) * direction - (3 - secondChar) * (1 - direction)) * (distance - 1)
                 + ((1 + secondChar) * direction - (2 - secondChar) * (1 - direction)) * (2 - distance)] = parallelName;
         parallel[parallelIndex + ((1 + secondChar) * direction - (2 - secondChar) * (1 - direction)) * (distance - 1)
@@ -155,54 +161,44 @@ public class SchiebeParkplatz {
                 - ((1 - secondChar) * direction + secondChar * (1 - direction)) * (2 - distance)] = null;
         parallel[parallelIndex - ((1 - secondChar) * direction + secondChar * (1 - direction)) * (distance - 1)
                 - ((1 - secondChar) * direction + secondChar * (1 - direction)) * (2 - distance)] = null;
-
-        // TODO: remove commented unnecessary code before finalizing th project
-        /*
-         * if(distance==1){
-         * parallel[parallelIndex+(1+secondChar)*direction-(2-secondChar)*(1-direction)]
-         * =parallelName;
-         * parallel[parallelIndex-(1-secondChar)*direction+secondChar*(1-direction)]=
-         * null; } else if(distance==2){
-         * parallel[parallelIndex+(2+secondChar)*direction-(3-secondChar)*(1-direction)]
-         * =parallelName;
-         * parallel[parallelIndex+(1+secondChar)*direction-(2-secondChar)*(1-direction)]
-         * =parallelName;
-         * parallel[parallelIndex+secondChar*direction-(1-secondChar)*(1-direction)]=
-         * null;
-         * parallel[parallelIndex-(1-secondChar)*direction+secondChar*(1-direction)]=
-         * null; }
-         */
+        //this is pure math. no coding involved here
     }
 
     private double canSolve() {
+        //Checks if the parkinglot is solvable and to what degree
         int j = 0;
         for (int i = 0; i < parallel.length; i++) {
             if (parallel[i] == null) {
                 j++;
             }
         }
-        if (j == 0) { // nicht lösbar
+        if (j == 0) { // not solvable
             return 0;
-        } else if (j == 1) { // nur die hälfte lösbar
+            } else if (j == 1) { // only half is solvable
             return 0.5;
-        } else if (j >= 2) { // sollte lösbar sein
+        } else if (j >= 2) { // should be solvable
             return 1;
         }
         return -1;
     }
 
     private void visualization(String filePath, String visualizeStraight, String visualizeParallel) {
+        //Prints Information about the parkinglot
         String spacer = "";
         for (int i = 0; i < 60; i++) {
             spacer += "*";
         }
         System.out.println("\n" + spacer + "\n");
-        System.out.println("Searching solution of: \"" + filePath + "\" ☺\n");
+        System.out.println("Searching solution of: \"" + filePath + "\"\n");
         System.out.println("straight cars: \t" + visualizeStraight);
         System.out.println("parallel cars: \t" + visualizeParallel);
     }
 
     private boolean selectShorterPath(int straightIndex) {
+        //This method is responsible for the solving procces
+        //It calls methods to move the blocking cars to the far right, until the straight car can move out and the same thing with the left side
+        //In the array "iterations" is saved how many steps it took in each direction until the straight car could move out
+        //The solution of the direction with the shorter steps then gets saved to the final solution
         iterations[1] = 0;
         iterations[0] = 0;
         selectSolution[0] = null;
@@ -216,8 +212,7 @@ public class SchiebeParkplatz {
                 moveParallelCar(straightIndex, (1 + secondChar) * (1 - i) + (2 - secondChar) * i, straightIndex, i);
                 resetParallelCars();
             }
-            //Entscheidungsbaum welche der beiden Lösungen aus dem selectSolution
-            //Array genommen wird und in das finalSolution eingetragen wird
+            //Short Decision tree which decides, which of the two direction took the least steps to move the car out
             if (selectSolution[1] == null && selectSolution[0] == null) {
                 return false;
             } else if (iterations[0] == 0 || selectSolution[0] == null) {
