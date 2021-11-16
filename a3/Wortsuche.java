@@ -284,10 +284,6 @@ public class Wortsuche{
         lines.set(stelle2,speicher);
     }
 
-    public static void main(String[] args) {
-        
-    }
-
     public void level1(){
         Random random = new Random();
         reset();
@@ -401,7 +397,7 @@ public class Wortsuche{
                 Gitter[x][y] = '#';
             }
         }
-        lines=(ArrayList) original.clone();
+        lines=(ArrayList<String>) original.clone();
         sortieren();
     }
 
