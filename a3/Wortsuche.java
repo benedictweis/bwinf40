@@ -397,7 +397,7 @@ public class Wortsuche{
                 Gitter[x][y] = '#';
             }
         }
-        lines=(ArrayList) original.clone();
+        lines=(ArrayList<String>) original.clone();
         sortieren();
     }
 
