@@ -1,9 +1,10 @@
 public class Main {
     public static void main(String[] args) {
         String[] all;
-        //Errorcase no text file given
+        //If no Parameters are given, the first example is used
         if(args.length==0){
             System.out.println("ERROR: Keine Parameter gefunden");
+            new SchiebeParkplatz("./examples/parkplatz0.txt");
             return;
         }
         //If the parameter given is "all", all examples are solved

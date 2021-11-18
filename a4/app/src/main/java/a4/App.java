@@ -22,13 +22,27 @@ public class App {
 
         // reading out path from arguments
         if (args.length == 1) {
+            if (args[0].equalsIgnoreCase("all")) {
+                for (int i = 0; i < 4; i++) {
+                    file = new File("beispiele/wuerfel" + i + ".txt");
+                    solve(file);
+                }
+                return;
+            }
             try {
                 file = new File(args[0]);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
+        solve(file);
+    }
+    /**
+     * solves the data from a file
+     * @param file file to solve
+     */
+    private static void solve(File file) {
+        dice = new ArrayList<int[]>();
         System.out.println(file.getAbsolutePath());
 
         // reading out data
@@ -109,7 +123,6 @@ public class App {
         }
 
         System.out.println("best dice: " + currentBest);
-
     }
 
     /**
