@@ -1,13 +1,11 @@
-import java.util.ArrayList;
-
 public class Daten
 {
-    public ArrayList<Integer> links=new ArrayList<Integer>();
-    public ArrayList<Integer> rechts=new ArrayList<Integer>();
-    public long abstand;
+    public char[] links;
+    public char[] rechts;
+    public long gewicht;
 
-    public Daten()
+    public Daten(long eingabe)
     {
-        abstand=-1;
+        gewicht=eingabe;
     }
 }

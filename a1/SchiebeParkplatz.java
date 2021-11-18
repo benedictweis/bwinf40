@@ -62,23 +62,26 @@ public class SchiebeParkplatz {
     }
 
     protected void autosAusparken() {
-        //Checks if a soulution is possible
-        if (canSolve() == 0.5) {
-            System.out.println(
-                    "\nNote:\nBased on the composition of the parallel cars, not all of the straight cars have a Solution");
-            System.out.println("\n\n" + "Solution: \n");
-        } else if (canSolve() == 1) {
-            System.out.println("\n\n" + "Solution: \n");
-        }
-        //Calls the solving-method on all cars
-        for (int straightIndex = 0; straightIndex < straight.length; straightIndex++) {
-            if (selectShorterPath(straightIndex)) {
-                System.out.println(finalSolution[straightIndex]);
-            } else {
-                System.out.println(straight[straightIndex] + ": No solution for this car");
+        //a
+           
+            //Checks if a soulution is possible
+            if (canSolve() == 0.5) {
+                System.out.println(
+                        "\nNote:\nBased on the composition of the parallel cars, not all of the straight cars have a Solution");
+                System.out.println("\n\n" + "Solution: \n");
+            } else if (canSolve() == 1) {
+                System.out.println("\n\n" + "Solution: \n");
             }
-            resetParallelCars();
-        }
+            //Calls the solving-method on all cars
+            for (int straightIndex = 0; straightIndex < straight.length; straightIndex++) {
+                if (selectShorterPath(straightIndex)) {
+                    System.out.println(finalSolution[straightIndex]);
+                } else {
+                    System.out.println(straight[straightIndex] + ": No solution for this car");
+                }
+                resetParallelCars();
+            }
+            
     }
 
     private boolean moveParallelCar(int parallelIndex, int distance, int straightIndex, int direction) {

@@ -4,3 +4,5 @@
 **/.settings
 .vscode
 *.class
+*.zip
+/final
