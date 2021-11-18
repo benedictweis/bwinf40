@@ -8,24 +8,24 @@ import java.util.Scanner;
 public class Marktwaage {
 
     ArrayList<String> lines;
-    ArrayList<Integer> alleErgebnisseKeys;
+    ArrayList<Long> alleErgebnisseKeys;
     HashMap<Integer, Daten> zehnerSchritte;
-    HashMap<Integer, Daten> alleErgebnis;
+    HashMap<Long, Daten> alleErgebnis;
     String[] parts;
     String gewichte;
     char binarGA[];
     char binarGG[];
-    int groesstesGewicht;
+    long groesstesGewicht;
 
     public Marktwaage(String input) {
-        groesstesGewicht = 0;
         zehnerSchritte = new HashMap<Integer, Daten>();
-        alleErgebnis = new HashMap<Integer, Daten>();
-        alleErgebnisseKeys = new ArrayList<Integer>();
+        alleErgebnis = new HashMap<Long, Daten>();
+        alleErgebnisseKeys = new ArrayList<Long>();
         einlesen(input);
         try {
             binarGG = new char[lines.size() - 1];
             binarGA = new char[lines.size() - 1];
+            groesstesGewicht =Long.parseLong(lines.get(lines.size()-1)+1);
         } catch (NegativeArraySizeException e) {
             System.out.println("Datei nicht gefunden");
             System.exit(0);
@@ -66,13 +66,13 @@ public class Marktwaage {
                         rechts += (lines.get(h + 1) + "    ");
                     }
                 }
-    
+
                 for (int h = 0; h < aktuell.links.length; h++) {
                     if (aktuell.links[h] == '1') {
                         links += (lines.get(h + 1) + "    ");
                     }
                 }
-    
+
                 System.out.println("linke Seite:\t" + links);
                 System.out.println("rechte Seite:\t" + rechts);
                 System.out.println();
@@ -111,18 +111,27 @@ public class Marktwaage {
             }
 
             while (true) {
-                int gewicht = (int) (gegengewicht - gewichtsadd);
-                if ((gewicht < groesstesGewicht) && (groesstesGewicht > 10000) && (gewicht > 10000)) {
-                    alleErgebnis.remove(groesstesGewicht);
-                }
-                Daten neu = new Daten(gewicht);
-                if ((gewicht % 10 == 0) && (gewicht <= 10000)) {
-                    neu.links = binarGA.clone();
-                    neu.rechts = binarGG.clone();
-                }
-                if (!alleErgebnis.containsKey(gewicht)) {
-                    alleErgebnis.put(gewicht, neu);
-                    alleErgebnisseKeys.add(gewicht);
+                long gewicht = gegengewicht - gewichtsadd;
+                if (gewicht > 10000) {
+                    if ((gewicht < groesstesGewicht)) {
+                        alleErgebnis.remove(groesstesGewicht);
+                        alleErgebnisseKeys.remove(groesstesGewicht);
+                        Daten neu = new Daten(gewicht);
+                        if (!alleErgebnis.containsKey(gewicht)) {
+                            alleErgebnis.put(gewicht, neu);
+                            alleErgebnisseKeys.add(gewicht);
+                        }
+                    }
+                } else {
+                    Daten neu = new Daten(gewicht);
+                    if ((gewicht % 10 == 0) && (gewicht <= 10000)) {
+                        neu.links = binarGA.clone();
+                        neu.rechts = binarGG.clone();
+                    }
+                    if (!alleErgebnis.containsKey(gewicht)) {
+                        alleErgebnis.put(gewicht, neu);
+                        alleErgebnisseKeys.add(gewicht);
+                    }
                 }
                 if (gewicht < groesstesGewicht && gewicht > 10000) {
                     groesstesGewicht = gewicht;
@@ -169,8 +178,8 @@ public class Marktwaage {
     public void umrechnen() {
         Collections.sort(alleErgebnisseKeys);
         for (int i = 10; i <= 10000; i += 10) {
-            if (alleErgebnis.containsKey(i)) {
-                zehnerSchritte.put(i, alleErgebnis.get(i));
+            if (alleErgebnis.containsKey(Long.valueOf(i))) {
+                zehnerSchritte.put(i, alleErgebnis.get(Long.valueOf(i)));
             } else {
                 int index = 0;
                 for (int h = 0; h < alleErgebnisseKeys.size() - 1; h++) {
@@ -179,13 +188,13 @@ public class Marktwaage {
                     }
                     index = h;
                 }
-                int abstandK = (i - alleErgebnisseKeys.get(index));
-                int abstandG = (alleErgebnisseKeys.get(index + 1) - i);
+                long abstandK = (i - alleErgebnisseKeys.get(index));
+                long abstandG = (alleErgebnisseKeys.get(index + 1) - i);
 
                 if (abstandK <= abstandG) {
-                    zehnerSchritte.put(i, alleErgebnis.get(alleErgebnisseKeys.get(index)));
+                    zehnerSchritte.put(i, alleErgebnis.get(Long.valueOf(alleErgebnisseKeys.get(index))));
                 } else {
-                    zehnerSchritte.put(i, alleErgebnis.get(alleErgebnisseKeys.get(index + 1)));
+                    zehnerSchritte.put(i, alleErgebnis.get(Long.valueOf(alleErgebnisseKeys.get(index + 1))));
                 }
             }
         }

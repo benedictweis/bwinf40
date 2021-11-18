@@ -37,7 +37,10 @@ public class App {
         }
         solve(file);
     }
-
+    /**
+     * solves the data from a file
+     * @param file file to solve
+     */
     private static void solve(File file) {
         dice = new ArrayList<int[]>();
         System.out.println(file.getAbsolutePath());
