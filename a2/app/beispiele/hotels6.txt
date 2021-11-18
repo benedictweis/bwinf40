@@ -1,0 +1,8 @@
+10
+400
+// Expected to throw exception
+0 4
+370 3
+380 2
+390 1
+400 0

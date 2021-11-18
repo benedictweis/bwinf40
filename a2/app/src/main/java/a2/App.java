@@ -23,7 +23,7 @@ public class App {
         // reading out path from arguments
         if (args.length == 1) {
             if (args[0].equalsIgnoreCase("all")) {
-                for (int i = 0; i < 7; i++) {
+                for (int i = 1; i < 7; i++) {
                     file = new File("beispiele/hotels" + i + ".txt");
                     solve(file);
                 }
