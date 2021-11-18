@@ -33,6 +33,7 @@ public class Wortsuche{
             Scanner scanner = new Scanner(file);
             while(scanner.hasNext()){
                 lines.add(scanner.nextLine());
+                scanner.close();
             }
         } catch(FileNotFoundException e){
             e.printStackTrace();
