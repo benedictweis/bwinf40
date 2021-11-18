@@ -1,14 +1,14 @@
 #BlueJ package file
-dependency1.from=Main
-dependency1.to=Marktwaage
+dependency1.from=Marktwaage
+dependency1.to=Daten
 dependency1.type=UsesDependency
-dependency2.from=Marktwaage
-dependency2.to=Daten
+dependency2.from=Main
+dependency2.to=Marktwaage
 dependency2.type=UsesDependency
-editor.fx.0.height=737
-editor.fx.0.width=814
-editor.fx.0.x=100
-editor.fx.0.y=2
+editor.fx.0.height=0
+editor.fx.0.width=0
+editor.fx.0.x=0
+editor.fx.0.y=0
 objectbench.height=113
 objectbench.width=452
 package.divider.horizontal=0.5997386759581881
