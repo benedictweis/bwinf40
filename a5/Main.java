@@ -23,30 +23,35 @@ public class Main {
             System.out.println();
             System.out.println();
             System.out.println("Gewichtsstuecke 1:");
+            System.out.println();
             b.alleberechnen();
             b.umrechnen();
             b.ausgabe();
             System.out.println();
             System.out.println();
             System.out.println("Gewichtsstuecke 2:");
+            System.out.println();
             c.alleberechnen();
             c.umrechnen();
             c.ausgabe();
             System.out.println();
             System.out.println();
             System.out.println("Gewichtsstuecke 3:");
+            System.out.println();
             d.alleberechnen();
             d.umrechnen();
             d.ausgabe();
             System.out.println();
             System.out.println();
             System.out.println("Gewichtsstuecke 4:");
+            System.out.println();
             e.alleberechnen();
             e.umrechnen();
             e.ausgabe();
             System.out.println();
             System.out.println();
             System.out.println("Gewichtsstuecke 5:");
+            System.out.println();
         }else{
             m=new Marktwaage(args[0]);
         }

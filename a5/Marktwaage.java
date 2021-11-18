@@ -79,7 +79,7 @@ public class Marktwaage {
 
             } else {
                 System.out.println(i + "g ist nicht moeglich");
-                System.out.println("nächster Abstand: " + Math.abs((aktuell.gewicht - i)));
+                System.out.println("naechster Abstand: " + Math.abs((aktuell.gewicht - i)));
             }
             System.out.println();
         }
