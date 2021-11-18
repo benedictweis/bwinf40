@@ -19,16 +19,26 @@ public class App {
         // prod: java -jar a2.jar <yourPath>
         // Standard test file
         File file = new File("beispiele/hotels1.txt");
-        
-        //reading out path from arguments
+
+        // reading out path from arguments
         if (args.length == 1) {
+            if (args[0].equalsIgnoreCase("all")) {
+                for (int i = 0; i < 7; i++) {
+                    file = new File("beispiele/hotels" + i + ".txt");
+                    solve(file);
+                }
+                return;
+            }
             try {
                 file = new File(args[0]);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        solve(file);
+    }
 
+    private static void solve(File file) {
         System.out.println(file.getAbsolutePath());
 
         ArrayList<String> lines = new ArrayList<String>();
