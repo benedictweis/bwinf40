@@ -3,6 +3,7 @@ public class Main {
         if (args.length == 0) {
             new Wortsuche("beispiele/worte1.txt").level1();
         }
+
         if(args[0] == "all"){
             for(int i = 0; i < 5; i++){
                     new Wortsuche("beispiele/worte" + i + ".txt").level1();
@@ -10,10 +11,7 @@ public class Main {
                     new Wortsuche("beispiele/worte" + i + ".txt").level3();
             }
         }
-
-
-
-
+        
         if (args[1].equals("1")) {
             new Wortsuche(args[0]).level1();
         } else if (args[1].equals("2")) {
