@@ -2,7 +2,7 @@
 
 ## Setup
 
-**Minimum requirements: ☕️ Java JRE Version 8**
+**Minimum requirements: ☕️ JRE Version 8**
 
 Download [Click](https://adoptium.net/releases.html)
 
