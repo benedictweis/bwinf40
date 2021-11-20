@@ -1,8 +1,9 @@
 # This file is used to make a final zip file for submission
 # This file requires gradle to be executed
+# It will not work on a non Unix based OS
 
 PREFIX=v
-VERSION=0.9
+VERSION=1.0
 
 CLEAR_OUTPUT=false
 
@@ -13,11 +14,10 @@ rm -rf $PREFIX$VERSION.zip
 
 echo "creating directories..."
 mkdir final
-mkdir final/executables
-mkdir final/executables/Aufgabe{1..5}
-mkdir final/executables/Aufgabe{1..5}/beispiele
-mkdir final/code
-mkdir final/code/Aufgabe{1..5}
+mkdir final/Aufgabe{1..5}
+mkdir final/Aufgabe{1..5}/executables
+mkdir final/Aufgabe{1..5}/executables/beispiele
+mkdir final/Aufgabe{1..5}/code
 
 echo "copying all docs..."
 cp a{1..5}/Aufgabe*.pdf final/
@@ -32,23 +32,23 @@ echo "building a4 using gradle..."
 
 for i in {2,4}; do
     echo "copying files from a$i..."
-    cp a$i/app/build/libs/app.jar final/executables/Aufgabe$i/a$i.jar
-    cp a$i/app/src/main/resources/*.txt final/executables/Aufgabe$i/beispiele/
-    cp a$i/app/src/main/java/a$i/*.java final/code/Aufgabe$i/
+    cp a$i/app/build/libs/app.jar final/Aufgabe$i/executables/a$i.jar
+    cp a$i/app/**/*.txt final/Aufgabe$i/executables/beispiele/
+    cp a$i/app/src/main/java/a$i/*.java final/Aufgabe$i/code/
 done
 
 for i in {1,3,5}; do
     echo "copying files from a$i..."
-    cp a$i/*.jar final/executables/Aufgabe$i/a$i.jar
-    cp a$i/**/*.txt final/executables/Aufgabe$i/beispiele/
-    cp a$i/*.java final/code/Aufgabe$i/
+    cp a$i/*.jar final/Aufgabe$i/executables/a$i.jar
+    cp a$i/**/*.txt final/Aufgabe$i/executables/beispiele/
+    cp a$i/*.java final/Aufgabe$i/code/
 done
 
 echo "renaming files..."
 mv final $PREFIX$VERSION
 
 echo "creating zip..."
-zip -r $PREFIX$VERSION.zip $PREFIX$VERSION/* &> /dev/null
+zip -r $PREFIX$VERSION.zip $PREFIX$VERSION/* #&> /dev/null
 
 if $CLEAR_OUTPUT; then
     echo "removing temporary folders..."

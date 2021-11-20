@@ -6,6 +6,9 @@
  * User Manual available at https://docs.gradle.org/7.2/userguide/building_java_projects.html
  */
 
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
@@ -40,5 +43,7 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+compileJava   {
+  sourceCompatibility = '1.8'
+  targetCompatibility = '1.8'
+}
