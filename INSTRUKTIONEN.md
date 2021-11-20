@@ -1,4 +1,4 @@
-Gerne die Github Repository [Link](https://github.com/benegamz/bwinf40) besuchen. Öffentlich zugänglich ab 22.10.21
+Gerne die Github Repository [Link](https://github.com/benegamz/bwinf40) besuchen. Öffentlich zugänglich ab 22.11.21
 
 # Ausführung der Java Dateien
 ## Setup
