@@ -41,14 +41,14 @@ for i in {1,3,5}; do
     echo "copying files from a$i..."
     cp a$i/*.jar final/Aufgabe$i/executables/a$i.jar
     cp a$i/**/*.txt final/Aufgabe$i/executables/beispiele/
-    cp a$i/*.java final/Aufgabe$i/code/
+    find a$i -mindepth 0 -type f -name "*.java" -exec cp {} final/Aufgabe$i/code/ \;
 done
 
 echo "renaming files..."
 mv final $PREFIX$VERSION
 
 echo "creating zip..."
-zip -r $PREFIX$VERSION.zip $PREFIX$VERSION/* #&> /dev/null
+(cd $PREFIX$VERSION &&  zip -r -l ../$PREFIX$VERSION.zip . &> /dev/null)
 
 if $CLEAR_OUTPUT; then
     echo "removing temporary folders..."

@@ -1,0 +1,26 @@
+main := "Main"
+class_file_version := "1.8"
+output_name := "a1"
+
+# build all files
+build: clean
+    mkdir bin
+    mkdir bin/src
+    echo "building all files..."
+    javac -d bin/src src/*.java --source {{class_file_version}} --target {{class_file_version}}
+
+# clean binary file
+clean:
+    echo "cleaning binary files"
+    rm -rf bin
+
+run *args: build 
+    echo "running at main entry point..."
+    java -cp bin/src {{main}} {{args}}
+
+jar: build
+    mkdir bin/target
+    echo "building jar archive bin/target/{{output_name}}.jar..."
+    echo "Manifest-Version: 1.0\nMain-Class: {{main}}\n" > bin/manifest.txt
+    jar cfm bin/target/{{output_name}}.jar bin/manifest.txt -C bin/src .
+    rm -rf bin/manifest.txt
