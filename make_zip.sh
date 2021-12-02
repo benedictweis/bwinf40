@@ -20,17 +20,15 @@ mkdir final/Aufgabe{1..5}/executables/beispiele
 mkdir final/Aufgabe{1..5}/code
 
 echo "copying all docs..."
-cp a{1..5}/Aufgabe*.pdf final/
+cp a{1..5}/docs/Aufgabe*.pdf final/
 
 echo "copying instructions..."
 cp INSTRUKTIONEN.md final/
-echo "building a2 using gradle..."
-(cd a2 && gradle clean && gradle build && gradle jar) &> /dev/null
-
-echo "building a4 using gradle..."
-(cd a4 && gradle clean && gradle build && gradle jar) &> /dev/null
 
 for i in {2,4}; do
+    echo "building a$i using gradle..."
+    (cd a$i && gradle clean && gradle build && gradle jar) &> /dev/null
+
     echo "copying files from a$i..."
     cp a$i/app/build/libs/app.jar final/Aufgabe$i/executables/a$i.jar
     cp a$i/app/**/*.txt final/Aufgabe$i/executables/beispiele/
@@ -38,8 +36,12 @@ for i in {2,4}; do
 done
 
 for i in {1,3,5}; do
+    echo "attempting to build a$i using just..."
+    (cd a$i && just jar) &> /dev/null
+
+
     echo "copying files from a$i..."
-    cp a$i/*.jar final/Aufgabe$i/executables/a$i.jar
+    cp a$i/bin/target/*.jar final/Aufgabe$i/executables/a$i.jar
     cp a$i/**/*.txt final/Aufgabe$i/executables/beispiele/
     find a$i -mindepth 0 -type f -name "*.java" -exec cp {} final/Aufgabe$i/code/ \;
 done
